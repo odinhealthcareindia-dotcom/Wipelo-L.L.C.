@@ -1147,3 +1147,65 @@ body::after{
   .pdp-title-row{flex-direction:column;gap:9px}
   .product-gal-main{min-height:400px}
 }
+
+/* ============================================================
+   MOBILE LAYOUT FIXES — scoped to ≤1020px / ≤820px / ≤520px so
+   the desktop layout is untouched.
+   ============================================================ */
+@media (max-width:1020px){
+  /* .hero-grid and .pdp set `padding:X 0`, which wipes the .wrap gutter */
+  .wrap.hero-grid,.wrap.pdp{padding-left:min(5vw,40px);padding-right:min(5vw,40px)}
+  .pdp{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:820px){
+  /* single-column grids must be allowed to shrink below their nowrap content */
+  .hero-grid,.gap-grid,.mech-grid,.nl-box,.guar{grid-template-columns:minmax(0,1fr)}
+  .hero-grid>*,.mech-grid>*{min-width:0}
+
+  /* spec rows: keep the dot leader, let long values wrap instead of overflowing */
+  .spec-row{white-space:normal;flex-wrap:wrap;column-gap:10px;row-gap:0}
+  .spec-row .dots{min-width:24px}
+  .spec-row .v{flex:0 1 auto;min-width:0;margin-left:auto;text-align:right;overflow-wrap:anywhere}
+  .hero-spec{font-size:11px;line-height:1.9;max-width:none}
+  .hero-spec .spec-row{padding:3px 0}
+
+  /* homepage hero product composition: stack image → sachet → details */
+  .home-product-hero{min-height:0;padding:58px 0 8px;gap:0}
+  .home-product-hero::before{display:none}
+  .home-product-hero .hero-badge{top:0;right:0}
+  .home-product-hero .home-product-hero-image{width:min(78%,300px);height:300px}
+  .hero-comp .hero-product-sachet{order:1;position:relative;left:auto;bottom:auto;align-self:flex-start;width:168px;margin:-54px 0 0 2%;transform:rotate(-5deg)}
+  .home-product-hero-details{order:2;position:static;width:100%;flex-direction:row;justify-content:space-between;align-items:center;gap:16px;margin-top:22px;padding-top:16px;border-top:1px solid rgba(250,245,239,.35)}
+  .home-product-hero-details .link-arrow{text-align:right;line-height:1.4}
+
+  /* proof stats beside the spec box */
+  .mech-grid .stat{gap:16px!important;padding:20px 20px!important}
+  .mech-grid .stat .num{font-size:44px!important;flex:none}
+  .mech-grid .stat .src{overflow-wrap:anywhere}
+
+  /* the object stage: two packs side by side, tin + sachet beneath */
+  .object-stage{gap:16px 14px;padding:56px 20px 40px}
+  .object-stage .pack{width:min(42%,170px);padding:14px 13px;border-radius:10px}
+  .object-stage .pack .p-seal{top:10px;right:10px;width:18px;height:18px;font-size:8px}
+  .object-stage .pack .p-name{font-size:20px}
+  .object-stage .pack .p-sku{font-size:11px;margin-bottom:8px}
+  .object-stage .pack .p-spec{font-size:5.4px;padding-top:7px}
+  .object-stage .pack .p-batch{display:none}
+  .object-stage .tin{width:96px;margin-top:10px}
+  .object-stage .tin .t-w{font-size:30px}
+  .object-stage .sachet-sm{bottom:30px!important;right:8%!important}
+
+  /* footer colour line: read as one sentence, not four flex fragments */
+  .color-spec{display:block;line-height:1.8}
+  .color-spec .swatch{display:inline-block;vertical-align:-3px;margin-right:10px}
+
+  /* closed cart drawer's shadow bleeds onto the right edge of every page */
+  .drawer:not(.on){box-shadow:none}
+}
+@media (max-width:520px){
+  .pay-icons{flex-wrap:wrap}
+  .nl-form input{min-width:0}
+  .pdp-title-row h1{font-size:34px}
+  .product-gal-main{min-height:340px;aspect-ratio:auto}
+  .product-tear{max-width:none}
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node shoot.mjs before-mobile 390)",
+      "Bash(node shoot.mjs before-desktop 1440)"
+    ]
+  }
+}
