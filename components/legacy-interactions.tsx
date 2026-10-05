@@ -54,7 +54,7 @@ export function LegacyInteractions({ children, products = [] }: { children: Reac
         const products = productsRef.current;
         const wanted = picked?.toLowerCase();
         let match = wanted ? products.find((product) => product.handle.toLowerCase().includes(wanted) || product.title.toLowerCase().includes(wanted)) : undefined;
-        if (picked === "first" && root.querySelector(".q-opts[data-q='3'] .q-opt.sel")?.dataset.v === "breakout") {
+        if (picked === "first" && root.querySelector<HTMLElement>(".q-opts[data-q='3'] .q-opt.sel")?.dataset.v === "breakout") {
           match = products.find((product) => /bare|acne|body|back/i.test(`${product.handle} ${product.title}`)) ?? match;
         }
         match ??= products[0];

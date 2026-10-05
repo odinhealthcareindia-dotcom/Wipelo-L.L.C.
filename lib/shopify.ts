@@ -39,14 +39,15 @@ export type ShopifyProduct = {
   priceRange: { minVariantPrice: ShopifyMoney; maxVariantPrice: ShopifyMoney };
   options: { id: string; name: string; values: string[] }[];
   variants: ShopifyVariant[];
-  metafields: (ShopifyMetafield | null)[];
+  metafields: ShopifyMetafield[];
 };
 export type ShopifyCollection = { id: string; handle: string; title: string; description: string; products: ShopifyProduct[] };
 type ShopifyProductConnection = { nodes: ShopifyProductPayload[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } };
 type ShopifyVariantPayload = Omit<ShopifyVariant, "sellingPlanAllocations"> & {
   sellingPlanAllocations?: { nodes: ShopifyPlanAllocation[] } | ShopifyPlanAllocation[];
 };
-type ShopifyProductPayload = Omit<ShopifyProduct, "images" | "variants"> & {
+type ShopifyProductPayload = Omit<ShopifyProduct, "images" | "variants" | "metafields"> & {
+  metafields: (ShopifyMetafield | null)[] | null;
   images: { nodes: ShopifyImage[] } | ShopifyImage[];
   variants: { nodes: ShopifyVariantPayload[] } | ShopifyVariantPayload[];
 };
@@ -131,7 +132,7 @@ export async function getProducts(first = 50): Promise<ShopifyProduct[]> {
   const products: ShopifyProduct[] = [];
   let after: string | null = null;
   for (let page = 0; page < 50; page += 1) {
-    const data = await storefrontQuery<{ products: ShopifyProductConnection }>(
+    const data: { products: ShopifyProductConnection } | null = await storefrontQuery<{ products: ShopifyProductConnection }>(
       `query WipeloProducts($first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!) {
         products(first: $first, after: $after, sortKey: TITLE) {
           nodes { ${PRODUCT_FIELDS} }

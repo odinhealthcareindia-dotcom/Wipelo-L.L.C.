@@ -33,7 +33,7 @@ function validateLines(value: unknown): ShopifyCartLineInput[] | null {
   return result;
 }
 
-function unwrap(result: unknown) {
+function unwrap(result: unknown): { errors: string[] } | { cart: unknown } | null {
   if (!result || typeof result !== "object") return null;
   const mutation = Object.values(result as Record<string, { cart: unknown; userErrors: { message: string }[] }>)[0];
   if (!mutation) return null;
