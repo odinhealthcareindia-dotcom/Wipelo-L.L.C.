@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- WIPELO QUIZ FUNNEL (MOFU→BOFU) — prototype.
+     [MANIFEST] "Below-the-Jaw Score" is a design device (not a real metric).
+     4.8/2,847 reviews + "fewer than 1% ever ask" = dummy (see site manifests).
+     Headline variants: ?h=1 (default, gap angle) ?h=2 (odor angle) ?h=3 (pH angle) -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The 60-Second Routine Quiz — Wipelo</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2300B4A0'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-weight='600' text-anchor='middle' fill='%23FAF5EF'%3EW%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../wipelo.css"><link rel="stylesheet" href="funnel.css">
+</head>
+<body>
+
+<header class="fhead"><div class="fhead-in">
+  <a href="../index.html" class="nav-brand">Wipelo</a>
+  <span class="f-trust">★ 4.8 · 2,847 reviews* · 30-day guarantee</span>
+</div></header>
+
+<div class="qz">
+  <div class="qz-prog"><i class="done"></i><i></i><i></i><i></i><i></i></div>
+
+  <!-- INTRO / Q1 -->
+  <div class="qz-step on" data-step="1">
+    <span class="mono-tag">// 60 seconds · 5 questions</span>
+    <h1 class="qz-q" id="vh">Your face has a routine.<br>Let's build one for the rest of you.</h1>
+    <p class="qz-sub" id="vs">Answer five questions. We match one active to your actual need — that's the whole science.</p>
+    <div class="qz-opts" data-q="sku">
+      <button class="qz-opt" data-v="bare"><span class="em">✦</span><span>Back &amp; body breakouts<small>Shoulders, back, chest congestion</small></span></button>
+      <button class="qz-opt" data-v="first"><span class="em">✦</span><span>The moments in-between<small>Gym, travel, before &amp; after</small></span></button>
+      <button class="qz-opt" data-v="her"><span class="em">✦</span><span>Feminine care<small>pH &amp; microbiome, treated with respect</small></span></button>
+      <button class="qz-opt" data-v="clean"><span class="em">✦</span><span>Just honest clean<small>No actives — pure cotton removal</small></span></button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qz-step" data-step="2">
+    <span class="mono-tag">// 02</span>
+    <h1 class="qz-q">When do you reach for something?</h1>
+    <div class="qz-opts" data-q="when">
+      <button class="qz-opt" data-v="gym"><span class="em">◷</span><span>After training<small>The gym → meeting gap</small></span></button>
+      <button class="qz-opt" data-v="intim"><span class="em">☾</span><span>Before &amp; after intimacy</span></button>
+      <button class="qz-opt" data-v="travel"><span class="em">✈</span><span>Travel &amp; long days<small>Seat 14A, hour six</small></span></button>
+      <button class="qz-opt" data-v="daily"><span class="em">✦</span><span>Every day, everywhere</span></button>
+    </div>
+    <button class="qz-back">← back</button>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qz-step" data-step="3">
+    <span class="mono-tag">// 03</span>
+    <h1 class="qz-q">What handles it today?</h1>
+    <div class="qz-opts" data-q="now">
+      <button class="qz-opt" data-v="baby"><span class="em">◌</span><span>Baby wipes<small>Designed for infants, pH ~7</small></span></button>
+      <button class="qz-opt" data-v="soap"><span class="em">◌</span><span>Soap + hope<small>Bar soap is pH ~10</small></span></button>
+      <button class="qz-opt" data-v="fresh"><span class="em">◌</span><span>"Fresh-scent" body wipes<small>Perfume over the problem</small></span></button>
+      <button class="qz-opt" data-v="nothing"><span class="em">◌</span><span>Honestly? Nothing</span></button>
+    </div>
+    <button class="qz-back">← back</button>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qz-step" data-step="4">
+    <span class="mono-tag">// 04</span>
+    <h1 class="qz-q">Your skin is…</h1>
+    <div class="qz-opts" data-q="skin">
+      <button class="qz-opt" data-v="breakout"><span class="em">✦</span><span>Breakout-prone</span></button>
+      <button class="qz-opt" data-v="sensitive"><span class="em">✦</span><span>Reactive — easily stripped</span></button>
+      <button class="qz-opt" data-v="normal"><span class="em">✦</span><span>Low-maintenance</span></button>
+    </div>
+    <button class="qz-back">← back</button>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qz-step" data-step="5">
+    <span class="mono-tag">// 05</span>
+    <h1 class="qz-q">How many of these moments hit per week?</h1>
+    <div class="qz-opts" data-q="freq">
+      <button class="qz-opt" data-v="1"><span class="em">▁</span><span>1–3 <small>One box has you covered</small></span></button>
+      <button class="qz-opt" data-v="3"><span class="em">▃</span><span>4–7 <small>One per bag — gym, travel, home</small></span></button>
+      <button class="qz-opt" data-v="6"><span class="em">▆</span><span>8+ <small>This is a lifestyle</small></span></button>
+    </div>
+    <button class="qz-back">← back</button>
+  </div>
+
+  <!-- COMPUTING -->
+  <div class="qz-step qz-comp" data-step="6">
+    <span class="mono-tag">// Matching your formulation</span>
+    <div class="spec">
+      <div class="spec-row"><span class="k marker">//</span><span class="k">Mapping your moments</span><span class="dots"></span><span class="v">✓</span></div>
+      <div class="spec-row"><span class="k">Matching active to need</span><span class="dots"></span><span class="v">✓</span></div>
+      <div class="spec-row"><span class="k">Checking pH window</span><span class="dots"></span><span class="v">4.5–5.5 ✓</span></div>
+      <div class="spec-row"><span class="k">Sizing your supply</span><span class="dots"></span><span class="v">✓</span></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="qz-step" data-step="7">
+    <span class="mono-tag">// Your formulation — matched</span>
+    <div class="qz-score"><span class="n" id="rScore">86</span><span class="d">Below-the-jaw score*<br>room to engineer</span></div>
+    <p class="qz-sub" id="rDiag">You're trusting a product designed for infants with an adult body's needs.</p>
+    <div class="offer" style="margin-top:18px">
+      <span class="o-kick" id="rKick">// Matched: multi-purpose</span>
+      <h3 id="rName">Wipelo First — <span id="rBoxes">3 boxes</span></h3>
+      <p id="rWhy">Zinc odor complex + aloe, pH-True™ 4.5–5.5. One per bag: gym, travel, home.</p>
+      <div class="spec" style="font-size:11px;margin-bottom:16px">
+        <div class="spec-row"><span class="k">Your price</span><span class="dots"></span><span class="v" id="rPrice">$67.50 with subscription</span></div>
+        <div class="spec-row"><span class="k">Welcome Kit</span><span class="dots"></span><span class="v">Travel Tin + Clean ×10 — free</span></div>
+        <div class="spec-row"><span class="k">Guarantee</span><span class="dots"></span><span class="v">30 days · &lt;1% ever ask*</span></div>
+      </div>
+      <a class="btn btn-teal btn-lg" id="rCta" href="../first.html">Start my routine <span class="ar">→</span></a>
+      <p class="o-under">Swap, skip, or cancel in one click · ships in 12–24h</p>
+    </div>
+    <form class="nl-form" style="display:flex;gap:8px;margin:6px 0 14px" onsubmit="event.preventDefault();wToast('Match sent. Messages, not newsletters.');this.reset();">
+      <input type="email" required placeholder="Email my match + the spec sheet" style="flex:1;font:400 14px/1 var(--in);padding:14px 18px;border-radius:999px;border:1.5px solid var(--hairline);background:#fff">
+      <button class="btn btn-ink" type="submit">Send</button>
+    </form>
+    <p style="font-size:11px;color:var(--ink-40)">*Score is illustrative — prototype device. Review figures are dummy data.</p>
+  </div>
+</div>
+
+<script src="../wipelo.js"></script>
+<script>
+(function(){
+  var V={ '2':{h:'Deodorant hides it.<br>Zinc removes it.', s:'Five questions to match the active your body actually needs.'},
+          '3':{h:'Your soap is pH 10.<br>Your skin is 4.5.', s:'Five questions to fix the half of your routine nobody engineered.'} };
+  var p=new URLSearchParams(location.search).get('h')||(location.hash.match(/h=([0-9])/)||[])[1];
+  if(V[p]){ document.getElementById('vh').innerHTML=V[p].h; document.getElementById('vs').textContent=V[p].s; }
+
+  var picks={}, order=['1','2','3','4','5'], cur=0;
+  var steps=document.querySelectorAll('.qz-step'), prog=document.querySelectorAll('.qz-prog i');
+  function show(n){
+    steps.forEach(function(s){ s.classList.toggle('on', s.dataset.step==String(n)); });
+    prog.forEach(function(b,i){ b.classList.toggle('done', i < Math.min(n,5)); });
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('.qz-opts').forEach(function(g){
+    g.addEventListener('click', function(e){
+      var b=e.target.closest('.qz-opt'); if(!b) return;
+      picks[g.dataset.q]=b.dataset.v; cur++;
+      if(cur<5){ show(cur+1); } else { compute(); }
+    });
+  });
+  document.querySelectorAll('.qz-back').forEach(function(b){
+    b.addEventListener('click', function(){ if(cur>0){ cur--; show(cur+1); } });
+  });
+  function compute(){
+    show(6);
+    var rows=document.querySelectorAll('.qz-comp .spec-row');
+    rows.forEach(function(r,i){ setTimeout(function(){ r.classList.add('show'); }, 320*(i+1)); });
+    setTimeout(result, 320*rows.length + 700);
+  }
+  var REC={ bare:{n:'Wipelo Bare',k:'// Matched: back & body',w:'Salicylic acid 2% clears pores and treats body breakouts — at your skin’s real pH.'},
+            first:{n:'Wipelo First',k:'// Matched: multi-purpose',w:'Zinc odor complex + aloe, pH-True™ 4.5–5.5. Treats odor at the source — doesn’t mask it.'},
+            her:{n:'Wipelo Her',k:'// Matched: feminine care',w:'Cranberry + lactic acid, microbiome-matched, reviewed with gynecological input.'},
+            clean:{n:'Wipelo Clean',k:'// Matched: pure cotton',w:'100% cotton, no actives — removes without adding.'} };
+  var DIAG={ baby:'You’re trusting a product designed for infants with an adult body’s needs.',
+             soap:'Bar soap sits near pH 10. Your skin’s barrier lives at 4.5–5.5 — every wash works against it.',
+             fresh:'"Fresh scent" is perfume over the problem. Odor needs removing, not masking.',
+             nothing:'No system at all — which at least is honest. Let’s engineer one.' };
+  var PRICE={1:'$27 with subscription',3:'$67.50 with subscription',6:'$108 with subscription'};
+  function result(){
+    var sku=picks.sku||'first';
+    if(picks.skin==='breakout' && sku==='first') sku='bare';
+    var r=REC[sku], boxes=picks.freq||'3';
+    document.getElementById('rKick').textContent=r.k;
+    document.getElementById('rName').innerHTML=r.n+' — <span id="rBoxes">'+boxes+' box'+(boxes>1?'es':'')+'</span>';
+    document.getElementById('rWhy').textContent=r.w;
+    document.getElementById('rDiag').textContent=DIAG[picks.now]||DIAG.baby;
+    document.getElementById('rPrice').textContent=PRICE[boxes];
+    document.getElementById('rScore').textContent=String(58+Math.floor(Math.random()*0)+ (picks.now==='nothing'?34:picks.now==='soap'?30:picks.now==='baby'?28:24));
+    show(7); prog.forEach(function(b){ b.classList.add('done'); });
+  }
+})();
+</script>
+</body>
+</html>

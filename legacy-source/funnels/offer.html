@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- WIPELO DR OFFER PAGE (BOFU converter, mobile-first) — prototype.
+     All review/stat figures dummy per site manifests. Offer mirrors PureSkin.
+     Variants: ?h=1 odor (default) ?h=2 gap ?h=3 guarantee-led -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wipelo First — Functional Wet Wipes™ | Start Your Supply</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2300B4A0'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-weight='600' text-anchor='middle' fill='%23FAF5EF'%3EW%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../wipelo.css"><link rel="stylesheet" href="funnel.css">
+</head>
+<body>
+
+<header class="fhead"><div class="fhead-in">
+  <a href="../index.html" class="nav-brand">Wipelo</a>
+  <span class="f-trust">30-day guarantee · ships in 12–24h</span>
+</div></header>
+
+<div class="dr-wrap">
+  <!-- ABOVE THE FOLD -->
+  <div class="dr-hero" id="buyzone">
+    <div class="rating" style="margin-top:16px"><span class="stars">★★★★★</span> 4.8 · <a href="#revs" style="text-decoration:underline;color:var(--ink-60)">612 reviews*</a> · <span style="color:var(--teal-deep);font-weight:700">97% recommend*</span></div>
+    <h1 class="dr-h1 fr" id="vh">The wet wipe that removes odor.<br><em style="font-style:normal;color:var(--teal-deep)">Not hides it.</em></h1>
+    <p style="font-size:15px;color:var(--ink-60)" id="vs">Zinc odor complex + aloe · pH-True™ 4.5–5.5 · 50 individually sealed wipes. Built for adult body skin, not the baby aisle.</p>
+
+    <div class="dr-visual">
+      <span class="dv-badge">Batch 0426 · pH 4.9 ✓</span>
+      <div class="pack"><span class="p-cat">Functional Wet Wipes™</span><span class="p-name">Wipelo</span><span class="p-sku">First</span><div class="p-spec">FUNCTION · ODOR CONTROL<br>pH ······· 4.5–5.5 [pH-TRUE™]</div></div>
+      <div class="sachet"><span class="s-notch"></span><span class="s-brand">Wipelo</span><span class="s-func">1 of 50 · sealed</span><span class="s-line">tear here →</span></div>
+    </div>
+
+    <ul class="buy-bullets">
+      <li><span class="bt">✦</span>Treats odor at the source — zero fragrance, nothing to mask</li>
+      <li><span class="bt">✦</span>pH-matched to adult skin — cleanses without stripping</li>
+      <li><span class="bt">✦</span>Every wipe individually sealed — gym bag, jacket, carry-on</li>
+    </ul>
+
+    <div class="opt-label"><span>Choose your supply</span><span>50 wipes / box</span></div>
+    <div class="opts" id="supplyOpts">
+      <label class="opt" data-boxes="1" data-price="30" data-was="0"><input type="radio" name="s"><span class="dot"></span><span class="o-main"><span class="o-title">1 box</span><span class="o-sub">A month of moments</span></span><span class="o-price"><span class="now">$30</span><span class="per">$0.60 / wipe</span></span></label>
+      <label class="opt sel" data-boxes="3" data-price="75" data-was="90"><span class="opt-badge tealb">★ Most popular</span><input type="radio" name="s" checked><span class="dot"></span><span class="o-main"><span class="o-title">3 boxes</span><span class="o-sub"><span class="save">Save $15</span> · one per bag</span></span><span class="o-price"><span class="was">$90</span><span class="now">$75</span><span class="per">$0.50 / wipe</span></span></label>
+      <label class="opt" data-boxes="6" data-price="120" data-was="180"><span class="opt-badge">Best deal</span><input type="radio" name="s"><span class="dot"></span><span class="o-main"><span class="o-title">6 boxes</span><span class="o-sub"><span class="save">Save $60</span> · half-year, handled</span></span><span class="o-price"><span class="was">$180</span><span class="now">$120</span><span class="per">$0.40 / wipe</span></span></label>
+    </div>
+
+    <div class="opt-label"><span>How often</span><span>85% subscribe*</span></div>
+    <div class="opts" id="freqOpts">
+      <label class="opt sel" data-freq="sub"><span class="opt-badge tealb">Free Welcome Kit</span><input type="radio" name="f" checked><span class="dot"></span><span class="o-main"><span class="o-title">Subscribe &amp; save 10%</span><span class="o-sub">Every 4 wks · swap, skip, cancel in one click</span></span><span class="o-price"><span class="now" id="subPrice">$67.50</span></span></label>
+      <label class="opt" data-freq="once"><input type="radio" name="f"><span class="dot"></span><span class="o-main"><span class="o-title">One-time</span><span class="o-sub">No kit, ships once</span></span><span class="o-price"><span class="now" id="oncePrice">$75</span></span></label>
+    </div>
+
+    <div class="kit" id="kitBox">
+      <div class="k-title"><span>// Your first delivery</span><span>itemized</span></div>
+      <ul><li>✦ <b id="kitWipes">150 sealed wipes</b></li><li>✦ <b>Travel Tin</b> — $12 free</li><li>✦ <b>Clean ×10</b> — $8 free</li></ul>
+      <div class="k-total"><span>Total value</span><span><span class="strike" id="kitWas">$110</span><span class="pay" id="kitPay">you pay $67.50</span></span></div>
+    </div>
+
+    <div class="atc"><button class="btn btn-teal btn-lg btn-wide" id="atcBtn">Start your supply — $67.50</button></div>
+    <div class="atc-under">
+      <div class="u-row"><span class="ic">✓</span><span><b>The Skin-Is-Skin Guarantee</b> — 30 days, keep it or keep your money. &lt;1% ever ask*</span></div>
+      <div class="u-row"><span class="ic">✓</span><span>Ships in <b>12–24h</b> · free US shipping over $35 · reminder email 3 days before every refill</span></div>
+    </div>
+  </div>
+
+  <!-- PROOF -->
+  <div class="dr-stats">
+    <div><span class="n" data-count="96" data-suffix="%">0%</span><span>Fresher all day*</span></div>
+    <div><span class="n" data-count="91" data-suffix="%">0%</span><span>Calm, not stripped*</span></div>
+    <div><span class="n" data-count="84" data-suffix="%">0%</span><span>Replaced their wipe*</span></div>
+  </div>
+
+  <span class="sec-label">// How it works</span>
+  <div class="dr-steps">
+    <div><span class="n">01</span><b>Tear</b><span>One sealed single, always fresh</span></div>
+    <div><span class="n">02</span><b>Wipe</b><span>Zinc binds odor molecules — removed, not masked</span></div>
+    <div><span class="n">03</span><b>Bin</b><span>Biodegradable cloth. Not flushable — honesty is the brand</span></div>
+  </div>
+
+  <span class="sec-label">// The honest table</span>
+  <table class="dr-cmp">
+    <thead><tr><th></th><th class="us">Wipelo</th><th>Baby wipe</th><th>"Fresh" wipe</th></tr></thead>
+    <tbody>
+      <tr><td>Removes sweat</td><td class="us">✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Adult formulation</td><td class="us">✓</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Odor at source</td><td class="us">✓ zinc</td><td>✗</td><td>✗ masked</td></tr>
+      <tr><td>pH 4.5–5.5</td><td class="us">✓</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Sealed singles</td><td class="us">✓ ×50</td><td>✗</td><td>✗</td></tr>
+      <tr><td>Per use</td><td class="us">$0.50</td><td>$0.04</td><td>$0.35</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:11.5px;color:var(--ink-40)">Row one is a tie on purpose — and we lose on price. We win on engineering.</p>
+
+  <span class="sec-label" id="revs">// Verified buyers*</span>
+  <div class="dr-rev"><span class="stars">★★★★★</span><p>"The 40 minutes between the gym and my 9 a.m. used to be a problem. Now it's one sealed packet."</p><span class="who">Marcus T. · trains 5x/week · ✓ verified</span></div>
+  <div class="dr-rev"><span class="stars">★★★★★</span><p>"No sting, no perfume cloud, no baby-aisle shame. Lives in the nightstand."</p><span class="who">Dana R. · Austin · ✓ verified</span></div>
+  <div class="dr-rev"><span class="stars">★★★★☆</span><p>"Only complaint: I want a 100-count box."</p><span class="who">Elena V. · sensitive skin · ✓ verified</span></div>
+
+  <div class="offer">
+    <span class="o-kick">// Risk, reversed</span>
+    <h3>Use all 30 days. Then decide.</h3>
+    <p>If your body isn't convinced, one email refunds every dollar — no return label, no interrogation. Fewer than 1% ever ask.*</p>
+    <button class="btn btn-teal btn-lg" id="ctaBtn2">Start your supply — $67.50</button>
+  </div>
+
+  <span class="sec-label">// Questions</span>
+  <div class="faq-list">
+    <details class="faq-item"><summary>So it's… a wet wipe? <span class="pm">+</span></summary><div class="faq-a">Yes — it says so on the pack. The word before it is the difference: <em>functional</em>. One treatment active with a stated job, pH-matched, individually sealed.</div></details>
+    <details class="faq-item"><summary>Does it replace a shower? <span class="pm">+</span></summary><div class="faq-a">No, and we won't pretend it does. It's for the gap between showers — gym→meeting, seat 14A, before, after.</div></details>
+    <details class="faq-item"><summary>How does cancelling work? <span class="pm">+</span></summary><div class="faq-a">One click from your account. We email you 3 days before every shipment so nothing ever surprises you.</div></details>
+    <details class="faq-item"><summary>Is it safe for intimate skin? <span class="pm">+</span></summary><div class="faq-a">Yes — alcohol-free, fragrance-free, pH 4.5–5.5, aloe base. For feminine-specific formulation, see Wipelo HER.</div></details>
+  </div>
+  <p style="font-size:10.5px;color:var(--ink-40);margin-top:18px">*Prototype — reviews, stats and guarantee-usage figures are dummy data (see site manifests).</p>
+</div>
+
+<!-- STICKY CTA -->
+<div class="dr-sticky" id="drSticky"><button class="btn btn-teal" id="ctaBtn3">Start your supply — $67.50</button></div>
+
+<!-- CART DRAWER -->
+<div class="scrim"></div>
+<aside class="drawer" aria-label="Cart">
+  <div class="dr-head"><span class="mono">// Your cart</span><button class="dr-close" aria-label="Close cart">×</button></div>
+  <div class="dr-ship"><div class="ship-msg">Free shipping on orders over <b>$35</b>.</div><div class="ship-bar"><i style="width:0%"></i></div></div>
+  <div class="dr-items"></div>
+  <div class="dr-foot">
+    <div class="dr-total"><span>Subtotal</span><b>$0</b></div>
+    <button class="btn btn-ink btn-wide" onclick="wToast('Prototype — checkout not wired yet.')">Checkout</button>
+    <div class="dr-guar">30-day Skin-Is-Skin Guarantee · fewer than 1% ever ask*</div>
+  </div>
+</aside>
+<div class="toast" role="status"></div>
+
+<script src="../wipelo.js"></script>
+<script>
+(function(){
+  var V={ '2':{h:'Your face has a routine.<br><em style="font-style:normal;color:var(--teal-deep)">The rest of you has this.</em>', s:'One active per need, dosed to work, pH-True™ 4.5–5.5. The other half of skincare — in 50 sealed singles.'},
+          '3':{h:'Try it for 30 days.<br><em style="font-style:normal;color:var(--teal-deep)">Keep it or keep your money.</em>', s:'The Skin-Is-Skin Guarantee: no return label, no questions. Fewer than 1% ever ask.*'} };
+  var p=new URLSearchParams(location.search).get('h')||(location.hash.match(/h=([0-9])/)||[])[1];
+  if(V[p]){ document.getElementById('vh').innerHTML=V[p].h; document.getElementById('vs').textContent=V[p].s; }
+
+  var state={boxes:3,price:75,was:90,freq:'sub'}, SUB=.10, KIT=20;
+  function money(n){ return '$'+(n%1?n.toFixed(2):n); }
+  function cur(){ return state.freq==='sub'?state.price*(1-SUB):state.price; }
+  function sync(){
+    document.getElementById('subPrice').textContent=money(state.price*(1-SUB));
+    document.getElementById('oncePrice').textContent=money(state.price);
+    var l=(state.freq==='sub'?'Start your supply — ':'Add to cart — ')+money(cur());
+    ['atcBtn','ctaBtn2','ctaBtn3'].forEach(function(id){ document.getElementById(id).textContent=l; });
+    document.getElementById('kitBox').style.display=state.freq==='sub'?'':'none';
+    document.getElementById('kitWipes').textContent=(state.boxes*50)+' sealed wipes';
+    document.getElementById('kitWas').textContent=money((state.was||state.price)+KIT);
+    document.getElementById('kitPay').textContent='you pay '+money(cur());
+  }
+  function wire(id,fn){ var g=document.getElementById(id); g.querySelectorAll('.opt').forEach(function(o){ o.addEventListener('click',function(){ g.querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel');}); o.classList.add('sel'); o.querySelector('input').checked=true; fn(o); sync(); }); }); }
+  wire('supplyOpts',function(o){ state.boxes=+o.dataset.boxes; state.price=+o.dataset.price; state.was=+o.dataset.was; });
+  wire('freqOpts',function(o){ state.freq=o.dataset.freq; });
+  sync();
+
+  function add(){ wAdd({id:'first-'+state.boxes+'-'+state.freq, name:'Wipelo First — '+state.boxes+' box'+(state.boxes>1?'es':'')+(state.freq==='sub'?' · Subscription':''), short:'First', meta:(state.boxes*50)+' × Single-Seal'+(state.freq==='sub'?' · kit incl.':''), price:cur(), ground:'#00B4A0', groundText:'#fff'}); }
+  ['atcBtn','ctaBtn2','ctaBtn3'].forEach(function(id){ document.getElementById(id).addEventListener('click',add); });
+
+  /* sticky CTA after the buy zone scrolls out */
+  var zone=document.getElementById('buyzone'), bar=document.getElementById('drSticky');
+  function chk(){ bar.classList.toggle('on', zone.getBoundingClientRect().bottom < 0); }
+  window.addEventListener('scroll', chk, {passive:true}); chk();
+})();
+</script>
+</body>
+</html>

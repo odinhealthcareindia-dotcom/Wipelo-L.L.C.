@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- WIPELO GAMIFIED FUNNEL "THE LAB" (TOFU/MOFU interactive) — prototype.
+     pH values approximate/illustrative; freshness sim is a design device.
+     Tear-to-reveal offer = the launch Welcome Kit (no fake discounts). -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wipelo Lab — test what you're actually using</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2300B4A0'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' font-weight='600' text-anchor='middle' fill='%23FAF5EF'%3EW%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../wipelo.css"><link rel="stylesheet" href="funnel.css">
+</head>
+<body>
+
+<header class="fhead"><div class="fhead-in">
+  <a href="../index.html" class="nav-brand">Wipelo</a>
+  <span class="f-trust">// The Lab · interactive · 90 seconds</span>
+  <a class="btn btn-teal" href="../first.html">Shop</a>
+</div></header>
+
+<div class="fcol-wide" style="padding-top:clamp(32px,5vw,56px);padding-bottom:90px">
+  <span class="adv-kicker">// Experiment 01–03 · no signup required</span>
+  <h1 class="adv-h1 fr">Don't take our word for it.<br><em style="font-style:normal;color:var(--teal-deep)">Run the lab.</em></h1>
+  <p class="qz-sub">Three interactive experiments on the thing you're currently using below the jaw.</p>
+
+  <!-- EXP 1: pH METER -->
+  <div class="lab-panel">
+    <span class="mono-tag">// Experiment 01 — the pH meter</span>
+    <h2 class="h-card" style="margin-bottom:6px">Test what touches your skin.</h2>
+    <p style="font-size:13.5px;color:var(--cream-70);margin-bottom:8px">Adult skin's acid mantle: pH 4.5–5.5 (the glowing zone). Tap a product.</p>
+    <div class="lab-btns" id="phBtns">
+      <button class="lab-btn" data-ph="10" data-v="Bar soap — pH ~10. Alkaline. Strips the acid mantle; skin feels &quot;squeaky&quot; because the barrier just lost." >Bar soap</button>
+      <button class="lab-btn" data-ph="7" data-v="Baby wipes — pH ~7. Neutral, engineered for infants. Not hostile — just not yours.">Baby wipe</button>
+      <button class="lab-btn" data-ph="8" data-v="&quot;Fresh-scent&quot; body wipe — pH varies, rarely stated. Plus perfume layered over the odor it can't remove.">"Fresh" wipe</button>
+      <button class="lab-btn" data-ph="4.9" data-v="Wipelo First — pH 4.9, batch-tested inside the 4.5–5.5 window. pH-True™: your barrier, respected. ✓">Wipelo First</button>
+    </div>
+    <div class="lab-scale"><div class="lab-zone"></div><div class="lab-needle" id="needle" data-ph="—"></div></div>
+    <div class="ph-ends" style="margin-top:0"><span>pH 3 · acidic</span><span>your skin: 4.5–5.5</span><span>pH 11 · alkaline</span></div>
+    <div class="lab-verdict" id="phVerdict" style="margin-top:18px">Tap a product to measure it.</div>
+  </div>
+
+  <!-- EXP 2: DAY SIMULATOR -->
+  <div class="lab-panel">
+    <span class="mono-tag">// Experiment 02 — simulate your day</span>
+    <h2 class="h-card" style="margin-bottom:6px">Pick a day. Watch the chemistry.</h2>
+    <div class="lab-btns" id="dayBtns">
+      <button class="lab-btn" data-day="gym">Gym 7am → meeting 9am</button>
+      <button class="lab-btn" data-day="travel">Two flights, one day</button>
+      <button class="lab-btn" data-day="date">Long day → date night</button>
+    </div>
+    <div id="simRows" style="opacity:.4">
+      <div class="lab-row"><span>Perfume wipe</span><div class="lab-meter danger"><i id="mA" style="width:0%"></i></div><span class="val" id="vA">—</span></div>
+      <div class="lab-row"><span>Wipelo First</span><div class="lab-meter"><i id="mB" style="width:0%"></i></div><span class="val" id="vB">—</span></div>
+    </div>
+    <div class="lab-verdict" id="dayVerdict">Freshness remaining at the moment it matters.*</div>
+    <p style="font-size:10.5px;color:var(--cream-45)">*Illustrative simulation — a design device, not measured data.</p>
+  </div>
+
+  <!-- EXP 3: TEAR TO REVEAL -->
+  <div class="lab-panel" style="text-align:center">
+    <span class="mono-tag">// Experiment 03 — the seal test</span>
+    <h2 class="h-card" style="margin-bottom:14px">Tear the sachet. See what's inside.</h2>
+    <div class="sachet" id="offerSachet" style="margin:0 auto"><span class="s-notch"></span><span class="s-brand">Wipelo</span><span class="s-func">Your launch offer</span><span class="s-line">tear here →</span></div>
+    <div id="offerReveal" style="max-height:0;overflow:hidden;transition:max-height .8s var(--ease)">
+      <div class="offer" style="text-align:left;background:rgba(0,180,160,.12);border-color:var(--teal-bright)">
+        <span class="o-kick" style="color:var(--teal-bright)">// Seal broken — offer unlocked</span>
+        <h3 style="color:var(--cream)">The Welcome Kit, free with your first subscription</h3>
+        <p style="color:var(--cream-70)">Travel Tin ($12) + Clean ×10 ($8) with 3 boxes of First — $110 value for <b style="color:var(--teal-bright)">$67.50</b>. Swap, skip, or cancel in one click.</p>
+        <a class="btn btn-teal btn-lg" href="../first.html">Claim the kit <span class="ar">→</span></a>
+        <p class="o-under" style="color:var(--cream-45)">30-day Skin-Is-Skin Guarantee · fewer than 1% ever ask*</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 18px">
+    <a class="btn btn-ghost" href="quiz.html">Not sure which SKU? Take the 60-second quiz →</a>
+  </div>
+  <p style="font-size:11px;color:var(--ink-40)">Prototype: pH values approximate; review/guarantee figures dummy (see site manifests).</p>
+</div>
+
+<script src="../wipelo.js"></script>
+<script>
+(function(){
+  /* EXP 1: pH needle — scale 3..11 mapped to 0..100% */
+  var needle=document.getElementById('needle'), verdict=document.getElementById('phVerdict');
+  document.getElementById('phBtns').addEventListener('click', function(e){
+    var b=e.target.closest('.lab-btn'); if(!b) return;
+    this.querySelectorAll('.lab-btn').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    var ph=parseFloat(b.dataset.ph);
+    needle.style.left=(((ph-3)/8)*100).toFixed(1)+'%';
+    needle.setAttribute('data-ph','pH '+ph);
+    var ok=ph>=4.5&&ph<=5.5;
+    verdict.innerHTML='<span class="'+(ok?'ok':'bad')+'">'+(ok?'▮ IN THE WINDOW':'▮ OUTSIDE YOUR SKIN’S WINDOW')+'</span><br>'+b.dataset.v;
+  });
+
+  /* EXP 2: day simulator */
+  var SIM={ gym:{a:22,b:93,t:'9:00 a.m. — the meeting. Perfume wipe: masking has faded, chemistry continues. Zinc: odor was removed at 7:40.'},
+            travel:{a:15,b:90,t:'Hour 11, second landing. Tub wipes dried out in the bag; sealed single #2 is identical to #1.'},
+            date:{a:18,b:95,t:'8:30 p.m. Fragrance layered at 6 p.m. now argues with your cologne. Odor control doesn’t argue — it’s gone.'} };
+  document.getElementById('dayBtns').addEventListener('click', function(e){
+    var b=e.target.closest('.lab-btn'); if(!b) return;
+    this.querySelectorAll('.lab-btn').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on');
+    var s=SIM[b.dataset.day];
+    document.getElementById('simRows').style.opacity=1;
+    document.getElementById('mA').style.width=s.a+'%';
+    document.getElementById('mB').style.width=s.b+'%';
+    document.getElementById('vA').textContent=s.a+'%';
+    document.getElementById('vB').textContent=s.b+'%';
+    document.getElementById('dayVerdict').textContent=s.t;
+  });
+
+  /* EXP 3: tear reveals the offer (wipelo.js makes .sachet tearable) */
+  document.getElementById('offerSachet').addEventListener('click', function(){
+    var s=this;
+    setTimeout(function(){ /* wipelo.js toggles .torn on the delegated click after this handler */
+      document.getElementById('offerReveal').style.maxHeight=s.classList.contains('torn')?'520px':'0';
+    },0);
+  });
+})();
+</script>
+</body>
+</html>
