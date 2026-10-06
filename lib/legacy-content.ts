@@ -1,3 +1,4 @@
+// Archived prototype parser. Live pages render the components in components/home.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { moneyLabel } from "@/lib/money";
@@ -64,13 +65,28 @@ function homeHeroVisualMarkup(product: ShopifyProduct | null) {
   const title = product ? escapeHTML(product.title) : "Shopify catalog";
   const price = product ? escapeHTML(moneyLabel(product.priceRange.minVariantPrice)) : "Your product catalog";
   const imageMarkup = image
-    ? `<img class="home-product-hero-image" src="${escapeHTML(image.url)}" alt="${escapeHTML(image.altText || product?.title || "Wipelo product")}">`
+    ? `<img class="home-product-hero-image" src="./hero-image.png" alt="${escapeHTML(image.altText || product?.title || "Wipelo product")}">`
     : `<div class="pack pack-lg"><span class="p-seal">✦</span><span class="p-ghost">W</span><span class="p-cat">Functional Wet Wipes™</span><span class="p-name">Wipelo</span><span class="p-sku">${title}</span><div class="p-spec">${product ? escapeHTML(product.description.slice(0, 110)) : "Product names · images<br>Details · options · pricing<br>Connected to Shopify"}</div></div>`;
   const productLink = product ? `/products/${encodeURIComponent(product.handle)}` : "/shop";
   const linkLabel = product ? `Explore ${title} →` : "Browse the shop →";
   const productHandle = product ? escapeHTML(product.handle) : "Publish products to begin";
-  return `<div class="hero-visual rv"><div class="hero-comp home-product-hero"><div class="hero-badge"><span class="mono">${product ? "From the Shopify catalog" : "Catalog ready"}</span></div>${imageMarkup}<div class="home-product-hero-details"><span class="mono">${price}</span><a class="link-arrow" href="${productLink}">${linkLabel}</a></div><div class="sachet hero-product-sachet"><span class="s-notch"></span><span class="s-brand">Wipelo <em>${title}</em></span><span class="s-func">${product ? "Product details from Shopify" : "Product details load from Shopify"}</span><span class="s-line">${productHandle}</span></div></div></div>`;
+  return `<div class="hero-visual rv">
+  <div class="hero-comp home-product-hero">
+  <div class="hero-badge">
+  <span class="mono">${product ? "From the Shopify catalog" : "Catalog ready"}</span>
+  </div>${imageMarkup}
+  <div class="home-product-hero-details">
+  <span class="mono">${price}</span>
+  <a class="link-arrow" href="${productLink}">${linkLabel}</a></div>
+  </div>
+  </div>`;
 }
+  // <div class="sachet hero-product-sachet">
+  // <span class="s-notch"></span>
+  // <span class="s-brand">Wipelo <em>${title}</em></span>
+  // <span class="s-func">${product ? "Product details from Shopify" : "Product details load from Shopify"}</span>
+  // <span class="s-line">${productHandle}</span>
+  // </div>
 
 export function getHomeMarkup(product: ShopifyProduct | null = null) {
   let body = cleanBody();

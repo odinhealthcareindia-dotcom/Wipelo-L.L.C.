@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
-type FAQItem = { questionHTML: string; answerHTML: string };
+export type FAQItem = { question: string; answer: ReactNode };
 
 export function FAQAccordion({ items }: { items: FAQItem[] }) {
   const [openItems, setOpenItems] = useState<Set<number>>(() => new Set());
@@ -37,7 +37,7 @@ export function FAQAccordion({ items }: { items: FAQItem[] }) {
               aria-controls={answerId}
               onClick={() => toggleItem(index)}
             >
-              <span className="faq-question" dangerouslySetInnerHTML={{ __html: item.questionHTML }} />
+              <span className="faq-question">{item.question}</span>
               <span className="pm" aria-hidden="true">+</span>
             </button>
             <div
@@ -49,7 +49,7 @@ export function FAQAccordion({ items }: { items: FAQItem[] }) {
               inert={!isOpen}
             >
               <div className="faq-answer-inner">
-                <div className="faq-a" dangerouslySetInnerHTML={{ __html: item.answerHTML }} />
+                <div className="faq-a">{item.answer}</div>
               </div>
             </div>
           </div>;

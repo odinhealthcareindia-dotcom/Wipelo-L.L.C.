@@ -139,5 +139,5 @@ export function LegacyInteractions({ children, products = [] }: { children: Reac
     };
   }, []);
 
-  return <div className="legacy-page" ref={rootRef}>{children}</div>;
+  return <div className="legacy-page [&_.rv]:[opacity:1] [&_.rv]:[transform:none] [&_.sku-card_a_h3]:[color:var(--ink)]" ref={rootRef}>{children}</div>;
 }

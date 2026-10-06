@@ -613,9 +613,6 @@ h1,h2,h3{font-family:var(--fr);font-weight:600;letter-spacing:-.02em;line-height
 .rit h3{font-size:22px;margin:14px 0 8px}
 .rit p{font-size:14px;color:var(--ink-60)}
 .rit .rtag{position:absolute;top:24px;right:24px;font-family:var(--mo);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-40)}
-.rit{display:flex;flex-direction:column}
-.rit-photo{margin-top:auto;padding-top:24px}
-.rit-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:10px}
 
 /* pH bar — flat segmented proof device */
 .phwrap{margin-top:56px;border:1px solid var(--hairline-dark);border-radius:var(--r);padding:34px 34px 30px}
@@ -1118,7 +1115,7 @@ body::after{
 .cart-checkout:focus-visible,.nav-links a:focus-visible,.btn:focus-visible,.cart-btn:focus-visible{outline:3px solid var(--teal);outline-offset:4px}
 .home-product-hero{flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:55px 20px 90px}
 .home-product-hero::before{bottom:64px}
-.home-product-hero .home-product-hero-image{display:block;width:min(112%,640px);max-width:none;height:auto;flex:none;object-fit:contain;z-index:2;filter:drop-shadow(0 35px 30px rgba(5,34,30,.3));border-radius:8px}
+.home-product-hero .home-product-hero-image{display:block;width:min(70%,340px);height:clamp(260px,34vw,390px);object-fit:contain;z-index:2;filter:drop-shadow(0 35px 30px rgba(5,34,30,.3));border-radius:8px}
 .home-product-hero .pack-lg{align-self:center;flex:none;margin-top:14px}
 .home-product-hero .hero-badge{top:16px;right:16px;z-index:4}
 .home-product-hero-details{position:absolute;right:4%;bottom:77px;z-index:4;display:flex;align-items:center;gap:14px;color:var(--cream)}
@@ -1135,7 +1132,7 @@ body::after{
   .site-nav .nav-links.open{display:flex}
   .site-nav .nav-links a{padding:15px 0;font-size:16px}
   .site-nav .nav-links a::after{display:none}
-  .home-product-hero .home-product-hero-image{width:min(100%,520px);max-width:100%;height:auto}
+  .home-product-hero .home-product-hero-image{width:min(74%,300px);height:290px}
   .home-product-hero-details{right:4%;bottom:65px;gap:8px;flex-direction:column;align-items:flex-end}
   .hero-comp .hero-product-sachet{width:140px;left:4%;bottom:23px}
   .hero-comp .hero-product-sachet .s-brand{font-size:14px}
@@ -1176,6 +1173,7 @@ body::after{
   .home-product-hero{min-height:0;padding:58px 0 8px;gap:0}
   .home-product-hero::before{display:none}
   .home-product-hero .hero-badge{top:0;right:0}
+  .home-product-hero .home-product-hero-image{width:min(78%,300px);height:300px}
   .hero-comp .hero-product-sachet{order:1;position:relative;left:auto;bottom:auto;align-self:flex-start;width:168px;margin:-54px 0 0 2%;transform:rotate(-5deg)}
   .home-product-hero-details{order:2;position:static;width:100%;flex-direction:row;justify-content:space-between;align-items:center;gap:16px;margin-top:22px;padding-top:16px;border-top:1px solid rgba(250,245,239,.35)}
   .home-product-hero-details .link-arrow{text-align:right;line-height:1.4}

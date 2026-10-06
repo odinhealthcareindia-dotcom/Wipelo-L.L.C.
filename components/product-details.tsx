@@ -4,10 +4,6 @@ import type { PdpContent } from "@/lib/pdp-content";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
 
-function safeText(value: string) {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
-}
-
 export function ProductDetailSections({ content, related }: { content: PdpContent; related: ShopifyProduct[] }) {
   const relatedByHandle = new Map(related.map((product) => [product.handle, product]));
   const crossSell = content.crossSell.handles.map((handle) => relatedByHandle.get(handle)).filter((product): product is ShopifyProduct => Boolean(product));
@@ -53,7 +49,7 @@ export function ProductDetailSections({ content, related }: { content: PdpConten
 
     <section className="sec product-ingredients" id="ingredients"><div className="wrap"><div className="sec-head"><span className="mono-tag">// Inside the formula</span><h2 className="h-section">What’s in it.</h2><p className="lede">{content.ingredients.intro}</p></div><div className="ingredient-cards">{content.ingredients.tabs.map((tab, index) => <article className="ingredient-card" key={tab.title}><span className="mono-tag">0{index + 1} / Ingredient note</span><h3>{tab.title}</h3><p>{tab.body}</p></article>)}</div><div className="inci-box"><span className="mono-tag">// Full INCI · indicative only</span><p>{content.ingredients.inci}</p></div><p className="free-from"><b>Free from:</b> {content.ingredients.freeFrom}</p></div></section>
 
-    <FAQAccordion items={content.faqs.map((item) => ({ questionHTML: safeText(item.question), answerHTML: safeText(item.answer) }))} />
+    <FAQAccordion items={content.faqs.map((item) => ({ question: item.question, answer: item.answer }))} />
 
     <section className="sec dark beat product-brand-band"><div className="wrap"><span className="mono-tag">// {content.brandBand.strapline}</span><h2>{content.brandBand.title}</h2><p>{content.brandBand.body}</p></div></section>
     <div className="band product-tagline" aria-label={content.brandBand.strapline}><div className="band-track" aria-hidden="true"><span>{content.brandBand.strapline}</span><span className="sp">✦</span><span>{content.brandBand.strapline}</span><span className="sp">✦</span></div></div>

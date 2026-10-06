@@ -1,0 +1,44 @@
+/*
+ * Brand values are intentionally exact. Keep the old CSS aliases until the
+ * final component has been migrated to utilities.
+ */
+@theme {
+  --color-wipelo-teal: #00b4a0;
+  --color-wipelo-teal-bright: #13c8b2;
+  --color-wipelo-teal-deep: #0b7468;
+  --color-wipelo-abyss: #05221e;
+  --color-wipelo-mist: #dff2ed;
+  --color-wipelo-cream: #faf5ef;
+  --color-wipelo-stone: #e8e0d5;
+  --font-wipelo-display: "Fraunces", Georgia, serif;
+  --font-wipelo-body: "Inter", -apple-system, sans-serif;
+  --font-wipelo-mono: "Space Mono", monospace;
+  --ease-wipelo: cubic-bezier(.19, 1, .22, 1);
+  --shadow-wipelo: 0 18px 50px -18px rgb(11 11 11 / .22);
+  --container-wipelo: 77.5rem;
+  --radius-wipelo: 10px;
+}
+
+:root {
+  --teal: #00B4A0;
+  --teal-bright: #13C8B2;
+  --teal-deep: #0B7468;
+  --abyss: #05221E;
+  --ink: var(--abyss);
+  --mist: #DFF2ED;
+  --cream: #FAF5EF;
+  --stone: #E8E0D5;
+  --ink-60: rgba(5,34,30,.64);
+  --ink-40: rgba(5,34,30,.42);
+  --cream-70: rgba(250,245,239,.72);
+  --cream-45: rgba(250,245,239,.46);
+  --hairline: rgba(5,34,30,.13);
+  --hairline-dark: rgba(250,245,239,.15);
+  --fr: 'Fraunces', Georgia, serif;
+  --in: 'Inter', -apple-system, sans-serif;
+  --mo: 'Space Mono', monospace;
+  --max: var(--container-wipelo);
+  --r: var(--radius-wipelo);
+  --shadow: 0 18px 50px -18px rgba(11,11,11,.22);
+  --ease: cubic-bezier(.19,1,.22,1);
+}

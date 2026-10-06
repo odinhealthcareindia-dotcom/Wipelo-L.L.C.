@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { LegacyInteractions } from "@/components/legacy-interactions";
-import { getScienceMarkup } from "@/lib/legacy-content";
+import { ComparisonSection } from "@/components/home/comparison";
+import { MechanismSection } from "@/components/home/mechanism";
+import { ProblemSection } from "@/components/home/problem";
+import { RevealEffects } from "@/components/reveal-effects";
 
 export const metadata: Metadata = { title: "The Science" };
 
 export default function SciencePage() {
-  return <LegacyInteractions><div dangerouslySetInnerHTML={{ __html: getScienceMarkup() }} /></LegacyInteractions>;
+  return <RevealEffects>
+    <ProblemSection />
+    <MechanismSection />
+    <ComparisonSection />
+  </RevealEffects>;
 }
