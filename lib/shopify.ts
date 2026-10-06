@@ -2,9 +2,21 @@ const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN?.trim().replace(/^https?
 const SHOPIFY_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN?.trim();
 export const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION || "2026-07";
 const SHOPIFY_API_ENABLED = process.env.SHOPIFY_ENABLE_SELLING_PLANS === "true";
-const PRODUCT_METAFIELDS = (process.env.SHOPIFY_PRODUCT_METAFIELDS || "wipelo.function,wipelo.active,wipelo.skin_type,wipelo.directions,wipelo.ingredients,wipelo.free_from,wipelo.features")
-  .split(",")
-  .map((identifier) => identifier.trim().split("."))
+const DEFAULT_PRODUCT_METAFIELDS = [
+  "wipelo.function",
+  "wipelo.active",
+  "wipelo.skin_type",
+  "wipelo.directions",
+  "wipelo.ingredients",
+  "wipelo.free_from",
+  "wipelo.features",
+  "wipelo.pdp_content",
+];
+const PRODUCT_METAFIELDS = [...new Set([
+  ...DEFAULT_PRODUCT_METAFIELDS,
+  ...(process.env.SHOPIFY_PRODUCT_METAFIELDS || "").split(",").map((identifier) => identifier.trim()).filter(Boolean),
+])]
+  .map((identifier) => identifier.split("."))
   .filter(([namespace, key]) => Boolean(namespace && key))
   .map(([namespace, key]) => ({ namespace, key }));
 

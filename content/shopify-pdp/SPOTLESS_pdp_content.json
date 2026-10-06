@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "breadcrumb": "All-gender body care / Body pore care / Leave-on exfoliating wipe",
+  "intro": "Your face routine does not reach every place that gets sweaty or congested. SPOTLESS spreads a salicylic-acid lotion across hard-to-reach body skin. The proposed 0.5% formula pairs a beta hydroxy acid with niacinamide and humectants in a sealed cloth. It is a body-skin routine step, not an overnight cure or a replacement for diagnosis.",
+  "bullets": [
+    "Proposed 0.5% salicylic acid; finished-wipe delivery and dose must be verified.",
+    "Fragrance free and ethanol free, with niacinamide, glycerin, and panthenol for skin feel.",
+    "One individually sealed, leave-on wipe for chest, shoulders, or back after sweat."
+  ],
+  "announcements": [
+    "Launch offer: 3 packs for $60 before subscription savings.",
+    "Free U.S. shipping on orders of $50 or more.",
+    "The First Pack Promise: 30 days to decide.",
+    "Proposed 0.5% salicylic acid; target lotion pH about 3.9.",
+    "Proposed dispatch: 1–2 business days; confirm fulfillment settings in Shopify."
+  ],
+  "systemName": "Pore Path System™",
+  "clothName": "Leave-On Cloth™",
+  "quickFacts": [
+    {
+      "label": "Use",
+      "value": "Intact external body skin"
+    },
+    {
+      "label": "Salicylic acid",
+      "value": "Proposed 0.5% lotion · transfer not measured"
+    },
+    {
+      "label": "Format",
+      "value": "30 individually sealed wipes per pack"
+    }
+  ],
+  "subscription": {
+    "savingsPercent": 10,
+    "threePackPrice": "54",
+    "welcomeKitValue": "12",
+    "note": "Recurring orders and the Welcome Kit are proposed offers. They are unavailable until a Shopify subscription app, selling plan, and kit fulfillment are configured."
+  },
+  "pressNote": "No publication coverage is claimed before a real mention exists. Independent reading behind this page is cited below; those sources have not reviewed or endorsed SPOTLESS.",
+  "moments": [
+    {
+      "time": "07:15 — workout finished",
+      "title": "After a workout",
+      "body": "Sweat and a tight shirt stay together on the walk home. Your face-only routine may never reach your shoulders."
+    },
+    {
+      "time": "13:30 — backpack straps",
+      "title": "The same strip of skin",
+      "body": "Heat and friction meet the same part of your upper back every day. A deliberate routine can reach the place that needs it."
+    },
+    {
+      "time": "19:00 — changing room",
+      "title": "A small sink, cleanser at home",
+      "body": "One sealed wipe makes a careful pass over chest and back skin possible."
+    },
+    {
+      "time": "Sunday — laundry fold",
+      "title": "A step after washing",
+      "body": "A leave-on pore-care step can fit after an ordinary wash; it does not replace it."
+    }
+  ],
+  "mechanism": {
+    "name": "Pore Path System™",
+    "note": "This is the name for a proposed delivery system, not a patented or clinically proven technology. The formula and delivered wipe dose have not been verified.",
+    "steps": [
+      {
+        "title": "Reach body skin",
+        "body": "A single cloth spreads lotion over chest, shoulders, or upper back without a bottle, cotton rounds, or a second pair of hands."
+      },
+      {
+        "title": "Exfoliate carefully",
+        "body": "The proposed lotion contains 0.5% salicylic acid. The amount retained on skin after wiping has not been measured."
+      },
+      {
+        "title": "Keep the routine comfortable",
+        "body": "Niacinamide, glycerin, and panthenol are included for skin feel. They do not remove the chance of dryness or irritation."
+      }
+    ],
+    "numbers": [
+      {
+        "value": "965 patients",
+        "label": "Dermatology referral cohort",
+        "note": "The cohort examined face, chest, and back acne rather than treating the face as the only site."
+      },
+      {
+        "value": "61%",
+        "label": "Had back involvement",
+        "note": "A figure from that referral cohort, not a population prevalence estimate."
+      },
+      {
+        "value": "45%",
+        "label": "Had chest involvement",
+        "note": "A figure from the same cohort; none of these numbers measures SPOTLESS results."
+      }
+    ],
+    "sources": [
+      {
+        "label": "Facial and truncal acne referral cohort · PMID 18561586",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18561586/"
+      }
+    ],
+    "proofTitle": "Concentration is not delivered dose.",
+    "proof": "Proposed lotion: 0.5% salicylic acid. A pass with a saturated cloth is followed by air-dry, leave-on contact. Concentration alone does not establish drug compliance or the amount transferred from the cloth. Do not present wipe time as a clinical contact-time claim."
+  },
+  "outcomes": [
+    {
+      "when": "First use",
+      "body": "A clean, lightly conditioned feel. A tingle can occur; stinging is a reason to stop. No visible clearing is promised."
+    },
+    {
+      "when": "Week 1",
+      "body": "Consistency matters more than scrubbing. Begin conservatively and do not stack strong exfoliants without advice."
+    },
+    {
+      "when": "Week 4",
+      "body": "Skin may look smoother, or it may not. No transformation, fixed lesion reduction, or clearance timeline is promised."
+    }
+  ],
+  "howToUse": [
+    "Open one sachet.",
+    "Gently pass over intact chest, shoulders, or back. Avoid eyes, lips, mucosa, and broken skin. Do not scrub.",
+    "Let the lotion air-dry; do not rinse. Bin the wipe. Start every other day if sensitive and use sunscreen on exposed skin."
+  ],
+  "perspective": {
+    "body": "The American Academy of Dermatology explains that salicylic acid opens clogged pores and exfoliates skin. That supports the ingredient mechanism, not a claim that this particular wipe treats acne. Deep, painful, or scarring lesions need a dermatologist.",
+    "source": "American Academy of Dermatology · Acne treatment",
+    "url": "https://www.aad.org/public/diseases/acne/derm-treat/treat",
+    "disclaimer": "This independent guidance informs the ingredient and use decision. It is not an endorsement of Wipelo or this product."
+  },
+  "comparison": {
+    "columns": [
+      "Decision point",
+      "SPOTLESS",
+      "Face-only routine",
+      "Harsh alcohol wipe"
+    ],
+    "rows": [
+      [
+        "Can be used on body skin",
+        "Yes",
+        "Possible but awkward",
+        "Yes"
+      ],
+      [
+        "Salicylic acid planned",
+        "0.5% lotion",
+        "Varies",
+        "Often no"
+      ],
+      [
+        "Leave-on pass",
+        "Yes",
+        "Varies",
+        "Yes"
+      ],
+      [
+        "Fragrance and ethanol absent",
+        "Yes · proposed formula",
+        "Varies",
+        "Alcohol often present"
+      ],
+      [
+        "Proven acne drug status",
+        "No · pending review",
+        "Some products",
+        "Some products"
+      ],
+      [
+        "Lowest price per use",
+        "No",
+        "Often yes",
+        "Often yes"
+      ],
+      [
+        "Replaces shower and full routine",
+        "No",
+        "No",
+        "No"
+      ]
+    ],
+    "note": "No wipe replaces washing. A compliant acne medicine also requires substantiation that this proposed cosmetic positioning does not provide."
+  },
+  "reviews": {
+    "summary": "Rating not yet available",
+    "filters": [
+      "Back",
+      "Chest",
+      "Post-workout",
+      "Sensitive skin"
+    ],
+    "emptyText": "We are new and do not have customer reviews to show yet. Verified-purchase reviews will be published without changing the customer’s words."
+  },
+  "receipts": {
+    "items": [
+      "Creator strip: genuine routines with actual platform view counts.",
+      "Comment captures: unedited replies with the platform and real like counts visible.",
+      "Customer photos: shared with permission and shown in their original context."
+    ],
+    "emptyText": "No customer posts, creator views, comments, or photos are available yet. Real routines will appear here only after customers share them and grant permission."
+  },
+  "crossSell": {
+    "body": "Build a routine around real situations. Each box contains 30 individually wrapped wipes. Any bundle price is a proposed offer until a matching Shopify bundle is configured.",
+    "handles": [
+      "her",
+      "on-the-go"
+    ]
+  },
+  "guarantee": {
+    "title": "The First Pack Promise",
+    "body": "Try your first delivery for 30 days. If SPOTLESS does not earn a place in your routine, contact Wipelo for a refund of that first order. No return label. No questions.",
+    "note": "Claim rate is not yet available. Confirm these terms match the store’s published refund policy before accepting orders."
+  },
+  "ingredients": {
+    "intro": "Current development formula; check the finished product label before use. Finished-wipe delivery, stability, and final INCI order must be verified.",
+    "tabs": [
+      {
+        "title": "Salicylic acid",
+        "body": "A beta hydroxy acid in the proposed lotion at 0.5%. It exfoliates and can help unclog pores. It does not establish finished-product acne-treatment status or clear cysts overnight."
+      },
+      {
+        "title": "Niacinamide + zinc PCA",
+        "body": "Ingredients selected for skin conditioning and oil-look support. They do not replace acne medicines or prove reduced sebum for this wipe."
+      },
+      {
+        "title": "Glycerin + panthenol",
+        "body": "Humectant and conditioning support for the feel of an acid routine. They do not make irritation impossible."
+      },
+      {
+        "title": "Cloth",
+        "body": "Proposed viscose or viscose/lyocell cloth, around 60 gsm and saturated to about 400% of dry weight. Verify salicylic-acid stability and delivered dose after contact with the chosen fiber."
+      }
+    ],
+    "inci": "Aqua, Glycerin, Niacinamide, Panthenol, Salicylic Acid, Zinc PCA, Allantoin, Centella Asiatica Extract, Camellia Sinensis Leaf Extract, Polysorbate 20, Sodium Hyaluronate, Sodium Phytate, Phenoxyethanol, Ethylhexylglycerin, Sodium Benzoate, Sodium Hydroxide. Indicative pack-deck list; final INCI order must follow the manufactured batch.",
+    "freeFrom": "No added fragrance, ethanol/denatured alcohol, or parabens in the proposed formula."
+  },
+  "faqs": [
+    {
+      "question": "Is it safe for sensitive or intimate skin?",
+      "answer": "This is for intact external body skin only, not genital or other mucosal skin. Salicylic acid can dry or irritate. Patch test and start slowly. For children, ask a pediatric clinician before use; this formula has no age-specific safety data."
+    },
+    {
+      "question": "Does it replace washing or my acne treatment?",
+      "answer": "No. Cleanse normally after heavy sweat when you can. If you use prescription or over-the-counter acne medicine, ask your clinician before layering another acid, especially on large areas."
+    },
+    {
+      "question": "Will it clear body acne in four weeks?",
+      "answer": "No fixed timeline is promised. Body bumps can have different causes, including folliculitis or keratosis pilaris. Painful, deep, spreading, or scarring lesions need a clinician."
+    },
+    {
+      "question": "How does the subscription work?",
+      "answer": "The product brief proposes 10% savings and a free first-order Welcome Kit. Recurring orders are not available until a Shopify subscription app and selling plan are configured."
+    },
+    {
+      "question": "What if it does not work for me?",
+      "answer": "The proposed First Pack Promise gives you 30 days from delivery to contact support for a refund of the first order. Confirm the final policy terms with the store before purchase."
+    }
+  ],
+  "brandBand": {
+    "title": "Clear skin, clear mind.",
+    "strapline": "FACE IS NOT THE WHOLE ROUTINE  •  REACH THE BODY  •  RESPECT THE SKIN",
+    "body": "Wipelo makes precise clean-up products for real moments. No apology for having a body. No fantasy that one wipe can do the work of a shower or a clinician."
+  },
+  "legal": "For external use only. Stop use if irritation occurs. Keep out of reach of children. Do not flush. Product made in India; distributor details must match the final pack."
+}

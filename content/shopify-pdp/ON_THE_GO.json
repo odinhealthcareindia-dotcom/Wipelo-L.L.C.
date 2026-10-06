@@ -1,0 +1,290 @@
+{
+  "handle": "on-the-go",
+  "title": "Wipelo ON THE GO",
+  "vendor": "Wipelo",
+  "productType": "Between-Shower Body Care Wipes",
+  "status": "ACTIVE",
+  "description": "A scented, individually wrapped body wipe for surface sweat and residue between showers. Zinc ricinoleate is included with odor-binding intent; finished-product performance has not been tested.",
+  "optionName": "Supply",
+  "variants": [
+    {
+      "optionValue": "1 pack · 30 wipes",
+      "price": "24.00",
+      "compareAtPrice": null
+    },
+    {
+      "optionValue": "3 packs · 90 wipes",
+      "price": "60.00",
+      "compareAtPrice": "72.00"
+    },
+    {
+      "optionValue": "6 packs · 180 wipes",
+      "price": "108.00",
+      "compareAtPrice": "144.00"
+    }
+  ],
+  "pdpContent": {
+    "version": 1,
+    "breadcrumb": "All-gender body care / Between showers / External body skin",
+    "intro": "The day does not always leave room for a second shower. ON THE GO removes surface sweat and residue where odor begins. A textured plant-fiber cloth does the physical work; a mild cleanser and zinc ricinoleate are designed to address the remaining odor impression. It is a practical reset, not an antiperspirant or a substitute for washing.",
+    "bullets": [
+      "Mild surfactants lift residue; zinc ricinoleate is included for odor-binding intent.",
+      "Glycerin, panthenol and an acidic pH target support a comfortable finish; fragrance is present.",
+      "One individually sealed, two-sided wipe for feet, underarms and body."
+    ],
+    "announcements": [
+      "Launch offer: 3 packs for $60 before subscription savings.",
+      "Free U.S. shipping on orders of $50 or more.",
+      "The First Pack Promise: 30 days to decide.",
+      "30 individually wrapped wipes per pack; target lotion pH 4.5–5.0, pending batch verification.",
+      "Proposed dispatch: 1–2 business days; confirm fulfillment settings in Shopify."
+    ],
+    "systemName": "Source Reset System™",
+    "clothName": "Dual Surface Cloth™",
+    "quickFacts": [
+      {
+        "label": "Use",
+        "value": "Intact external body skin"
+      },
+      {
+        "label": "Lotion pH",
+        "value": "Target 4.5–5.0 · batch verification pending"
+      },
+      {
+        "label": "Format",
+        "value": "30 individually sealed wipes per pack"
+      }
+    ],
+    "subscription": {
+      "savingsPercent": 10,
+      "threePackPrice": "54",
+      "welcomeKitValue": "12",
+      "note": "Recurring orders and the Welcome Kit are proposed offers. They are unavailable until a Shopify subscription app, selling plan, and kit fulfillment are configured."
+    },
+    "pressNote": "No publication coverage is claimed before a real mention exists. Independent reading behind this page is cited below; those sources have not reviewed or endorsed ON THE GO.",
+    "moments": [
+      {
+        "time": "08:40 — gym to meeting",
+        "title": "A shirt change, no shower",
+        "body": "A pass over underarms and neck removes surface residue before the next layer of deodorant."
+      },
+      {
+        "time": "Seat 14A — hour six",
+        "title": "A long travel day",
+        "body": "One sealed wipe fits next to your toothbrush for the gap between showers."
+      },
+      {
+        "time": "17:25 — shoes off",
+        "title": "Dinner is next",
+        "body": "Feet and shoes have had a full day. Clean the skin first; cologne over socks is not a plan."
+      },
+      {
+        "time": "21:30 — campsite sink",
+        "title": "When facilities are far",
+        "body": "Clean the skin you can reach, then use soap and water when you can."
+      }
+    ],
+    "mechanism": {
+      "name": "Source Reset System™",
+      "note": "This is the name for a proposed delivery system, not a patented or clinically proven technology. Zinc ricinoleate’s effect in this finished wipe has not been tested.",
+      "steps": [
+        {
+          "title": "Lift surface residue",
+          "body": "The embossed side is designed to pick up sweat and surface debris; the smooth side finishes the pass. Physical removal comes first."
+        },
+        {
+          "title": "Clean the skin",
+          "body": "Mild sugar and amino-acid surfactants help release oily residue. The lotion pH target is 4.5–5.0, pending batch verification."
+        },
+        {
+          "title": "Address odor impression",
+          "body": "Zinc ricinoleate is included to bind some odor molecules rather than rely on scent alone. A finished-wipe study must establish its effect."
+        }
+      ],
+      "numbers": [
+        {
+          "value": "24 volunteers",
+          "label": "Axillary microbiota study",
+          "note": "One study linked bacterial communities with odor differences through the day."
+        },
+        {
+          "value": "About 50×",
+          "label": "Bacteria in a comparison group",
+          "note": "In that study, non-antiperspirant users had more underarm bacteria on average; this is not an ON THE GO result."
+        },
+        {
+          "value": "96%",
+          "label": "Sequences in a small sample",
+          "note": "In an 11-person sample, 96% belonged to three common skin-bacteria genera; this is not product efficacy."
+        }
+      ],
+      "sources": [
+        {
+          "label": "Axillary microbiota and odor study · PMID 25653852",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25653852/"
+        }
+      ],
+      "proofTitle": "Two paths after a long day.",
+      "proof": "Masking path: sweat and residue remain while fragrance sits over them. Proposed Source Reset path: a wipe removes surface material, cleansing lotion lifts remaining residue, and zinc ricinoleate is intended to bind odor molecules. This is a mechanism diagram, not a measured before-and-after result. A finished-product odor study must establish any difference."
+    },
+    "outcomes": [
+      {
+        "when": "First use",
+        "body": "Skin may feel clean and lightly scented. Sweat production does not stop."
+      },
+      {
+        "when": "Week 1",
+        "body": "A sealed wipe can be useful at predictable gaps: commute, exercise, and travel. Use only on intact body skin."
+      },
+      {
+        "when": "Week 4",
+        "body": "The practical gain is a clean-up option where a shower is unavailable. No 24-hour odor control, antibacterial action, or shower-equivalent result is promised."
+      }
+    ],
+    "howToUse": [
+      "Open one sachet.",
+      "Wipe underarms, feet, or external body skin; use the textured side first and the smooth side to finish. Avoid mucosa, broken skin, and the groin because this proposed version contains fragrance and a cooling agent.",
+      "Let skin dry, dress, and bin the wipe. Do not flush. Wash normally when facilities are available."
+    ],
+    "perspective": {
+      "body": "The American Academy of Dermatology explains that odor forms where sweat mixes with skin bacteria. Its whole-body deodorant guidance cautions against applying fragranced products to the groin. This proposed scented version is therefore focused on underarms, feet, and body skin.",
+      "source": "American Academy of Dermatology · Whole-body deodorant",
+      "url": "https://www.aad.org/public/everyday-care/skin-care-secrets/routine/whole-body-deodorant",
+      "disclaimer": "This independent guidance informs the use decision. It is not an endorsement of Wipelo or this product."
+    },
+    "comparison": {
+      "columns": [
+        "Decision point",
+        "ON THE GO",
+        "Baby wipe",
+        "Masking deodorant"
+      ],
+      "rows": [
+        [
+          "Portable clean-up",
+          "Yes",
+          "Yes",
+          "Yes"
+        ],
+        [
+          "Physically removes sweat and residue",
+          "Yes",
+          "Yes",
+          "No"
+        ],
+        [
+          "Odor-binding ingredient planned",
+          "Yes",
+          "Usually no",
+          "Usually no"
+        ],
+        [
+          "Plant-fiber dual texture planned",
+          "Yes",
+          "Usually single texture",
+          "Not a wipe"
+        ],
+        [
+          "Reduces sweat production",
+          "No",
+          "No",
+          "Only antiperspirant versions"
+        ],
+        [
+          "Lowest price per use",
+          "No",
+          "Usually yes",
+          "Usually yes"
+        ],
+        [
+          "Replaces a shower",
+          "No",
+          "No",
+          "No"
+        ]
+      ],
+      "note": "The proposed wipe can physically clean skin but cannot reduce sweat production. Its finished-product odor effect still needs direct testing."
+    },
+    "reviews": {
+      "summary": "Rating not yet available",
+      "filters": [
+        "After workout",
+        "Commute",
+        "Travel",
+        "Feet"
+      ],
+      "emptyText": "We are new and do not have customer reviews to show yet. Verified-purchase reviews will be published without changing the customer’s words."
+    },
+    "receipts": {
+      "items": [
+        "Creator strip: genuine routines with actual platform view counts.",
+        "Comment captures: unedited replies with the platform and real like counts visible.",
+        "Customer photos: shared with permission and shown in their original context."
+      ],
+      "emptyText": "No customer posts, creator views, comments, or photos are available yet. Real routines will appear here only after customers share them and grant permission."
+    },
+    "crossSell": {
+      "body": "Build a routine around real situations. Each box contains 30 individually wrapped wipes. Any bundle price is a proposed offer until a matching Shopify bundle is configured.",
+      "handles": [
+        "her",
+        "spotless"
+      ]
+    },
+    "guarantee": {
+      "title": "The First Pack Promise",
+      "body": "Try your first delivery for 30 days. If ON THE GO does not earn a place in your routine, contact Wipelo for a refund of that first order. No return label. No questions.",
+      "note": "Claim rate is not yet available. Confirm these terms match the store’s published refund policy before accepting orders."
+    },
+    "ingredients": {
+      "intro": "Current development formula; check the finished product label before use. The final INCI order must follow the manufactured batch.",
+      "tabs": [
+        {
+          "title": "Zinc ricinoleate",
+          "body": "A zinc salt included to bind some odor molecules in a formulation. It is not an antiperspirant or disinfectant, and it is not proof of finished-wipe efficacy."
+        },
+        {
+          "title": "Lactic acid + sodium lactate",
+          "body": "The intended acidic pH adjustment and buffer. They do not sterilize skin or erase the normal microbiome."
+        },
+        {
+          "title": "Panthenol + glycerin",
+          "body": "Conditioning ingredients for a less tight afterfeel. They do not prevent sweat."
+        },
+        {
+          "title": "Cloth",
+          "body": "Proposed plant-derived lyocell/viscose spunlace, about 20 × 20 cm and 50–60 gsm, with a smooth and textured side. Verify fiber and biodegradation claims before publication."
+        }
+      ],
+      "inci": "Aqua, Glycerin, Propanediol, Aloe Barbadensis Leaf Juice, Hamamelis Virginiana Water, Sodium Cocoyl Glutamate, Coco-Glucoside, Niacinamide, Zinc Ricinoleate, Sodium PCA, Panthenol, Lactic Acid, Sodium Lactate, Menthyl Lactate, Allantoin, Caprylyl Glycol, Glyceryl Caprylate, Sodium Benzoate, Potassium Sorbate, Tetrasodium Glutamate Diacetate, Parfum. Indicative pack-deck list; final INCI order must follow the manufactured batch.",
+      "freeFrom": "No ethanol/denatured alcohol, parabens, or MIT/CMIT in the proposed formula. This version is fragranced."
+    },
+    "faqs": [
+      {
+        "question": "Is it safe for sensitive or intimate skin?",
+        "answer": "This proposed scented version is for intact external body skin such as underarms and feet. Do not use on genital mucosa or the groin. Patch test if fragrance or cooling ingredients bother you. Children should use it only with adult supervision after age-appropriate safety review."
+      },
+      {
+        "question": "Does it replace washing or deodorant?",
+        "answer": "No. A wipe is a bridge until soap and water are available. It does not stop sweat like an antiperspirant; use your usual deodorant if you need longer odor management."
+      },
+      {
+        "question": "Will it remove every odor?",
+        "answer": "No. It removes surface material and contains an odor-binding ingredient, but odor differs by person, fabric, and activity. A persistent new odor deserves medical assessment."
+      },
+      {
+        "question": "How does the subscription work?",
+        "answer": "The product brief proposes 10% savings and a free first-order Welcome Kit. Recurring orders are not available until a Shopify subscription app and selling plan are configured."
+      },
+      {
+        "question": "What if it does not work for me?",
+        "answer": "The proposed First Pack Promise gives you 30 days from delivery to contact support for a refund of the first order. Confirm the final policy terms with the store before purchase."
+      }
+    ],
+    "brandBand": {
+      "title": "Before clean. After clean.",
+      "strapline": "BETWEEN SHOWERS  •  BETWEEN PLANS  •  BACK TO YOUR DAY",
+      "body": "Wipelo makes precise clean-up products for real moments. No apology for having a body. No fantasy that one wipe can do the work of a shower or a clinician."
+    },
+    "legal": "For external use only. Stop use if irritation occurs. Keep out of reach of children. Do not flush. Product made in India; distributor details must match the final pack."
+  }
+}

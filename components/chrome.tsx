@@ -6,10 +6,9 @@ import { usePathname } from "next/navigation";
 import { useStorefrontCart } from "@/components/storefront-provider";
 
 const announcements = [
-  <>Launch offer — free <span className="tk">Welcome&nbsp;Kit</span> with every subscription</>,
-  <>Free US shipping over <span className="tk">$35</span> · ships in 12–24 hours</>,
-  <>The Skin-Is-Skin Guarantee — <span className="tk">30 days</span>, keep it or keep your money</>,
-  <><span className="tk">pH-True™</span> 4.5–5.5 · batch-tested · dermatologist-assessed</>,
+  <>Functional Wet Wipes™ for the moments between</>,
+  <>Skin is skin. Everywhere.</>,
+  <>Explore the Wipelo line</>,
 ];
 
 const navItems = [
@@ -34,7 +33,7 @@ export function SiteHeader() {
   }, []);
 
   return <>
-    <div className="ticker" aria-label="Announcements"><div className="ticker-inner"><div className="ticker-msg on">{announcements[announcement]}</div></div></div>
+    {!pathname.startsWith("/products/") && <div className="ticker" aria-label="Announcements"><div className="ticker-inner"><div className="ticker-msg on">{announcements[announcement]}</div></div></div>}
     <header className="nav site-nav">
       <div className="wrap nav-in">
         <Link href="/" className="nav-brand">Wipelo<span className="tm">Functional Wet Wipes™</span></Link>

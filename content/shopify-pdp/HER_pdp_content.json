@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "breadcrumb": "External intimate skin care / pH-considerate cleansing / External use only",
+  "intro": "Some days ask for a clean reset before the next shower. HER gently cleanses external intimate skin without added fragrance. Its lactic acid and sodium lactate system is designed around an acidic target pH, while a smooth, individually sealed cloth keeps the ritual discreet. It is care for the outside, with no promise to change what happens inside.",
+  "bullets": [
+    "Lactic acid + sodium lactate: an acidic lotion target, not a vaginal treatment.",
+    "Fragrance free and alcohol free, with panthenol and glycerin for a softer afterfeel.",
+    "One smooth, individually wrapped wipe for a clean reset away from home."
+  ],
+  "announcements": [
+    "Launch offer: 3 packs for $60 before subscription savings.",
+    "Free U.S. shipping on orders of $50 or more.",
+    "The First Pack Promise: 30 days to decide.",
+    "Target lotion pH 3.8–4.5; verify on each production batch.",
+    "Proposed dispatch: 1–2 business days; confirm fulfillment settings in Shopify."
+  ],
+  "systemName": "pH Regard System™",
+  "clothName": "Soft Surface Cloth™",
+  "quickFacts": [
+    {
+      "label": "Use",
+      "value": "External intimate skin care only"
+    },
+    {
+      "label": "Lotion pH",
+      "value": "Target 3.8–4.5 · batch verification pending"
+    },
+    {
+      "label": "Format",
+      "value": "30 individually sealed wipes per pack"
+    }
+  ],
+  "subscription": {
+    "savingsPercent": 10,
+    "threePackPrice": "54",
+    "welcomeKitValue": "12",
+    "note": "Recurring orders and the Welcome Kit are proposed offers. They are unavailable until a Shopify subscription app, selling plan, and kit fulfillment are configured."
+  },
+  "pressNote": "No publication coverage is claimed before a real mention exists. Independent reading behind this page is cited below; those sources have not reviewed or endorsed HER.",
+  "moments": [
+    {
+      "time": "08:40 — gym to meeting",
+      "title": "Before getting dressed",
+      "body": "Your bag has everything except a shower. A private, simple clean-up can fit before the next part of the day."
+    },
+    {
+      "time": "Seat 14A — hour six",
+      "title": "Mid-travel",
+      "body": "A long travel day can leave skin feeling less comfortable. A sealed wipe fits in a small pouch; bin the used cloth."
+    },
+    {
+      "time": "Day two — period bag",
+      "title": "A period-bag staple",
+      "body": "A pad change may be a moment for an external refresh. There is no need to “correct” your body or wash inside it."
+    },
+    {
+      "time": "21:10 — after intimacy",
+      "title": "A brief external clean",
+      "body": "If skin stings or discomfort persists, stop using the product and speak with a clinician."
+    }
+  ],
+  "mechanism": {
+    "name": "pH Regard System™",
+    "note": "This is the name for a proposed delivery system, not a patented or clinically proven technology. HER is for external skin only; its lotion pH target does not set or regulate vaginal pH.",
+    "steps": [
+      {
+        "title": "Lift surface residue",
+        "body": "A smooth, wet cloth removes surface residue with a gentle pass. No scrubbing and no internal use."
+      },
+      {
+        "title": "Respect the outside",
+        "body": "Lactic acid and sodium lactate set an acidic lotion target. That does not mean a wipe can set or regulate vaginal pH."
+      },
+      {
+        "title": "Leave skin comfortable",
+        "body": "Panthenol, glycerin and aloe are included for skin feel. Individually sealed sachets keep a wipe ready when water is unavailable."
+      }
+    ],
+    "numbers": [
+      {
+        "value": "3.80 ± 0.20",
+        "label": "Vaginal pH in one cohort",
+        "note": "A 20-woman study of lactobacilli-dominant microbiota; vaginal data, not a universal vulvar target."
+      },
+      {
+        "value": "36 women",
+        "label": "External gel-wash study",
+        "note": "Over 28 days, a separate pH 4.2 gel wash study reported acceptable tolerance. HER was not studied."
+      },
+      {
+        "value": "99 women",
+        "label": "Vulvar skin study",
+        "note": "Vulvar pH varied by site and was higher than inner-thigh and forearm control sites."
+      }
+    ],
+    "sources": [
+      {
+        "label": "In-vivo vaginal pH study · PMID 30642259",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30642259/"
+      },
+      {
+        "label": "28-day external gel wash study · PMID 32024047",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32024047/"
+      },
+      {
+        "label": "Vulvar skin study · PMID 23435846",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23435846/"
+      }
+    ],
+    "proofTitle": "pH is location specific.",
+    "proof": "Vaginal fluid in one healthy cohort averaged 3.80 ± 0.20. HER’s proposed lotion target is 3.8–4.5. Vulvar skin varies by site and can be higher. This overlap illustrates formulation intent only; it does not show that HER changes vaginal pH. Batch results and finished-product tolerance data are still required."
+  },
+  "outcomes": [
+    {
+      "when": "First use",
+      "body": "A brief external clean and a light, unscented afterfeel. Stop if it stings."
+    },
+    {
+      "when": "Week 1",
+      "body": "An optional bag staple for moments without water, not a daily hygiene requirement."
+    },
+    {
+      "when": "Week 4",
+      "body": "The practical value is reliable access to a gentle external clean. No transformed microbiome, fewer infections, or “better” natural scent is promised."
+    }
+  ],
+  "howToUse": [
+    "Open one sealed sachet with clean hands.",
+    "Gently wipe external vulvar skin from front to back. Never insert it or use it on broken skin.",
+    "Let skin dry; bin the wipe and wrapper. Do not flush."
+  ],
+  "perspective": {
+    "body": "ACOG guidance says clear water is adequate for the inner vulva and advises avoiding certain scented or intimate-hygiene products. HER is positioned for occasional external use when water is not practical, rather than as a medical or daily necessity.",
+    "source": "ACOG · Vulvovaginal health",
+    "url": "https://www.acog.org/womens-health/faqs/vulvovaginal-health",
+    "disclaimer": "This independent guidance informs the use decision. It is not an endorsement of Wipelo or this product."
+  },
+  "comparison": {
+    "columns": [
+      "Decision point",
+      "HER",
+      "Scented feminine wipe",
+      "Baby wipe"
+    ],
+    "rows": [
+      [
+        "Portable, single use",
+        "Yes",
+        "Often",
+        "Sometimes"
+      ],
+      [
+        "Added fragrance",
+        "No",
+        "Often",
+        "Often"
+      ],
+      [
+        "Lotion pH design target",
+        "3.8–4.5",
+        "Varies",
+        "Varies"
+      ],
+      [
+        "Smooth intimate-facing cloth",
+        "Planned",
+        "Varies",
+        "Varies"
+      ],
+      [
+        "Replaces routine washing with water",
+        "No",
+        "No",
+        "No"
+      ],
+      [
+        "Lowest price per wipe",
+        "No",
+        "Often yes",
+        "Often yes"
+      ],
+      [
+        "Internal use or infection treatment",
+        "No",
+        "No",
+        "No"
+      ]
+    ],
+    "note": "The cloth and lotion details are proposed and should be checked against the final manufactured pack. No wipe replaces washing."
+  },
+  "reviews": {
+    "summary": "Rating not yet available",
+    "filters": [
+      "Period bag",
+      "Travel",
+      "After activity",
+      "Sensitive skin"
+    ],
+    "emptyText": "We are new and do not have customer reviews to show yet. Verified-purchase reviews will be published without changing the customer’s words."
+  },
+  "receipts": {
+    "items": [
+      "Creator strip: genuine routines with actual platform view counts.",
+      "Comment captures: unedited replies with the platform and real like counts visible.",
+      "Customer photos: shared with permission and shown in their original context."
+    ],
+    "emptyText": "No customer posts, creator views, comments, or photos are available yet. Real routines will appear here only after customers share them and grant permission."
+  },
+  "crossSell": {
+    "body": "Build a routine around real situations. Each box contains 30 individually wrapped wipes. Any bundle price is a proposed offer until a matching Shopify bundle is configured.",
+    "handles": [
+      "on-the-go",
+      "spotless"
+    ]
+  },
+  "guarantee": {
+    "title": "The First Pack Promise",
+    "body": "Try your first delivery for 30 days. If HER does not earn a place in your routine, contact Wipelo for a refund of that first order. No return label. No questions.",
+    "note": "Claim rate is not yet available. Confirm these terms match the store’s published refund policy before accepting orders."
+  },
+  "ingredients": {
+    "intro": "Current development formula; check the finished product label before use. The final INCI order must follow the manufactured batch.",
+    "tabs": [
+      {
+        "title": "Lactic acid + sodium lactate",
+        "body": "A pH-adjusting acid and its salt. They set the lotion’s acidic target. They are not probiotics and cannot treat BV or yeast infection or restore vaginal pH."
+      },
+      {
+        "title": "Alpha-glucan oligosaccharide + lactobacillus ferment lysate",
+        "body": "A prebiotic-type ingredient and a nonliving ferment lysate in the proposed formula. They do not establish a clinical microbiome benefit for this wipe."
+      },
+      {
+        "title": "Panthenol + glycerin",
+        "body": "Humectant and conditioning ingredients chosen for skin feel. They are not a cure for irritation."
+      },
+      {
+        "title": "Cloth",
+        "body": "Proposed soft, smooth plant-fiber cloth, about 15 × 20 cm and 50 gsm. Confirm final fiber and plastic content before making environmental claims."
+      }
+    ],
+    "inci": "Aqua, Aloe Barbadensis Leaf Juice, Glycerin, Panthenol, Lactic Acid, Sodium Lactate, Alpha-Glucan Oligosaccharide, Lactobacillus Ferment Lysate, Coco-Glucoside, Decyl Glucoside, Vaccinium Macrocarpon Fruit Extract, Calendula Officinalis Flower Extract, Chamomilla Recutita Flower Extract, Allantoin, Sodium Hyaluronate, Menthyl Lactate, Phenoxyethanol, Ethylhexylglycerin, Sodium Benzoate, Potassium Sorbate, Sodium Phytate. Indicative pack-deck list; final INCI order must follow the manufactured batch.",
+    "freeFrom": "No added fragrance, ethanol/denatured alcohol, or parabens in the proposed formula."
+  },
+  "faqs": [
+    {
+      "question": "Is it safe for sensitive or intimate skin?",
+      "answer": "It is designed for external vulvar skin, but “sensitive safe” needs finished-product testing. Patch test first if you react easily. Do not insert it, use it on broken skin, or continue if it burns. Persistent odor, itching, pain, or unusual discharge needs medical advice."
+    },
+    {
+      "question": "Does HER replace washing?",
+      "answer": "No. Water and gentle cleansing remain the baseline. HER is an occasional clean-up when a sink or shower is out of reach."
+    },
+    {
+      "question": "Can it balance vaginal pH or prevent infection?",
+      "answer": "No. HER is used on the outside. A lotion pH target does not prove a change to vaginal pH or a reduction in BV, yeast infections, or UTIs."
+    },
+    {
+      "question": "How does the subscription work?",
+      "answer": "The product brief proposes 10% savings and a free first-order Welcome Kit. Recurring orders are not available until a Shopify subscription app and selling plan are configured."
+    },
+    {
+      "question": "What if it does not work for me?",
+      "answer": "The proposed First Pack Promise gives you 30 days from delivery to contact support for a refund of the first order. Confirm the final policy terms with the store before purchase."
+    }
+  ],
+  "brandBand": {
+    "title": "Your pH, respected.",
+    "strapline": "PRIVATE WHEN YOU WANT IT  •  PRECISE WHERE IT COUNTS  •  CLEAN WITHOUT A COVER STORY",
+    "body": "Wipelo makes precise clean-up products for real moments. No apology for having a body. No fantasy that one wipe can do the work of a shower or a clinician."
+  },
+  "legal": "For external use only. Stop use if irritation occurs. Keep out of reach of children. Do not flush. Product made in India; distributor details must match the final pack."
+}
