@@ -8,6 +8,9 @@ import { HeroSection } from "@/components/home/hero";
 import { MarqueeSection } from "@/components/home/marquee";
 import { MechanismSection } from "@/components/home/mechanism";
 import { NewsletterSection } from "@/components/home/newsletter";
+import { OnTheGoSection } from "@/components/home/on-the-go";
+import { SpotlessSection } from "@/components/home/spotless";
+import { HerSection } from "@/components/home/her";
 import { ObjectSection } from "@/components/home/object";
 import { PressSection } from "@/components/home/press";
 import { ProblemSection } from "@/components/home/problem";
@@ -29,10 +32,16 @@ export default async function HomePage() {
     description: product.description.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 240),
     price: moneyLabel(product.priceRange.minVariantPrice),
   }));
+  const onTheGoProduct = products.find((product) => /on[\s-]?the[\s-]?go/i.test(`${product.title} ${product.handle}`));
+  const spotlessProduct = products.find((product) => /spotless/i.test(`${product.title} ${product.handle}`));
+  const herProduct = products.find((product) => /\bher\b/i.test(`${product.title} ${product.handle}`));
 
   return <RevealEffects>
     <HeroSection product={products[0] ?? null} />
     <PressSection />
+    <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} />
+    <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
+    <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
     <ProblemSection />
     <HomeShopSection products={products} />
     <RitualSection />
