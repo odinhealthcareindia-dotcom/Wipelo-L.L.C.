@@ -19,8 +19,8 @@ export function FAQAccordion({ items }: { items: FAQItem[] }) {
   return <section className="sec" id="faq">
     <div className="wrap">
       <div className="sec-head rv">
-        <span className="mono-tag">// Asked, answered</span>
-        <h2 className="h-section">Questions people actually ask.</h2>
+        <span className="mono-tag">// Wipelo, explained</span>
+        <h2 className="h-section">A few helpful answers.</h2>
       </div>
       <div className="faq-list rv">
         {items.map((item, index) => {

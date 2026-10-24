@@ -8,15 +8,15 @@ export function HerSection({ productHref }: { productHref: string }) {
         <div className="otg-copy rv">
           <span className="mono-tag">// Wipelo HER</span>
           <h2 className="h-section" id="her-title">
-            Personal care,<br /><em>always with you.</em>
+            Your pH,<br /><em>respected.</em>
           </h2>
           <p className="lede">
-            Long journeys, busy days, and moments between plans. Wipelo HER brings fragrance-free cleansing for external intimate skin to one soft, individually sealed wipe. Slip it into your bag for a refresh when you need it.
+            An individually wrapped, fragrance-free wipe for occasional external intimate cleansing. Its proposed lactic acid and sodium lactate formula is designed for pH-considerate care, with glycerin, panthenol, and aloe to support skin comfort. Keep one close for travel, after a workout, during your period, or whenever water is limited.
           </p>
           <Link className="btn btn-teal" href={productHref}>
             Shop HER <span className="ar" aria-hidden="true">→</span>
           </Link>
-          <p className="otg-sealed"><span aria-hidden="true">✦</span> Individually sealed. External use only.</p>
+          <p className="otg-sealed"><span aria-hidden="true">✦</span> Fragrance free. External use only.</p>
         </div>
 
         <div className="otg-figure rv">

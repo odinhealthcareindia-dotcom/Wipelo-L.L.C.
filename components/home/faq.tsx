@@ -2,27 +2,27 @@ import type { FAQItem } from "@/components/faq-accordion";
 
 export const homeFaqItems: FAQItem[] = [
   {
-    question: "So it's… a wet wipe?",
-    answer: <>Yes. We say it on the front of the pack. The difference is the word before it: <em>functional</em>. A baby wipe removes surface sweat and adds nothing. Each Wipelo SKU carries one treatment active with a stated function — pore clearance (BARE), odor control (FIRST) — formulated inside adult skin's pH window and sealed individually. If all you need is sweat removal, a $0.04 wipe genuinely does that. This is for the jobs.</>,
+    question: "Which Wipelo wipe is right for me?",
+    answer: "Choose ON THE GO for a body refresh between showers; SPOTLESS for breakout-prone skin on the back, chest, or shoulders; and HER for occasional, fragrance-free cleansing of external intimate skin.",
   },
   {
-    question: "How do I cancel or pause my subscription?",
-    answer: "In one click, from your account, no chat with a retention specialist. We email you 3 days before every shipment so you can swap SKUs, skip a month, or cancel before anything ships. Subscriptions should be a convenience, not a trap.",
+    question: "Does ON THE GO replace a shower or deodorant?",
+    answer: "No. It is a convenient way to cleanse surface sweat and everyday residue when you cannot shower. It is not an antiperspirant, and you can continue using your usual deodorant if you choose.",
   },
   {
-    question: "Which one should I start with?",
-    answer: "Most people start with FIRST — it's the multi-purpose one, and the one you'll reach for most. If body breakouts are the specific problem, start with BARE. The 10-second quiz above will match you, or take the guess out entirely with a bundle.",
+    question: "What does SPOTLESS contain?",
+    answer: "The planned formula includes 0.5% salicylic acid, niacinamide, glycerin, and panthenol. Check the product pack for confirmed ingredients and directions. Stop use if irritation occurs.",
   },
   {
-    question: "What does pH-True™ actually mean?",
-    answer: "Adult body skin sits at pH 4.5–5.5 — the acid mantle that keeps your barrier intact. Most soap sits near pH 10; most wipes never state theirs. Every Wipelo batch is formulated and tested inside the 4.5–5.5 window. That's the whole claim, and we can show it per batch.",
+    question: "How should I use HER?",
+    answer: "HER is for occasional external intimate cleansing only. Do not insert the wipe or use it internally. Its planned lactic acid and sodium lactate formula is designed for pH-considerate external care; it does not change or regulate vaginal pH. Stop use if irritation occurs and seek medical advice for persistent discomfort.",
   },
   {
-    question: "Are the wipes flushable or biodegradable?",
-    answer: "The cloth is plant-fiber and biodegradable. It is not flushable — no wipe truly is, whatever the tub says. Bin it. Honesty is the brand; this is what it looks like on an unglamorous question.",
+    question: "Are the wipes flushable?",
+    answer: "No. Dispose of used wipes in a bin and follow the directions printed on the product pack.",
   },
   {
-    question: "What if it doesn't work for me?",
-    answer: "The Skin-Is-Skin Guarantee: 30 days, full refund, no questions, no return shipping. Fewer than 1% of customers ever use it* — we'd rather lose a sale than argue with your skin. (*dummy figure for prototype.)",
+    question: "Can I use a wipe instead of washing?",
+    answer: "Wipes are for convenient, occasional use when water is not available. They do not replace your regular washing routine.",
   },
 ];
