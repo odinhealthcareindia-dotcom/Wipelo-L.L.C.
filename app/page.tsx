@@ -2,6 +2,7 @@ import { HomeShopSection } from "@/components/catalog";
 import { FAQAccordion } from "@/components/faq-accordion";
 import { BrandBeatSection } from "@/components/home/brand-beat";
 import { homeFaqItems } from "@/components/home/faq";
+import { FeaturedInStrip } from "@/components/home/featured-in";
 import { HeroSection } from "@/components/home/hero";
 import { MechanismSection } from "@/components/home/mechanism";
 import { OnTheGoSection } from "@/components/home/on-the-go";
@@ -30,6 +31,7 @@ export default async function HomePage() {
 
   return <RevealEffects>
     <HeroSection />
+    <FeaturedInStrip />
     <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} />
     <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
     <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
