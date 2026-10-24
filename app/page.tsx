@@ -10,6 +10,7 @@ import { HerSection } from "@/components/home/her";
 import { QuizSection } from "@/components/home/quiz";
 import { RitualSection } from "@/components/home/ritual";
 import { WellnessSections } from "@/components/home/wellness-sections";
+import { FormulaSections } from "@/components/home/formula-sections";
 import { RevealEffects } from "@/components/reveal-effects";
 import { getProducts } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
@@ -34,6 +35,11 @@ export default async function HomePage() {
     <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
     <HomeShopSection products={products} />
     <WellnessSections
+      onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
+      spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
+      herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
+    />
+    <FormulaSections
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
       spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
       herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
