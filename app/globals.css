@@ -1260,6 +1260,19 @@ body::after{
   .otg-moments span{display:block;margin-bottom:7px}
   .otg-moments b{font-size:11.5px}
 }
+
+/* Additional homepage sections for Wipelo's three care specialties */
+.wellness-section{border-top:1px solid var(--hairline)}
+.wellness-section.dark{border-top-color:var(--hairline-dark)}
+.wellness-grid{gap:clamp(36px,6vw,88px)}
+.wellness-copy .mono-tag{display:block;margin-bottom:20px}
+.wellness-copy h2{margin-bottom:22px}
+.wellness-copy .lede{margin-bottom:20px}
+.wellness-section:not(.dark) .wellness-copy h2 em{color:var(--teal-deep)}
+.wellness-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;padding:0;list-style:none}
+.wellness-tags li{border:1px solid var(--hairline);border-radius:999px;padding:7px 11px;color:var(--teal-deep);font:400 9px/1.4 var(--mo);letter-spacing:.08em;text-transform:uppercase}
+.wellness-section.dark .wellness-tags li{border-color:var(--hairline-dark);color:var(--cream-70)}
+.wellness-figure{min-width:0}
 .product-gallery-message h2{font-size:clamp(32px,4vw,48px)}
 .product-gallery-message p{max-width:50ch;color:var(--ink-60);font-size:13px}
 .product-gallery-message .sachet{margin:0 auto;transform:rotate(-3deg)}
