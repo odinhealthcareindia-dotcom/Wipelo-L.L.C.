@@ -8,7 +8,7 @@ export function SpotlessSection({ productHref }: { productHref: string }) {
         <figure className="otg-figure rv">
           <div className="otg-image-frame">
             <Image
-              src="/spotless-body-routine.pn"
+              src="/spotless-body-home.png"
               width={1536}
               height={1024}
               sizes="(max-width: 920px) 90vw, (max-width: 1240px) 58vw, 680px"
