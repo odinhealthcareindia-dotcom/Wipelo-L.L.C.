@@ -8,25 +8,25 @@ export function OnTheGoSection({ productHref }: { productHref: string }) {
         <div className="otg-copy rv">
           <span className="mono-tag">// Wipelo ON THE GO</span>
           <h2 className="h-section" id="on-the-go-title">
-            Face refresh,<br /><em>between stops.</em>
+            Freshness reset,<br /><em>between showers.</em>
           </h2>
           <p className="lede">
-            For the moments between plans: open one individually sealed Wipelo ON THE GO wipe, make a gentle pass, and get on with your day.
+            When a shower has to wait, one individually sealed Wipelo ON THE GO wipe helps cleanse surface sweat, odor-causing residue, and everyday buildup from your underarms, feet, and body. Mild cleansers and zinc ricinoleate make it a practical refresh between showers.
           </p>
           <Link className="btn btn-teal" href={productHref}>
             Shop ON THE GO <span className="ar">→</span>
           </Link>
-          <p className="otg-sealed"><span aria-hidden="true">✦</span> Individually sealed. Ready between stops.</p>
+          <p className="otg-sealed"><span aria-hidden="true">✦</span> Body odor cleansing. Ready between showers.</p>
         </div>
 
         <figure className="otg-figure rv">
           <div className="otg-image-frame">
             <Image
-              src="/on-the-go-cleansing-sequence.png"
+              src="/spotless-body-routine.pn"
               width={1536}
               height={1024}
               sizes="(max-width: 920px) 90vw, (max-width: 1240px) 58vw, 680px"
-              alt="Three moments in a face-cleansing routine: natural skin, a gentle wipe at the temple, and light residue visible on the used cloth."
+              alt="Three moments in a cleansing routine: fresh skin, a gentle wipe, and the used cloth after a single pass."
             />
           </div>
           <figcaption>

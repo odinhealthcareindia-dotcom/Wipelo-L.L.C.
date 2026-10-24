@@ -4,8 +4,8 @@ import { SiteFooter, SiteHeader } from "@/components/chrome";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Wipelo — Functional Wet Wipes™", template: "%s | Wipelo" },
-  description: "Functional Wet Wipes™ — engineered actives, body-skin care, and individually sealed wipes. Skin is skin. Everywhere.",
+  title: { default: "Wipelo | Personal Care Wipes for Body & Intimate Care", template: "%s | Wipelo" },
+  description: "Explore ON THE GO body wipes, SPOTLESS body breakout care, and HER fragrance-free wipes for external intimate use. Individually wrapped for life on the move.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

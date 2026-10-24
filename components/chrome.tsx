@@ -6,16 +6,15 @@ import { usePathname } from "next/navigation";
 import { useStorefrontCart } from "@/components/storefront-provider";
 
 const announcements = [
-  <>Functional Wet Wipes™ for the moments between</>,
-  <>Skin is skin. Everywhere.</>,
-  <>Explore the Wipelo line</>,
+  <>Three wipe types. Three distinct care needs.</>,
+  <>Individually wrapped. Ready when you are.</>,
+  <>Meet ON THE GO, SPOTLESS, and HER</>,
 ];
 
 const navItems = [
   ["Shop", "/shop"],
   ["The Science", "/science"],
   ["Our Story", "/our-story"],
-  ["Manage Subscription", "/manage-subscription"],
 ] as const;
 
 export function SiteHeader() {
@@ -36,7 +35,7 @@ export function SiteHeader() {
     {!pathname.startsWith("/products/") && <div className="ticker" aria-label="Announcements"><div className="ticker-inner"><div className="ticker-msg on">{announcements[announcement]}</div></div></div>}
     <header className="nav site-nav">
       <div className="wrap nav-in">
-        <Link href="/" className="nav-brand">Wipelo<span className="tm">Functional Wet Wipes™</span></Link>
+        <Link href="/" className="nav-brand">Wipelo<span className="tm">Personal care wipes</span></Link>
         <nav className={`nav-links${menuOpen ? " open" : ""}`} aria-label="Main">
           {navItems.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenuOpen(false)} aria-current={pathname === href ? "page" : undefined}>{label}</Link>)}
         </nav>
@@ -49,12 +48,12 @@ export function SiteHeader() {
 export function SiteFooter() {
   return <footer className="footer site-footer"><div className="wrap">
     <div className="foot-grid">
-      <div className="foot-brand"><Link href="/" className="nav-brand">Wipelo</Link><p>Functional Wet Wipes™ — engineered, portable skin treatment for the needs your routine doesn’t reach.</p></div>
-      <div className="foot-col"><span className="mono">Shop</span><ul><li><Link href="/shop">Shop all products</Link></li><li><Link href="/collections/all">Collections</Link></li></ul></div>
+      <div className="foot-brand"><Link href="/" className="nav-brand">Wipelo</Link><p>Thoughtful, individually wrapped wipes for body freshness, breakout-prone skin, and external intimate care.</p></div>
+      <div className="foot-col"><span className="mono">Shop</span><ul><li><Link href="/shop">Shop all products</Link></li></ul></div>
       <div className="foot-col"><span className="mono">Brand</span><ul><li><Link href="/science">The Science</Link></li><li><Link href="/our-story">Our Story</Link></li></ul></div>
-      <div className="foot-col"><span className="mono">Support</span><ul><li><Link href="/manage-subscription">Manage subscription</Link></li><li><Link href="/manage-subscription#faq">FAQ</Link></li></ul></div>
+      <div className="foot-col"><span className="mono">Support</span><ul><li><Link href="/#faq">Frequently asked questions</Link></li></ul></div>
     </div>
-    <div className="site-colorline"><span className="color-spec"><span className="swatch" />Wipelo Teal · <b>#00B4A0</b> — if it’s this teal, it’s us.</span></div>
-    <div className="foot-base"><span className="legal">© {new Date().getFullYear()} Wipelo · Functional Wet Wipes™ · Skin is skin. Everywhere.™</span><div className="pay-icons"><span>Visa</span><span>MC</span><span>Amex</span><span>Apple&nbsp;Pay</span><span>Shop&nbsp;Pay</span><span>PayPal</span></div></div>
+    <div className="site-colorline"><span className="color-spec">ON THE GO · SPOTLESS · HER</span></div>
+    <div className="foot-base"><span className="legal">© {new Date().getFullYear()} Wipelo · Personal care wipes · Skin is skin. Everywhere.™</span><div className="pay-icons"><span>Visa</span><span>MC</span><span>Amex</span><span>Apple&nbsp;Pay</span><span>PayPal</span></div></div>
   </div></footer>;
 }

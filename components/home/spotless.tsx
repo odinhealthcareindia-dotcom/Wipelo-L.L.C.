@@ -8,7 +8,7 @@ export function SpotlessSection({ productHref }: { productHref: string }) {
         <figure className="otg-figure rv">
           <div className="otg-image-frame">
             <Image
-              src="/spotless-body-routine.png"
+              src="/spotless-body-routine.pn"
               width={1536}
               height={1024}
               sizes="(max-width: 920px) 90vw, (max-width: 1240px) 58vw, 680px"
@@ -27,15 +27,15 @@ export function SpotlessSection({ productHref }: { productHref: string }) {
         <div className="otg-copy rv">
           <span className="mono-tag">// Wipelo SPOTLESS</span>
           <h2 className="h-section" id="spotless-title">
-            Body care,<br /><em>beyond your face.</em>
+            Body acne care,<br /><em>made more reachable.</em>
           </h2>
           <p className="lede">
-            Give your shoulders, chest, and back a moment of their own. Wipelo SPOTLESS brings a leave-on body-care step to one individually sealed wipe. Open, gently pass, and let skin air-dry.
+            Body breakouts can be hard to reach. Wipelo SPOTLESS brings a proposed 0.5% salicylic acid leave-on formula to an individually sealed wipe for acne-prone skin on the back, chest, and shoulders. Niacinamide, glycerin, and panthenol support skin conditioning, with no complicated routine required.
           </p>
           <Link className="btn btn-teal" href={productHref}>
             Shop SPOTLESS <span className="ar" aria-hidden="true">→</span>
           </Link>
-          <p className="otg-sealed"><span aria-hidden="true">✦</span> Individually sealed. Made for body skin.</p>
+          <p className="otg-sealed"><span aria-hidden="true">✦</span> Salicylic acid body wipes. Clear skin, clear mind.</p>
         </div>
       </div>
     </section>

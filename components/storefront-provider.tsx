@@ -55,14 +55,14 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify(payload),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Shopify could not update your cart.");
+      if (!response.ok) throw new Error(result.error || "We couldn't update your cart. Please try again.");
       const nextCart = result.cart as ShopifyCart | null;
       setCart(nextCart);
       if (nextCart?.id) window.localStorage.setItem(STORAGE_KEY, nextCart.id);
       else window.localStorage.removeItem(STORAGE_KEY);
       return nextCart;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Shopify could not update your cart.");
+      setError(cause instanceof Error ? cause.message : "We couldn't update your cart. Please try again.");
       return null;
     } finally {
       setBusy(false);
@@ -130,7 +130,7 @@ function CartDrawer() {
       <div className="dr-head"><span className="mono">// Your cart · {count}</span><button className="dr-close" aria-label="Close cart" onClick={closeCart}>×</button></div>
       <div className="dr-ship"><div className="ship-msg">{count ? "Your order is ready for checkout." : "Your cart is empty."}</div><div className="ship-bar"><i style={{ width: count ? "100%" : "0%" }} /></div></div>
       <div className="dr-items">
-        {!lines.length ? <div className="dr-empty">Your cart is empty.<br />Your body has moments — we engineered for them.</div> : lines.map((line) => <div className="dr-item" key={line.id}>
+        {!lines.length ? <div className="dr-empty">Your cart is empty.<br />Find the wipe for your kind of care.</div> : lines.map((line) => <div className="dr-item" key={line.id}>
           <div className="di-pack">{line.merchandise.image ? <img src={line.merchandise.image.url} alt={line.merchandise.image.altText || line.merchandise.product.title} /> : "W"}</div>
           <div className="di-copy"><a className="di-name" href={`/products/${line.merchandise.product.handle}`}>{line.merchandise.product.title}</a><div className="di-meta">{line.merchandise.title}{line.sellingPlanAllocation ? ` · ${line.sellingPlanAllocation.sellingPlan.name}` : ""}</div>
             <div className="dr-qty"><button disabled={busy} onClick={() => void setLineQuantity(line.id, line.quantity - 1)} aria-label="Decrease quantity">−</button><span>{line.quantity}</span><button disabled={busy} onClick={() => void setLineQuantity(line.id, line.quantity + 1)} aria-label="Increase quantity">+</button><button className="cart-remove" disabled={busy} onClick={() => void removeLine(line.id)}>Remove</button></div>
@@ -141,7 +141,7 @@ function CartDrawer() {
         {error && <p className="cart-error" role="alert">{error}</p>}
         <div className="dr-total"><span>Subtotal</span><b>{moneyLabel(cart?.cost.subtotalAmount) || moneyLabel({ amount: "0", currencyCode: "USD" })}</b></div>
         {cart?.checkoutUrl ? <a className="btn btn-ink btn-wide cart-checkout" href={cart.checkoutUrl}>Checkout securely <span>→</span></a> : <button className="btn btn-ink btn-wide" disabled={!count || busy} onClick={closeCart}>Continue shopping</button>}
-        <div className="dr-guar">Checkout and payment are handled securely by Shopify.</div>
+        <div className="dr-guar">You’ll complete checkout and payment in the next step.</div>
       </div>
     </aside>
   </>;
