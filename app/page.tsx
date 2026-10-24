@@ -2,6 +2,7 @@ import { HomeShopSection } from "@/components/catalog";
 import { FAQAccordion } from "@/components/faq-accordion";
 import { BrandBeatSection } from "@/components/home/brand-beat";
 import { homeFaqItems } from "@/components/home/faq";
+import { FeaturedInStrip } from "@/components/home/featured-in";
 import { HeroSection } from "@/components/home/hero";
 import { MechanismSection } from "@/components/home/mechanism";
 import { OnTheGoSection } from "@/components/home/on-the-go";
@@ -9,6 +10,8 @@ import { SpotlessSection } from "@/components/home/spotless";
 import { HerSection } from "@/components/home/her";
 import { QuizSection } from "@/components/home/quiz";
 import { RitualSection } from "@/components/home/ritual";
+import { WellnessSections } from "@/components/home/wellness-sections";
+import { FormulaSections } from "@/components/home/formula-sections";
 import { RevealEffects } from "@/components/reveal-effects";
 import { getProducts } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
@@ -28,10 +31,21 @@ export default async function HomePage() {
 
   return <RevealEffects>
     <HeroSection />
+    <FeaturedInStrip />
     <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} />
     <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
     <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
     <HomeShopSection products={products} />
+    <WellnessSections
+      onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
+      spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
+      herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
+    />
+    <FormulaSections
+      onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
+      spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
+      herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
+    />
     <RitualSection />
     <QuizSection products={quizProducts} />
     <MechanismSection />

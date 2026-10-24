@@ -4,12 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useStorefrontCart } from "@/components/storefront-provider";
-
-const announcements = [
-  <>Three wipe types. Three distinct care needs.</>,
-  <>Individually wrapped. Ready when you are.</>,
-  <>Meet ON THE GO, SPOTLESS, and HER</>,
-];
+import { AnnouncementBar } from "@/components/announcement-bar";
 
 const navItems = [
   ["Shop", "/shop"],
@@ -18,21 +13,19 @@ const navItems = [
 ] as const;
 
 export function SiteHeader() {
-  const [announcement, setAnnouncement] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const { cart, openCart } = useStorefrontCart();
 
   useEffect(() => {
-    const timer = window.setInterval(() => setAnnouncement((value) => (value + 1) % announcements.length), 4200);
     const onScroll = () => document.querySelector(".site-nav")?.classList.toggle("scrolled", window.scrollY > 8);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => { window.clearInterval(timer); window.removeEventListener("scroll", onScroll); };
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return <>
-    {!pathname.startsWith("/products/") && <div className="ticker" aria-label="Announcements"><div className="ticker-inner"><div className="ticker-msg on">{announcements[announcement]}</div></div></div>}
+    {!pathname.startsWith("/products/") && <AnnouncementBar />}
     <header className="nav site-nav">
       <div className="wrap nav-in">
         <Link href="/" className="nav-brand">Wipelo<span className="tm">Personal care wipes</span></Link>
