@@ -23,6 +23,7 @@ import { ReviewsSection } from "@/components/home/reviews";
 import { ReceiptsSection } from "@/components/home/receipts";
 import { GuaranteeSection } from "@/components/home/guarantee";
 import { NewsletterSection } from "@/components/home/newsletter";
+import { ReviewsSectionHome } from "@/components/home/reviewshome";
 
 export const revalidate = 60;
 
@@ -40,7 +41,7 @@ export default async function HomePage() {
   return <RevealEffects>
     <HeroSection />
     <FeaturedInStrip />
-    <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} />
+    <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} price={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined} />
     <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
     <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
     <ProblemSection />
@@ -49,6 +50,11 @@ export default async function HomePage() {
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
       spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
       herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
+      onTheGoPrice={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined}
+      spotlessPrice={spotlessProduct ? moneyLabel(spotlessProduct.priceRange.minVariantPrice) : undefined}
+      spotlessImage={(spotlessProduct?.featuredImage ?? spotlessProduct?.images[0])?.url}
+      onTheGoImage={(onTheGoProduct?.featuredImage ?? onTheGoProduct?.images[0])?.url}
+      herImage={(herProduct?.featuredImage ?? herProduct?.images[0])?.url}
     />
     <FormulaSections
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
@@ -62,7 +68,8 @@ export default async function HomePage() {
     <BrandBeatSection />
     <ComparisonSection />
     <ObjectSection />
-    <ReviewsSection />
+    {/* <ReviewsSection /> */}
+    <ReviewsSectionHome />
     <ReceiptsSection />
     <GuaranteeSection />
     <BrandBeatSection />

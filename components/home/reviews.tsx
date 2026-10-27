@@ -6,7 +6,7 @@ export function ReviewsSection() {
   const [filter, setFilter] = useState<string | null>(null);
   const isVisible = (tags: string, index: number) => filter === null ? index < 3 : filter === "all" || tags.split(" ").includes(filter);
   return (
-    <section className="sec" style={{ paddingTop: "0" }} id="reviews">
+    <section className="sec" id="reviews">
       <div className="wrap">
         <div className="rev-head rv">
           <div className="rev-score">

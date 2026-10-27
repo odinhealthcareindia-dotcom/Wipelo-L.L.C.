@@ -14,7 +14,7 @@ export function Sachet() {
   >
     <span className="s-notch" />
     <span className="s-brand">Wipelo</span>
-    <span className="s-func">Single-Seal Fresh™</span>
-    <span className="s-line">1 of 50 · tear here →</span>
+    <span className="s-func">HER · external care</span>
+    <span className="s-line">Fragrance-free · tear here →</span>
   </button>;
 }

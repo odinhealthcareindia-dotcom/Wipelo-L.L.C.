@@ -2,7 +2,7 @@ import { BeforeAfterSlider } from "./before-after";
 
 export function ReceiptsSection() {
   return (
-    <section className="sec" style={{ paddingTop: "0" }}>
+    <section className="sec">
       <div className="wrap">
         <div className="sec-head rv" style={{ marginBottom: "28px" }}>
           <span className="mono-tag">// Seen on your feed*</span>
