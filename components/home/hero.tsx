@@ -18,6 +18,11 @@ export function HeroSection() {
             <span className="tchip"><b>02</b> Body breakout care</span>
             <span className="tchip"><b>03</b> External intimate care</span>
           </div>
+           <div className="hero-spec spec" style={{ marginTop: "28px" }}>
+            <div className="spec-row"><span className="k marker">//</span><span className="k">ON THE GO</span><span className="dots"></span><span className="v">Zinc ricinoleate <span className="marker">[odor-binding]</span></span></div>
+            <div className="spec-row"><span className="k">SPOTLESS</span><span className="dots"></span><span className="v">0.5% salicylic acid <span className="marker">[planned]</span></span></div>
+            <div className="spec-row"><span className="k">HER</span><span className="dots"></span><span className="v">Fragrance-free <span className="marker">[external use]</span></span></div>
+          </div>
         </div>
         <HeroVisual />
       </div>

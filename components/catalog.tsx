@@ -49,11 +49,73 @@ export function ProductGrid({ products, compact = false }: { products: ShopifyPr
   return <div className={`line-grid product-grid${compact ? " product-grid-compact" : ""}`}>{products.map((product) => <ProductCard key={product.id} product={product} compact={compact} />)}</div>;
 }
 
+const compareRows = [
+  { key: "bestFor", label: "Best for" },
+  { key: "useOn", label: "Use on" },
+  { key: "ingredients", label: "Key ingredients" },
+  { key: "format", label: "Format" },
+  { key: "note", label: "Good to know" },
+] as const;
+
+type CompareSpec = { tone: string; eyebrow: string } & Record<(typeof compareRows)[number]["key"], string>;
+
+const compareSpecs: Record<string, CompareSpec> = {
+  otg: { tone: "mint", eyebrow: "Between showers", bestFor: "Lifting surface sweat and everyday residue", useOn: "Underarms, feet, body", ingredients: "Mild cleansers + zinc ricinoleate", format: "Individually sealed · no rinse", note: "Not an antiperspirant or a shower replacement" },
+  spotless: { tone: "stone", eyebrow: "Body breakouts", bestFor: "Breakout-prone body skin", useOn: "Back, chest, shoulders", ingredients: "Planned 0.5% salicylic acid, niacinamide, glycerin, panthenol", format: "Individually sealed · leave-on", note: "Check the finished pack for confirmed ingredients" },
+  her: { tone: "sand", eyebrow: "External intimate care", bestFor: "Occasional external intimate cleansing", useOn: "External intimate skin only", ingredients: "Planned lactic acid + sodium lactate, glycerin, panthenol, aloe", format: "Individually wrapped · fragrance-free", note: "Does not change or regulate vaginal pH" },
+};
+
+function compareKey(product: ShopifyProduct) {
+  const text = `${product.title} ${product.handle}`;
+  if (/on[\s-]?the[\s-]?go/i.test(text)) return "otg";
+  if (/spotless/i.test(text)) return "spotless";
+  if (/\bher\b/i.test(text)) return "her";
+  return null;
+}
+
+function compareSpec(product: ShopifyProduct) {
+  const key = compareKey(product);
+  return key ? compareSpecs[key] : null;
+}
+
+function compareOrder(product: ShopifyProduct) {
+  const index = Object.keys(compareSpecs).indexOf(compareKey(product) ?? "");
+  return index === -1 ? Infinity : index;
+}
+
+function CompareColumn({ product }: { product: ShopifyProduct }) {
+  const variant = firstVariant(product);
+  const image = product.featuredImage ?? product.images[0] ?? null;
+  const spec = compareSpec(product);
+  const min = product.priceRange.minVariantPrice;
+  const max = product.priceRange.maxVariantPrice;
+  return <div className="cmpx-col">
+    <div className="cmpx-cell cmpx-product">
+      <Link className={`cmpx-stage cmpx-tone-${spec?.tone ?? "mint"}`} href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
+        {image ? <img src={image.url} alt={image.altText || product.title} /> : <span className="cmpx-stage-name">{product.title}</span>}
+        {!product.availableForSale && <span className="cmpx-flag">Sold out</span>}
+      </Link>
+      {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}
+      <Link href={`/products/${product.handle}`}><h3>{product.title.replace(/^wipelo\s*/i, "")}</h3></Link>
+      <div className="cmpx-price">{moneyLabel(min)}{min.amount !== max.amount && <span> – {moneyLabel(max)}</span>}</div>
+      {variant?.availableForSale ? <AddProductButton variant={variant} className="cmpx-add">Add to bag</AddProductButton> : <Link className="cmpx-add" href={`/products/${product.handle}`}>View product</Link>}
+    </div>
+    {compareRows.map((row) => <div className="cmpx-cell" data-label={row.label} key={row.key}>{spec?.[row.key] ?? (row.key === "bestFor" ? productSummary(product) : "—")}</div>)}
+  </div>;
+}
+
 export function HomeShopSection({ products }: { products: ShopifyProduct[] }) {
-  return <section className="sec" id="products">
+  return <section className="sec cmpx-section" id="products">
     <div className="wrap">
-      <div className="sec-head rv"><span className="mono-tag">// Three needs. Three wipes.</span><h2 className="h-section">Find your Wipelo.</h2><p className="lede">Choose the wipe designed for the moment and area you want to care for.</p></div>
-      <ProductGrid products={products} />
+      <div className="cmpx-head rv"><span className="cmpx-tag">// Three needs. Three wipes.</span><h2>Find your Wipelo.</h2><p>Choose the wipe designed for the moment and area you want to care for.</p></div>
+      {products.length ? <div className="cmpx-table rv" style={{ "--cmpx-n": products.length } as React.CSSProperties}>
+        <div className="cmpx-col cmpx-labels" aria-hidden="true">
+          <div className="cmpx-cell cmpx-product"><span>Compare</span></div>
+          {compareRows.map((row) => <div className="cmpx-cell" key={row.key}>{row.label}</div>)}
+        </div>
+        {[...products].sort((a, b) => compareOrder(a) - compareOrder(b)).map((product) => <CompareColumn key={product.id} product={product} />)}
+      </div> : <StoreSetupNote />}
+      <p className="cmpx-foot rv">Still unsure? <Link href="#choose-your-wipe">Answer one question</Link> and we'll point you to the right wipe.</p>
     </div>
   </section>;
 }

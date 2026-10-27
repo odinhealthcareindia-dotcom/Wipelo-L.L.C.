@@ -1,34 +1,49 @@
-import { Sachet } from "./sachet";
+import Link from "next/link";
+import { PortableStack } from "./portable-stack";
+
+const uses = [
+  { product: "ON THE GO", title: "Body odor refresh", body: "Mild cleansers + zinc ricinoleate." },
+  { product: "SPOTLESS", title: "Breakout-prone body skin", body: "Proposed 0.5% salicylic acid." },
+  { product: "HER", title: "Gentle external intimate cleansing", body: "Fragrance-free. External use only." },
+];
+
+function UseItem({ index }: { index: number }) {
+  const use = uses[index];
+  return <div className="portable-use">
+    <span>{String(index + 1).padStart(2, "0")} · {use.product}</span>
+    <h3>{use.title}</h3>
+    <p>{use.body}</p>
+  </div>;
+}
 
 export function ObjectSection() {
   return (
-    <section className="sec" style={{ paddingTop: "0" }}>
+    <section className="sec portable-section" aria-labelledby="portable-title">
       <div className="wrap">
-        <div className="sec-head rv" style={{ marginBottom: "32px" }}>
-          <span className="mono-tag">// Beautifully carried</span>
-          <h2 className="h-section">The product you're not embarrassed<br />to leave on the counter.</h2>
-          <p className="lede">Marble counter. Gym bag. Bedside table. It photographs in all three — because design is positioning, not decoration.</p>
+        <div className="portable-head rv">
+          <span className="portable-tag">// Thoughtful care, made portable</span>
+          <h2 id="portable-title">A wipe for the moment <em>you need it most.</em></h2>
         </div>
-        <div className="object-stage rv">
-          <div className="anno a-chip" style={{ top: "26px", left: "26px" }}>// The object</div>
-          <div className="anno" style={{ top: "30px", right: "26px" }}>Anodized tin · refillable<span className="a-line"></span><span className="a-dot"></span></div>
-          <div className="pack" style={{ transform: "rotate(-4deg)" }}>
-            <span className="p-seal">✦</span>
-            <span className="p-cat">Functional Wet Wipes™</span>
-            <span className="p-name">Wipelo</span><span className="p-sku">Bare</span>
-            <div className="p-spec">FUNCTION · PORE CLEARANCE<br />ACTIVE ··· SALICYLIC ACID 2%<br />pH ······· 4.5–5.5 [pH-TRUE™]</div>
-            <div className="p-batch">Batch 0426 · pH 4.9 ✓</div>
+
+        <div className="portable-grid rv">
+          <div className="portable-left">
+            <UseItem index={0} />
+            <UseItem index={1} />
           </div>
-          <div className="pack" style={{ transform: "rotate(2deg)", zIndex: "2" }}>
-            <span className="p-seal">✦</span>
-            <span className="p-cat">Functional Wet Wipes™</span>
-            <span className="p-name">Wipelo</span><span className="p-sku">First</span>
-            <div className="p-spec">FUNCTION · ODOR CONTROL<br />ACTIVE ··· ZINC COMPLEX + ALOE<br />pH ······· 4.5–5.5 [pH-TRUE™]</div>
-            <div className="p-batch">Batch 0426 · pH 4.9 ✓</div>
+
+          <PortableStack />
+
+          <div className="portable-right">
+            <UseItem index={2} />
+            <Link className="portable-btn" href="#products">Find your Wipelo <span aria-hidden="true">→</span></Link>
           </div>
-          <div className="tin"><span className="t-w">W</span><span className="t-l">Travel Tin · holds 10</span></div>
-          <Sachet />
         </div>
+
+        <ul className="portable-facts rv">
+          <li>Individually wrapped</li>
+          <li>Ready to carry</li>
+          <li>One wipe, one clear purpose</li>
+        </ul>
       </div>
     </section>
   );
