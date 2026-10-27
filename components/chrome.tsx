@@ -37,16 +37,3 @@ export function SiteHeader() {
     </header>
   </>;
 }
-
-export function SiteFooter() {
-  return <footer className="footer site-footer"><div className="wrap">
-    <div className="foot-grid">
-      <div className="foot-brand"><Link href="/" className="nav-brand">Wipelo</Link><p>Thoughtful, individually wrapped wipes for body freshness, breakout-prone skin, and external intimate care.</p></div>
-      <div className="foot-col"><span className="mono">Shop</span><ul><li><Link href="/shop">Shop all products</Link></li></ul></div>
-      <div className="foot-col"><span className="mono">Brand</span><ul><li><Link href="/science">The Science</Link></li><li><Link href="/our-story">Our Story</Link></li></ul></div>
-      <div className="foot-col"><span className="mono">Support</span><ul><li><Link href="/#faq">Frequently asked questions</Link></li></ul></div>
-    </div>
-    <div className="site-colorline"><span className="color-spec">ON THE GO · SPOTLESS · HER</span></div>
-    <div className="foot-base"><span className="legal">© {new Date().getFullYear()} Wipelo · Personal care wipes · Skin is skin. Everywhere.™</span><div className="pay-icons"><span>Visa</span><span>MC</span><span>Amex</span><span>Apple&nbsp;Pay</span><span>PayPal</span></div></div>
-  </div></footer>;
-}
