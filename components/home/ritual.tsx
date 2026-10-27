@@ -1,3 +1,5 @@
+import { Reveal, Stagger } from "@/components/motion/reveal";
+
 const steps = [
   {
     title: "Open one wipe",
@@ -23,26 +25,31 @@ export function RitualSection() {
   return (
     <section className="sec ritual-section" aria-labelledby="ritual-title">
       <div className="wrap">
-        <div className="ritual-head rv">
-          <span className="ritual-tag">// A simple step, wherever you are</span>
-          <h2 id="ritual-title">Open. <em>Use.</em> Dispose.</h2>
-        </div>
-        <ol className="ritual-steps rv">
+        <Stagger className="ritual-head" gap={0.09}>
+          <Reveal as="span" className="ritual-tag">// A simple step, wherever you are</Reveal>
+          <Reveal as="h2" id="ritual-title">Open. <em>Use.</em> Dispose.</Reveal>
+        </Stagger>
+        <Stagger as="ol" className="ritual-steps" gap={0.15}>
           {steps.map((step, index) => (
-            <li key={step.title}>
+            <Stagger as="li" key={step.title} gap={0.08}>
               <div className="ritual-photo">
-                <img src={step.image} alt={step.alt} width="1254" height="1254" loading="lazy" />
-                <span className="ritual-num" aria-hidden="true">{index + 1}</span>
+                <span className="ritual-photo-clip">
+                  <Reveal as="span" variant="settle">
+                    <img src={step.image} alt={step.alt} width="1254" height="1254" loading="lazy" />
+                  </Reveal>
+                </span>
+                <Reveal as="span" variant="pop" className="ritual-num" aria-hidden="true">{index + 1}</Reveal>
               </div>
-              <h3>{step.title}</h3>
-              <p>{step.body}</p>
-            </li>
+              {index < steps.length - 1 && <Reveal as="span" variant="drawLine" className="ritual-link" aria-hidden="true" />}
+              <Reveal as="h3">{step.title}</Reveal>
+              <Reveal as="p">{step.body}</Reveal>
+            </Stagger>
           ))}
-        </ol>
-        <p className="ritual-bar rv">
+        </Stagger>
+        <Reveal as="p" className="ritual-bar">
           <span className="ritual-bar-icon" aria-hidden="true">!</span>
           <span><b>Do not flush used wipes.</b> Always follow the guidance printed on the pack.</span>
-        </p>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,6 +1,8 @@
 "use client";
 
+import { useReducedMotion } from "framer-motion";
 import Marquee from "react-fast-marquee";
+import { Reveal } from "@/components/motion/reveal";
 
 // Placeholder wordmarks for fictional publications — swap for real press logos before launch.
 const featuredLogos = [
@@ -14,21 +16,22 @@ const featuredLogos = [
 ];
 
 export function FeaturedInStrip() {
+  const reduced = useReducedMotion();
   return <section className="featured-strip" aria-label="As featured in">
-    <div className="wrap featured-strip-inner">
+    <Reveal variant="fadeIn" className="wrap featured-strip-inner">
       <span className="featured-strip-label">As featured in</span>
       <div className="featured-strip-track">
         <ul className="sr-only">
           {featuredLogos.map((logo) => <li key={logo.name}>{logo.name}</li>)}
         </ul>
         <div aria-hidden="true">
-          <Marquee className="featured-marquee" speed={30} pauseOnHover pauseOnClick autoFill gradient gradientColor="#FAF5EF" gradientWidth="10%">
+          <Marquee className="featured-marquee" speed={30} play={!reduced} pauseOnHover pauseOnClick autoFill gradient gradientColor="#FAF5EF" gradientWidth="10%">
             {featuredLogos.map((logo) => <span className="featured-marquee-item" key={logo.name}>
               <img src={logo.src} alt="" loading="lazy" decoding="async" />
             </span>)}
           </Marquee>
         </div>
       </div>
-    </div>
+    </Reveal>
   </section>;
 }

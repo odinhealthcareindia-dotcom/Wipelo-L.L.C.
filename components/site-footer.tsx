@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { socialProfiles } from "@/lib/social-links";
 import { FooterNewsletter } from "@/components/footer-newsletter";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 const footerNavigation = [
   {
@@ -55,19 +56,19 @@ export function SiteFooter() {
       </picture>
 
       <div className="wipe-footer-shell">
-        <FooterNewsletter />
+        <Reveal><FooterNewsletter /></Reveal>
 
         <div className="wipe-footer-top">
-          <nav className="wipe-footer-nav" aria-label="Footer">
-            {footerNavigation.map(({ title, links }) => <div className="wipe-footer-column" key={title}>
+          <Stagger as="nav" className="wipe-footer-nav" gap={0.08} aria-label="Footer">
+            {footerNavigation.map(({ title, links }) => <Reveal className="wipe-footer-column" key={title}>
               <h2>{title}</h2>
               <ul>{links.map(({ label, href }) => <li key={href}>
                 <Link href={href}>{label}</Link>
               </li>)}</ul>
-            </div>)}
-          </nav>
+            </Reveal>)}
+          </Stagger>
 
-          <div className="wipe-footer-intro">
+          <Reveal className="wipe-footer-intro" delay={0.2}>
             <p>Functional personal care.<br />Made for real life.</p>
             <div className="wipe-footer-socials" aria-label="Social media">
               {socialProfiles.map(({ name, icon, href }) => href ? (
@@ -80,7 +81,7 @@ export function SiteFooter() {
                 </span>
               ))}
             </div>
-          </div>
+          </Reveal>
         </div>
 
         <Link href="/" className="wipe-footer-wordmark" aria-label="Wipelo home">Wipelo</Link>

@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
 import { AddProductButton } from "@/components/product-buy";
+import { Parallax } from "@/components/motion/parallax";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 function firstVariant(product: ShopifyProduct) {
   return product.variants.find((variant) => variant.availableForSale) ?? product.variants[0] ?? null;
@@ -89,10 +91,10 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
   const spec = compareSpec(product);
   const min = product.priceRange.minVariantPrice;
   const max = product.priceRange.maxVariantPrice;
-  return <div className="cmpx-col">
+  return <Reveal className="cmpx-col">
     <div className="cmpx-cell cmpx-product">
       <Link className={`cmpx-stage cmpx-tone-${spec?.tone ?? "mint"}`} href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
-        {image ? <img src={image.url} alt={image.altText || product.title} /> : <span className="cmpx-stage-name">{product.title}</span>}
+        {image ? <Parallax fill offset={12}><img src={image.url} alt={image.altText || product.title} /></Parallax> : <span className="cmpx-stage-name">{product.title}</span>}
         {!product.availableForSale && <span className="cmpx-flag">Sold out</span>}
       </Link>
       {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}
@@ -101,27 +103,27 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
       {variant?.availableForSale ? <AddProductButton variant={variant} className="cmpx-add">Add to bag</AddProductButton> : <Link className="cmpx-add" href={`/products/${product.handle}`}>View product</Link>}
     </div>
     {compareRows.map((row) => <div className="cmpx-cell" data-label={row.label} key={row.key}>{spec?.[row.key] ?? (row.key === "bestFor" ? productSummary(product) : "—")}</div>)}
-  </div>;
+  </Reveal>;
 }
 
 export function HomeShopSection({ products }: { products: ShopifyProduct[] }) {
   return <section className="sec cmpx-section" id="products">
     <div className="wrap">
-      <div className="cmpx-head rv"><span className="cmpx-tag">// Three needs. Three wipes.</span><h2>Find your Wipelo.</h2><p>Choose the wipe designed for the moment and area you want to care for.</p></div>
-      {products.length ? <div className="cmpx-table rv" style={{ "--cmpx-n": products.length } as React.CSSProperties}>
-        <div className="cmpx-col cmpx-labels" aria-hidden="true">
+      <Stagger className="cmpx-head" gap={0.09}><Reveal as="span" className="cmpx-tag">// Three needs. Three wipes.</Reveal><Reveal as="h2">Find your Wipelo.</Reveal><Reveal as="p">Choose the wipe designed for the moment and area you want to care for.</Reveal></Stagger>
+      {products.length ? <Stagger className="cmpx-table" gap={0.12} style={{ "--cmpx-n": products.length } as React.CSSProperties}>
+        <Reveal variant="fadeIn" className="cmpx-col cmpx-labels" aria-hidden="true">
           <div className="cmpx-cell cmpx-product"><span>Compare</span></div>
           {compareRows.map((row) => <div className="cmpx-cell" key={row.key}>{row.label}</div>)}
-        </div>
+        </Reveal>
         {[...products].sort((a, b) => compareOrder(a) - compareOrder(b)).map((product) => <CompareColumn key={product.id} product={product} />)}
-      </div> : <StoreSetupNote />}
-      <p className="cmpx-foot rv">Still unsure? <Link href="#choose-your-wipe">Answer one question</Link> and we'll point you to the right wipe.</p>
+      </Stagger> : <StoreSetupNote />}
+      <Reveal as="p" className="cmpx-foot">Still unsure? <Link href="#choose-your-wipe">Answer one question</Link> and we'll point you to the right wipe.</Reveal>
     </div>
   </section>;
 }
 
 export function HomeShopStrip({ products }: { products: ShopifyProduct[] }) {
-  return <section className="sec home-shop-strip" style={{ paddingTop: 0 }}><div className="wrap"><div className="sec-head"><span className="mono-tag">// The Wipelo range</span><h2 className="h-section">Choose the care you need.</h2></div><ProductGrid products={products} compact /></div></section>;
+  return <section className="sec home-shop-strip" style={{ paddingTop: 0 }}><div className="wrap"><Stagger className="sec-head" gap={0.09}><Reveal as="span" className="mono-tag">// The Wipelo range</Reveal><Reveal as="h2" className="h-section">Choose the care you need.</Reveal></Stagger><Reveal><ProductGrid products={products} compact /></Reveal></div></section>;
 }
 
 export function CollectionHeader({ title, description }: { title: string; description?: string }) {

@@ -1,29 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
+import { DrawCircle } from "@/components/motion/draw-circle";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 export function HerSection({ productHref }: { productHref: string }) {
   return (
     <section className="sec otgx-section her-section" aria-labelledby="her-title">
       <div className="wrap">
         <div className="otgx-grid">
-          <div className="otgx-copy rv">
-            <span className="otgx-tag">// Wipelo HER</span>
-            <h2 id="her-title">
+          <Stagger className="otgx-copy" gap={0.09}>
+            <Reveal as="span" className="otgx-tag">// Wipelo HER</Reveal>
+            <Reveal as="h2" id="her-title">
               Your pH,<br /><em>respected.</em>
-            </h2>
-            <p className="otgx-lede">
+            </Reveal>
+            <Reveal as="p" className="otgx-lede">
               An individually wrapped, fragrance-free wipe for occasional external intimate cleansing. Its proposed lactic acid and sodium lactate formula is designed for pH-considerate care, with glycerin, panthenol, and aloe to support skin comfort. Keep one close for travel, after a workout, during your period, or whenever water is limited.
-            </p>
-            <div className="otgx-ctas">
+            </Reveal>
+            <Reveal className="otgx-ctas">
               <Link className="otgx-btn" href={productHref}>
-                Shop HER <span aria-hidden="true">→</span>
+                Shop HER <span className="ar" aria-hidden="true">→</span>
               </Link>
-            </div>
-            <p className="otgx-meta"><span aria-hidden="true">✦</span> Fragrance free. External use only.</p>
-          </div>
+            </Reveal>
+            <Reveal as="p" className="otgx-meta"><span aria-hidden="true">✦</span> Fragrance free. External use only.</Reveal>
+          </Stagger>
 
-          <div className="otgx-visual rv">
+          <Reveal variant="softScale" className="otgx-visual">
             <div className="otgx-orbit">
+              <DrawCircle className="otgx-ring" />
               <div className="otgx-photo">
                 <Image
                   src="/her-handbag-essential.png"
@@ -34,7 +37,7 @@ export function HerSection({ productHref }: { productHref: string }) {
                 />
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

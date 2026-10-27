@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { DrawCircle } from "@/components/motion/draw-circle";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 const steps = [
   { title: "Tear open", body: "One sealed sachet, fits a pocket or gym bag." },
@@ -12,25 +14,26 @@ export function OnTheGoSection({ productHref, price }: { productHref: string; pr
     <section className="sec otgx-section" aria-labelledby="on-the-go-title">
       <div className="wrap">
         <div className="otgx-grid">
-          <div className="otgx-copy rv">
-            <span className="otgx-tag">// Wipelo ON THE GO</span>
-            <h2 id="on-the-go-title">
+          <Stagger className="otgx-copy" gap={0.09}>
+            <Reveal as="span" className="otgx-tag">// Wipelo ON THE GO</Reveal>
+            <Reveal as="h2" id="on-the-go-title">
               Freshness reset,<br /><em>between showers.</em>
-            </h2>
-            <p className="otgx-lede">
+            </Reveal>
+            <Reveal as="p" className="otgx-lede">
               One individually sealed wipe lifts surface sweat and odor-causing residue from underarms, feet and body — so the shower can wait.
-            </p>
-            <div className="otgx-ctas">
+            </Reveal>
+            <Reveal className="otgx-ctas">
               <Link className="otgx-btn" href={productHref}>
-                Shop ON THE GO <span aria-hidden="true">→</span>
+                Shop ON THE GO <span className="ar" aria-hidden="true">→</span>
               </Link>
               <Link className="otgx-link" href="#ingredients">See how it works</Link>
-            </div>
-            <p className="otgx-meta">{price ? `${price} · ` : ""}Individually sealed wipes · Mild cleansers + zinc ricinoleate</p>
-          </div>
+            </Reveal>
+            <Reveal as="p" className="otgx-meta">{price ? `${price} · ` : ""}Individually sealed wipes · Mild cleansers + zinc ricinoleate</Reveal>
+          </Stagger>
 
-          <div className="otgx-visual rv">
+          <Reveal variant="slideFromRight" className="otgx-visual">
             <div className="otgx-orbit">
+              <DrawCircle className="otgx-ring" />
               <div className="otgx-photo">
                 <Image
                   src="/on-the-go-home.png"
@@ -40,23 +43,24 @@ export function OnTheGoSection({ productHref, price }: { productHref: string; pr
                   alt="Three moments in a cleansing routine: tearing open a sealed wipe, one gentle pass over the shoulder, and fresh skin after."
                 />
               </div>
-              <span className="otgx-chip otgx-chip-light" aria-hidden="true">Individually sealed</span>
-              <span className="otgx-chip otgx-chip-teal" aria-hidden="true">With zinc ricinoleate</span>
+              <Reveal as="span" variant="pop" delay={0.3} className="otgx-chip otgx-chip-light" aria-hidden="true">Individually sealed</Reveal>
+              <Reveal as="span" variant="pop" delay={0.4} className="otgx-chip otgx-chip-teal" aria-hidden="true">With zinc ricinoleate</Reveal>
             </div>
-          </div>
+          </Reveal>
         </div>
 
-        <ol className="otgx-steps rv">
+        <Stagger as="ol" className="otgx-steps" gap={0.1}>
           {steps.map((step, index) => (
-            <li key={step.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div>
+            <Stagger as="li" key={step.title} gap={0.12}>
+              <Reveal as="span" variant="drawLine" className="otgx-step-line" aria-hidden="true" />
+              <Reveal as="span">{String(index + 1).padStart(2, "0")}</Reveal>
+              <Reveal>
                 <b>{step.title}</b>
                 <p>{step.body}</p>
-              </div>
-            </li>
+              </Reveal>
+            </Stagger>
           ))}
-        </ol>
+        </Stagger>
       </div>
     </section>
   );

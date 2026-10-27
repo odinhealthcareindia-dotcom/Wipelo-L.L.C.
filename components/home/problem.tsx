@@ -1,3 +1,6 @@
+import { Reveal, Stagger } from "@/components/motion/reveal";
+import { cardHover } from "@/lib/motion";
+
 const rows = [
   { face: "A cleanser, morning and night", rest: "Fragrance sprayed over the sweat" },
   { face: "Salicylic acid for breakouts", rest: "Back and chest left to chance" },
@@ -15,48 +18,48 @@ export function ProblemSection() {
   return (
     <section className="sec named-section" id="science" aria-labelledby="named-title">
       <div className="wrap">
-        <div className="named-head rv">
+        <Stagger className="named-head" gap={0.09}>
           <div>
-            <span className="named-tag">// The named problem</span>
-            <h2 id="named-title">Below the jaw,<br /><em>you're on your own.</em></h2>
+            <Reveal as="span" className="named-tag">// The named problem</Reveal>
+            <Reveal as="h2" id="named-title">Below the jaw,<br /><em>you're on your own.</em></Reveal>
           </div>
-          <p className="named-lede">Face skincare became a science. Actives, pH, barrier care — a generation learned to read labels. Then sweat, body breakouts and intimate care were left to a spray of fragrance or a baby wipe.</p>
-        </div>
+          <Reveal as="p" className="named-lede">Face skincare became a science. Actives, pH, barrier care — a generation learned to read labels. Then sweat, body breakouts and intimate care were left to a spray of fragrance or a baby wipe.</Reveal>
+        </Stagger>
 
-        <table className="named-table rv">
+        <Stagger as="table" className="named-table" gap={0}>
           <thead>
             <tr><th scope="col">#</th><th scope="col">Your face gets</th><th scope="col">Everything else gets</th></tr>
           </thead>
           <tbody>
             {rows.map((row, index) => (
               <tr key={row.face}>
-                <td className="named-n">{String(index + 1).padStart(2, "0")}</td>
-                <td className="named-face" data-label="Your face gets">
+                <Reveal as="td" variant="fadeIn" delay={index * 0.05} className="named-n">{String(index + 1).padStart(2, "0")}</Reveal>
+                <Reveal as="td" variant="fadeIn" delay={index * 0.05} className="named-face" data-label="Your face gets">
                   <span className="named-ico named-ico-yes" aria-hidden="true">
                     <svg viewBox="0 0 12 12" width="11" height="11"><path d="M2.5 6.2 5 8.6l4.6-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   </span>
                   {row.face}
-                </td>
-                <td className="named-rest" data-label="Everything else gets">
+                </Reveal>
+                <Reveal as="td" variant="nudgeIn" delay={0.2 + index * 0.08} className="named-rest" data-label="Everything else gets">
                   <span className="named-ico named-ico-no" aria-hidden="true">–</span>
                   {row.rest}
-                </td>
+                </Reveal>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Stagger>
 
-        <p className="named-bridge rv">The needs between morning and evening were served by products designed for infants, or by no one. Three of them, named:</p>
+        <Reveal as="p" className="named-bridge">The needs between morning and evening were served by products designed for infants, or by no one. Three of them, named:</Reveal>
 
-        <div className="named-cards rv">
+        <Stagger className="named-cards" gap={0.1}>
           {gaps.map((gap, index) => (
-            <div className="named-card" key={gap.title}>
+            <Reveal className="named-card" key={gap.title} whileHover={cardHover}>
               <span className="named-pill">{String(index + 1).padStart(2, "0")} · {gap.product}</span>
               <h3>{gap.title}</h3>
               <p>{gap.body}</p>
-            </div>
+            </Reveal>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Parallax } from "@/components/motion/parallax";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 import { PortableStack } from "./portable-stack";
 
 const uses = [
@@ -9,41 +11,43 @@ const uses = [
 
 function UseItem({ index }: { index: number }) {
   const use = uses[index];
-  return <div className="portable-use">
+  return <Reveal className="portable-use">
     <span>{String(index + 1).padStart(2, "0")} · {use.product}</span>
     <h3>{use.title}</h3>
     <p>{use.body}</p>
-  </div>;
+  </Reveal>;
 }
 
 export function ObjectSection() {
   return (
     <section className="sec portable-section" aria-labelledby="portable-title">
       <div className="wrap">
-        <div className="portable-head rv">
-          <span className="portable-tag">// Thoughtful care, made portable</span>
-          <h2 id="portable-title">A wipe for the moment <em>you need it most.</em></h2>
-        </div>
+        <Stagger className="portable-head" gap={0.09}>
+          <Reveal as="span" className="portable-tag">// Thoughtful care, made portable</Reveal>
+          <Reveal as="h2" id="portable-title">A wipe for the moment <em>you need it most.</em></Reveal>
+        </Stagger>
 
-        <div className="portable-grid rv">
-          <div className="portable-left">
+        <div className="portable-grid">
+          <Stagger className="portable-left" gap={0.12} delay={0.2}>
             <UseItem index={0} />
             <UseItem index={1} />
-          </div>
+          </Stagger>
 
-          <PortableStack />
+          <Reveal variant="deal" className="portable-stack-wrap">
+            <Parallax offset={20}><PortableStack /></Parallax>
+          </Reveal>
 
-          <div className="portable-right">
+          <Stagger className="portable-right" gap={0.12} delay={0.44}>
             <UseItem index={2} />
-            <Link className="portable-btn" href="#products">Find your Wipelo <span aria-hidden="true">→</span></Link>
-          </div>
+            <Reveal><Link className="portable-btn" href="#products">Find your Wipelo <span aria-hidden="true">→</span></Link></Reveal>
+          </Stagger>
         </div>
 
-        <ul className="portable-facts rv">
-          <li>Individually wrapped</li>
-          <li>Ready to carry</li>
-          <li>One wipe, one clear purpose</li>
-        </ul>
+        <Stagger as="ul" className="portable-facts" gap={0.08}>
+          <Reveal as="li" variant="fadeIn">Individually wrapped</Reveal>
+          <Reveal as="li" variant="fadeIn">Ready to carry</Reveal>
+          <Reveal as="li" variant="fadeIn">One wipe, one clear purpose</Reveal>
+        </Stagger>
       </div>
     </section>
   );

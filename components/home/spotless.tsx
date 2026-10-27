@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { DrawCircle } from "@/components/motion/draw-circle";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 const steps = ["Open one wipe", "One gentle pass", "Let skin air-dry"];
 
@@ -8,8 +10,9 @@ export function SpotlessSection({ productHref }: { productHref: string }) {
     <section className="sec otgx-section spotless-section" aria-labelledby="spotless-title">
       <div className="wrap">
         <div className="otgx-grid otgx-grid-reversed">
-          <div className="otgx-visual rv">
+          <Reveal variant="slideFromLeft" className="otgx-visual">
             <div className="otgx-orbit">
+              <DrawCircle className="otgx-ring" />
               <div className="otgx-photo">
                 <Image
                   src="/spotless-body-home.png"
@@ -20,33 +23,34 @@ export function SpotlessSection({ productHref }: { productHref: string }) {
                 />
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="otgx-copy rv">
-            <span className="otgx-tag">// Wipelo SPOTLESS</span>
-            <h2 id="spotless-title">
+          <Stagger className="otgx-copy" gap={0.09} delay={0.1}>
+            <Reveal as="span" variant="slideFromRight" className="otgx-tag">// Wipelo SPOTLESS</Reveal>
+            <Reveal as="h2" variant="slideFromRight" id="spotless-title">
               Body acne care,<br /><em>made more reachable.</em>
-            </h2>
-            <p className="otgx-lede">
+            </Reveal>
+            <Reveal as="p" variant="slideFromRight" className="otgx-lede">
               Body breakouts can be hard to reach. Wipelo SPOTLESS brings a proposed 0.5% salicylic acid leave-on formula to an individually sealed wipe for acne-prone skin on the back, chest, and shoulders. Niacinamide, glycerin, and panthenol support skin conditioning, with no complicated routine required.
-            </p>
-            <div className="otgx-ctas">
+            </Reveal>
+            <Reveal variant="slideFromRight" className="otgx-ctas">
               <Link className="otgx-btn" href={productHref}>
-                Shop SPOTLESS <span aria-hidden="true">→</span>
+                Shop SPOTLESS <span className="ar" aria-hidden="true">→</span>
               </Link>
-            </div>
-            <p className="otgx-meta"><span aria-hidden="true">✦</span> Salicylic acid body wipes. Clear skin, clear mind.</p>
-          </div>
+            </Reveal>
+            <Reveal as="p" variant="slideFromRight" className="otgx-meta"><span aria-hidden="true">✦</span> Salicylic acid body wipes. Clear skin, clear mind.</Reveal>
+          </Stagger>
         </div>
 
-        <ol className="otgx-steps rv" aria-label="The three moments shown">
+        <Stagger as="ol" className="otgx-steps" gap={0.1} aria-label="The three moments shown">
           {steps.map((step, index) => (
-            <li key={step}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div><b>{step}</b></div>
-            </li>
+            <Stagger as="li" key={step} gap={0.12}>
+              <Reveal as="span" variant="drawLine" className="otgx-step-line" aria-hidden="true" />
+              <Reveal as="span">{String(index + 1).padStart(2, "0")}</Reveal>
+              <Reveal><b>{step}</b></Reveal>
+            </Stagger>
           ))}
-        </ol>
+        </Stagger>
       </div>
     </section>
   );
