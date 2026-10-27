@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useAnimate, useReducedMotion, type AnimationPlaybackControls } from "framer-motion";
+import { AnimatePresence, m, useAnimate, useReducedMotion, type AnimationPlaybackControls } from "framer-motion";
 
 const DWELL_SECONDS = 5;
 const EASE = [0.19, 1, 0.22, 1] as const;
@@ -27,6 +27,9 @@ export function AnnouncementBar() {
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(false);
   const reduceMotion = useReducedMotion();
+  // Read after mount: the server can't know the preference, and a mismatched aria-live is never patched.
+  const [announceAll, setAnnounceAll] = useState(false);
+  useEffect(() => setAnnounceAll(!!reduceMotion), [reduceMotion]);
   const [scope, animate] = useAnimate<HTMLDivElement>();
   const progress = useRef<AnimationPlaybackControls | null>(null);
 
@@ -73,9 +76,9 @@ export function AnnouncementBar() {
   >
     <div className="ticker-inner ticker-controls" ref={scope}>
       <button type="button" className="ticker-arrow" aria-label="Previous announcement" onClick={() => go(-1)}><Chevron flip /></button>
-      <div className="ticker-stage" aria-live={paused || reduceMotion ? "polite" : "off"} aria-atomic="true">
+      <div className="ticker-stage" aria-live={paused || announceAll ? "polite" : "off"} aria-atomic="true">
         <AnimatePresence initial={false} custom={direction}>
-          <motion.p
+          <m.p
             key={current.id}
             className="ticker-msg"
             custom={direction}
@@ -90,7 +93,7 @@ export function AnnouncementBar() {
             {current.href
               ? <Link href={current.href} className="ticker-link"><span>{current.text}</span><span className="ticker-go" aria-hidden="true">→</span></Link>
               : <span>{current.text}</span>}
-          </motion.p>
+          </m.p>
         </AnimatePresence>
       </div>
       <button type="button" className="ticker-arrow" aria-label="Next announcement" onClick={() => go(1)}><Chevron /></button>

@@ -7,7 +7,7 @@ export function HeroSection() {
       <div className="wrap hero-grid">
         <div className="hero-copy">
           <span className="mono-tag">✦ Thoughtful care for life on the move</span>
-          <h1 className="h-display">Care that goes<br /><em>where life does.</em></h1>
+          <h1 className="h-display"><span className="hero-line"><span>Care that goes</span></span><span className="hero-line"><em>where life does.</em></span></h1>
           <p className="lede">Three kinds of individually wrapped care, each made for a different moment: a freshen-up between showers, targeted care for breakout-prone body skin, or fragrance-free external intimate cleansing.</p>
           <div className="hero-ctas">
             <Link href="#products" className="btn btn-abyss btn-lg">Find your wipe <span className="ar">→</span></Link>

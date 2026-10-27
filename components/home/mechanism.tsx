@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 
 const jobs = [
   {
@@ -25,28 +26,28 @@ export function MechanismSection() {
   return (
     <section className="sec jobs-section" id="how-wipelo-works" aria-labelledby="jobs-title">
       <div className="wrap">
-        <div className="jobs-head rv">
+        <Stagger className="jobs-head" gap={0.09}>
           <div>
-            <span className="jobs-tag">// Made with a purpose</span>
-            <h2 id="jobs-title">One range.<br /><em>Three clear jobs.</em></h2>
+            <Reveal as="span" className="jobs-tag">// Made with a purpose</Reveal>
+            <Reveal as="h2" id="jobs-title">One range.<br /><em>Three clear jobs.</em></Reveal>
           </div>
-          <div className="jobs-intro">
+          <Reveal className="jobs-intro">
             <p>Wipelo makes individually wrapped wipes for specific personal-care moments. Each product has its own use, ingredients, and directions.</p>
             <Link href="#products">Find your Wipelo →</Link>
-          </div>
-        </div>
-        <ol className="jobs-list rv">
+          </Reveal>
+        </Stagger>
+        <Stagger as="ol" className="jobs-list" gap={0.12}>
           {jobs.map((job, index) => (
-            <li key={job.product}>
-              <span className="jobs-num" aria-hidden="true">{index + 1}</span>
-              <span className="jobs-product">{job.product}</span>
-              <h3>{job.title}</h3>
-              <p>{job.body}</p>
-              <p className="jobs-note"><b>Note —</b> {job.note}</p>
-            </li>
+            <Stagger as="li" key={job.product} gap={0.07}>
+              <Reveal as="span" className="jobs-num" aria-hidden="true">{index + 1}</Reveal>
+              <Reveal as="span" className="jobs-product">{job.product}</Reveal>
+              <Reveal as="h3">{job.title}</Reveal>
+              <Reveal as="p">{job.body}</Reveal>
+              <Reveal as="p" className="jobs-note"><b>Note —</b> {job.note}</Reveal>
+            </Stagger>
           ))}
-        </ol>
-        <p className="jobs-foot rv"><span>Format — Individually wrapped</span><span>Use — External skin only</span></p>
+        </Stagger>
+        <Reveal as="p" className="jobs-foot"><span>Format — Individually wrapped</span><span>Use — External skin only</span></Reveal>
       </div>
     </section>
   );

@@ -1,6 +1,8 @@
 "use client";
 
+import { m, type Variants } from "framer-motion";
 import { useRef, type KeyboardEvent } from "react";
+import { Reveal, Stagger } from "@/components/motion/reveal";
 import { nextTabIndex, useAutoRotate } from "./use-auto-rotate";
 
 // Long enough to scan the competitor column before it changes.
@@ -26,8 +28,15 @@ const rows: { label: string; wipelo: Mark; others: Mark[] }[] = [
 
 const wipeloPrice = "$0.60";
 
+// Wipelo's ticks pop in on a spring once the rows have landed.
+const markPop: Variants = {
+  hidden: { opacity: 0, scale: 0.6 },
+  show: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 400, damping: 22, delay: 0.12 } },
+};
+
 function MarkCell({ mark, us = false }: { mark: Mark; us?: boolean }) {
-  return <span className="honest-mark">
+  // Only Wipelo's column pops in on scroll; the competitor column re-mounts on every switch and fades in instead.
+  return <m.span className="honest-mark" variants={us ? markPop : undefined}>
     {mark.ok === true && <span className={`honest-yes${us ? " is-us" : ""}`} aria-label="Yes">
       <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2.5 6.2 5 8.6l4.6-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
     </span>}
@@ -36,7 +45,7 @@ function MarkCell({ mark, us = false }: { mark: Mark; us?: boolean }) {
     </span>}
     {mark.ok === null && <span className="honest-na" aria-label="Not applicable">—</span>}
     {mark.text && <span className="honest-text">{mark.text}</span>}
-  </span>;
+  </m.span>;
 }
 
 export function ComparisonSection() {
@@ -56,13 +65,13 @@ export function ComparisonSection() {
   return (
     <section className="sec honest-section" aria-labelledby="honest-title">
       <div className="wrap">
-        <div className="honest-head rv">
-          <span className="honest-tag">// The honest table</span>
-          <h2 id="honest-title">Any wipe removes sweat.<br /><em>That was never the question.</em></h2>
-        </div>
+        <Stagger className="honest-head" gap={0.09}>
+          <Reveal as="span" className="honest-tag">// The honest table</Reveal>
+          <Reveal as="h2" id="honest-title">Any wipe removes sweat.<br /><em>That was never the question.</em></Reveal>
+        </Stagger>
 
-        <div className="honest-body rv" {...rotation.rootProps}>
-          <div className="honest-switch">
+        <div className="honest-body" {...rotation.rootProps}>
+          <Reveal className="honest-switch">
             <span id="honest-switch-label">Compare Wipelo with</span>
             <div role="tablist" aria-labelledby="honest-switch-label">
               {competitors.map((item, index) => {
@@ -91,10 +100,10 @@ export function ComparisonSection() {
                 </button>;
               })}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="honest-card" role="tabpanel" id="honest-panel" aria-labelledby={`honest-tab-${active}`}>
-            <table className="honest-table">
+          <Reveal variant="fadeIn" className="honest-card" role="tabpanel" id="honest-panel" aria-labelledby={`honest-tab-${active}`}>
+            <Stagger as="table" className="honest-table" gap={0.05}>
               <thead>
                 <tr>
                   <th scope="col">What matters</th>
@@ -103,21 +112,21 @@ export function ComparisonSection() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row) => <tr key={row.label}>
+                {rows.map((row) => <Reveal as="tr" variant="fadeIn" key={row.label}>
                   <th scope="row">{row.label}</th>
                   <td className="is-us"><MarkCell mark={row.wipelo} us /></td>
                   <td className="is-them"><span key={active} className="honest-swap"><MarkCell mark={row.others[active]} /></span></td>
-                </tr>)}
+                </Reveal>)}
               </tbody>
               <tfoot>
-                <tr>
+                <Reveal as="tr" variant="fadeIn">
                   <th scope="row">Price per use</th>
                   <td className="is-us honest-price">{wipeloPrice}</td>
                   <td className="is-them honest-price"><span key={active} className="honest-swap">{competitor.price}</span></td>
-                </tr>
+                </Reveal>
               </tfoot>
-            </table>
-          </div>
+            </Stagger>
+          </Reveal>
 
           <p className="honest-note" aria-live={rotation.userPicked ? "polite" : "off"}>Row one is a tie on purpose. We don&rsquo;t win on price either — we win on engineering. If {competitor.price} does it for you, we genuinely respect that.</p>
         </div>

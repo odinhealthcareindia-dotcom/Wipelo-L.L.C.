@@ -22,7 +22,6 @@ import { ObjectSection } from "@/components/home/object";
 import { ReviewsSection } from "@/components/home/reviews";
 import { ReceiptsSection } from "@/components/home/receipts";
 import { GuaranteeSection } from "@/components/home/guarantee";
-import { NewsletterSection } from "@/components/home/newsletter";
 import { ReviewsSectionHome } from "@/components/home/reviewshome";
 
 export const revalidate = 60;
@@ -75,6 +74,5 @@ export default async function HomePage() {
     <BrandBeatSection />
     <FAQAccordion items={homeFaqItems} />
     <HomeShopStrip products={products} />
-    <NewsletterSection />
   </RevealEffects>;
 }

@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, m } from "framer-motion";
+import { Reveal, Stagger } from "@/components/motion/reveal";
+import { EASE } from "@/lib/motion";
 
 export type QuizProduct = { handle: string; title: string; price: string };
 
@@ -18,7 +21,7 @@ export function QuizSection({ products }: { products: QuizProduct[] }) {
 
   return <section className="sec" style={{ paddingTop: 0 }} id="choose-your-wipe">
     <div className="wrap">
-      <div className="quiz rv">
+      <Reveal className="quiz">
         <div className="quiz-head">
           <span className="mono-tag">// Choose by what you need</span>
           <h2 className="h-card" style={{ margin: "12px 0 8px" }}>Which moment is yours?</h2>
@@ -27,28 +30,45 @@ export function QuizSection({ products }: { products: QuizProduct[] }) {
         <div className="quiz-steps">
           <div className="q-step">
             <span className="q-label">Choose one</span>
-            <div className="q-opts" data-q="1">
-              {choices.map((item) => <button
+            <Stagger className="q-opts" gap={0.08} data-q="1">
+              {choices.map((item) => <Reveal
+                as="button"
                 className={`q-opt${selected === item.handle ? " sel" : ""}`}
                 type="button"
                 aria-pressed={selected === item.handle}
                 key={item.handle}
                 onClick={() => setSelected(item.handle)}
-              >{item.label}</button>)}
-            </div>
+                whileHover={{ y: -1 }}
+              >
+                {selected === item.handle && <m.span layoutId="quiz-highlight" className="q-opt-highlight" transition={{ duration: 0.45, ease: EASE }} aria-hidden="true" />}
+                <span className="q-opt-label">{item.label}</span>
+              </Reveal>)}
+            </Stagger>
           </div>
         </div>
-        <div className={`quiz-result${choice ? " show" : ""}`} id="quizResult" aria-live="polite">
-          <div className="qr-copy">
-            <span className="mono-tag">// A place to start</span>
-            <h3>{product?.title ?? "Choose a moment above"}</h3>
-            <p>{choice?.detail ?? "We’ll point you to the wipe made for that need."}</p>
-          </div>
-          {product && <Link className="btn btn-teal" href={`/products/${encodeURIComponent(product.handle)}`}>
-            Explore {product.title} · {product.price}
-          </Link>}
+        <div aria-live="polite">
+          <AnimatePresence mode="wait" initial={false}>
+            {choice && <m.div
+              key={choice.handle}
+              className="quiz-result show"
+              id="quizResult"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.35, ease: EASE }}
+            >
+              <div className="qr-copy">
+                <span className="mono-tag">// A place to start</span>
+                <h3>{product?.title ?? "Choose a moment above"}</h3>
+                <p>{choice.detail}</p>
+              </div>
+              {product && <Link className="btn btn-teal" href={`/products/${encodeURIComponent(product.handle)}`}>
+                Explore {product.title} · {product.price}
+              </Link>}
+            </m.div>}
+          </AnimatePresence>
         </div>
-      </div>
+      </Reveal>
     </div>
   </section>;
 }

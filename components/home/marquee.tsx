@@ -1,16 +1,13 @@
+import { Marquee } from "@/components/motion/marquee";
+
+const lines = ["Formulated, not fragranced", "Dosed to work, not to mask", "One active. One job. Done properly.", "Back skin is skin"];
+
 export function MarqueeSection() {
   return (
     <div className="band" aria-hidden="true">
-      <div className="band-track">
-        <span>Formulated, not fragranced</span><span className="sp">✦</span>
-        <span>Dosed to work, not to mask</span><span className="sp">✦</span>
-        <span>One active. One job. Done properly.</span><span className="sp">✦</span>
-        <span>Back skin is skin</span><span className="sp">✦</span>
-        <span>Formulated, not fragranced</span><span className="sp">✦</span>
-        <span>Dosed to work, not to mask</span><span className="sp">✦</span>
-        <span>One active. One job. Done properly.</span><span className="sp">✦</span>
-        <span>Back skin is skin</span><span className="sp">✦</span>
-      </div>
+      <Marquee seconds={36} className="band-marquee">
+        {lines.map((line) => <span className="band-item" key={line}><span>{line}</span><span className="sp">✦</span></span>)}
+      </Marquee>
     </div>
   );
 }

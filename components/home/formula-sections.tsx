@@ -1,3 +1,4 @@
+import { Reveal, Stagger } from "@/components/motion/reveal";
 import { FormulaTabs, type FormulaTab } from "./formula-tabs";
 
 type FormulaSectionsProps = {
@@ -49,14 +50,14 @@ export function FormulaSections({ onTheGoHref, spotlessHref, herHref }: FormulaS
 
   return <section className="sec dark formula-section" id="ingredients" aria-labelledby="science-range-title">
     <div className="wrap">
-      <div className="formula-head rv">
+      <Stagger className="formula-head" gap={0.09}>
         <div>
-          <span className="formula-tag">// Formulation, with a clear purpose</span>
-          <h2 id="science-range-title">Different needs.<br /><em>Different ingredient choices.</em></h2>
+          <Reveal as="span" className="formula-tag">// Formulation, with a clear purpose</Reveal>
+          <Reveal as="h2" id="science-range-title">Different needs.<br /><em>Different ingredient choices.</em></Reveal>
         </div>
-        <p>Ingredient choices follow the intended use of each formula. Pick a wipe to see what&rsquo;s inside and why.</p>
-      </div>
-      <div className="rv"><FormulaTabs tabs={tabs} /></div>
+        <Reveal as="p">Ingredient choices follow the intended use of each formula. Pick a wipe to see what&rsquo;s inside and why.</Reveal>
+      </Stagger>
+      <Reveal><FormulaTabs tabs={tabs} /></Reveal>
     </div>
   </section>;
 }

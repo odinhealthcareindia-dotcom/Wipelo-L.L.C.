@@ -1,8 +1,10 @@
+import { Reveal } from "@/components/motion/reveal";
+
 export function GuaranteeSection() {
   return (
     <section className="sec" style={{ paddingTop: "0" }}>
       <div className="wrap">
-        <div className="guar rv">
+        <Reveal variant="scaleIn" className="guar">
           <div>
             <span className="mono-tag" style={{ color: "rgba(255,255,255,.8)" }}>// Risk, reversed</span>
             <h2>The Skin-Is-Skin Guarantee.</h2>
@@ -20,7 +22,7 @@ export function GuaranteeSection() {
               <span className="w">W</span>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
