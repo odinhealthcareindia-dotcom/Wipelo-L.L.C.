@@ -2186,3 +2186,13 @@ body::after{
 
 /* Side-slides travel up to 40px; clip (unlike hidden) keeps position: sticky working. */
 main{overflow-x:clip}
+
+/* Rotating seal in the dot of the footer wordmark's "i". Sizes are in em of the wordmark, measured from the
+   Fraunces 600 "i": the dot spans 0.05–0.193em across and sits 0.511–0.655em above the baseline. */
+.wipe-footer-i{position:relative}
+.wipe-footer-seal{position:absolute;left:.05em;width:.143em;height:.143em;top:calc(1em - var(--seal-baseline) - .655em);display:flex;align-items:center;justify-content:center;color:var(--abyss);letter-spacing:0;pointer-events:none;--seal-baseline:.022em}
+.wipe-footer-seal svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;animation:spin 18s linear infinite}
+.wipe-footer-seal text{fill:currentColor;font:400 10.5px/1 var(--mo);letter-spacing:.06em;text-transform:uppercase}
+.wipe-footer-seal-w{font:600 .062em/1 var(--fr);letter-spacing:0}
+@media(max-width:900px){.wipe-footer-seal svg{display:none}.wipe-footer-seal-w{font-size:.075em}}
+@media(prefers-reduced-motion:reduce){.wipe-footer-seal svg{animation:none}}

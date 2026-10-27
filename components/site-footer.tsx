@@ -38,6 +38,17 @@ function SocialIcon({ name }: { name: "instagram" | "facebook" }) {
   );
 }
 
+// A tiny rotating seal sitting in the dot of the wordmark's "i".
+function FooterSeal() {
+  return <span className="wipe-footer-seal" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <defs><path id="footer-seal-ring" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0" /></defs>
+      <text><textPath href="#footer-seal-ring" textLength="230" lengthAdjust="spacing">Wipelo · Est. 2025 · Wipelo · Est. 2025 ·</textPath></text>
+    </svg>
+    <span className="wipe-footer-seal-w">W</span>
+  </span>;
+}
+
 export function SiteFooter() {
   return (
     <footer className="wipe-footer" aria-label="Wipelo footer">
@@ -84,7 +95,7 @@ export function SiteFooter() {
           </Reveal>
         </div>
 
-        <Link href="/" className="wipe-footer-wordmark" aria-label="Wipelo home">Wipelo</Link>
+        <Link href="/" className="wipe-footer-wordmark" aria-label="Wipelo home">W<span className="wipe-footer-i">i<FooterSeal /></span>pelo</Link>
 
         <div className="wipe-footer-bottom">
           <small>© {new Date().getFullYear()} Wipelo</small>
