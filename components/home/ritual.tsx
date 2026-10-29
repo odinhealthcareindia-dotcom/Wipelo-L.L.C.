@@ -46,10 +46,10 @@ export function RitualSection() {
             </Stagger>
           ))}
         </Stagger>
-        <Reveal as="p" className="ritual-bar">
+        {/* <Reveal as="p" className="ritual-bar">
           <span className="ritual-bar-icon" aria-hidden="true">!</span>
           <span><b>Do not flush used wipes.</b> Always follow the guidance printed on the pack.</span>
-        </Reveal>
+        </Reveal> */}
       </div>
     </section>
   );

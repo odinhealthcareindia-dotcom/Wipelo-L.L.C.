@@ -2289,8 +2289,8 @@ main{overflow-x:clip}
 /* Glassmorphism for the honest comparison table: soft glows behind, frosted panes on top. */
 .honest-section{position:relative;isolation:isolate;overflow:hidden}
 .honest-section::before,.honest-section::after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none;filter:blur(80px)}
-.honest-section::before{width:min(58vw,760px);aspect-ratio:1;top:22%;left:-12%;background:radial-gradient(closest-side,rgba(19,184,159,.38),rgba(19,184,159,0))}
-.honest-section::after{width:min(54vw,700px);aspect-ratio:1;bottom:-10%;right:-8%;background:radial-gradient(closest-side,rgba(232,208,170,.55),rgba(232,208,170,0))}
+.honest-section::before{width:min(58vw,760px);aspect-ratio:1;top:22%;left:-12%;background:var(--mist)}
+.honest-section::after{width:min(54vw,700px);aspect-ratio:1;bottom:-10%;right:-8%}
 .honest-body{position:relative}
 .honest-body::before{content:"";position:absolute;z-index:-1;width:min(30vw,380px);aspect-ratio:1;top:28%;left:46%;border-radius:50%;background:radial-gradient(closest-side,rgba(14,124,110,.3),transparent);filter:blur(60px);pointer-events:none}
 
@@ -2354,7 +2354,7 @@ main{overflow-x:clip}
 .honest-table tbody th,.honest-table tbody td{transition:background-color .25s ease}
 @media(hover:hover){
   .honest-table tbody tr:hover th{background:rgba(255,255,255,.4)}
-  .honest-table tbody tr:hover td.is-us{background:linear-gradient(90deg,rgba(19,184,159,.3),rgba(255,255,255,.3) 50%,rgba(19,184,159,.3))}
+  /* .honest-table tbody tr:hover td.is-us{background:linear-gradient(90deg,rgba(19,184,159,.3),rgba(255,255,255,.3) 50%,rgba(19,184,159,.3))} */
   .honest-table tbody tr:hover td.is-them{background:rgba(255,255,255,.55)}
 }
 .honest-yes.is-us{background:linear-gradient(160deg,#16A58F,#0C7A6A);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 10px -4px rgba(15,140,122,.6)}
