@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import type { ProductCategory } from "@/lib/product-profiles";
 import { AnimatePresence, m } from "framer-motion";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { EASE } from "@/lib/motion";
 
-export type QuizProduct = { handle: string; title: string; price: string };
+export type QuizProduct = { handle: string; category: ProductCategory; title: string; price: string };
 
 const choices = [
   { handle: "on-the-go", label: "I want a refresh between showers", detail: "For surface sweat, odor-causing residue, and everyday buildup on the body." },
@@ -17,7 +18,8 @@ const choices = [
 export function QuizSection({ products }: { products: QuizProduct[] }) {
   const [selected, setSelected] = useState<string | null>(null);
   const choice = choices.find((item) => item.handle === selected);
-  const product = products.find((item) => item.handle === selected);
+  // Answers map to a product category, so a renamed handle in Shopify still finds the right product.
+  const product = products.find((item) => item.category === selected);
 
   return <section className="sec" style={{ paddingTop: 0 }} id="choose-your-wipe">
     <div className="wrap">

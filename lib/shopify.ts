@@ -43,6 +43,8 @@ export type ShopifyProduct = {
   id: string;
   handle: string;
   title: string;
+  productType: string;
+  tags: string[];
   description: string;
   descriptionHtml: string;
   availableForSale: boolean;
@@ -106,7 +108,7 @@ const VARIANT_PLAN_FIELDS = SHOPIFY_API_ENABLED ? `
     }
   }` : "";
 const PRODUCT_FIELDS = `
-  id handle title description descriptionHtml availableForSale
+  id handle title productType tags description descriptionHtml availableForSale
   featuredImage { ${IMAGE_FIELDS} }
   images(first: 20) { nodes { ${IMAGE_FIELDS} } }
   priceRange { minVariantPrice { amount currencyCode } maxVariantPrice { amount currencyCode } }
