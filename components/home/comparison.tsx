@@ -118,17 +118,17 @@ export function ComparisonSection() {
                   <td className="is-them"><span key={active} className="honest-swap"><MarkCell mark={row.others[active]} /></span></td>
                 </Reveal>)}
               </tbody>
-              <tfoot>
+              {/* <tfoot>
                 <Reveal as="tr" variant="fadeIn">
                   <th scope="row">Price per use</th>
                   <td className="is-us honest-price">{wipeloPrice}</td>
                   <td className="is-them honest-price"><span key={active} className="honest-swap">{competitor.price}</span></td>
                 </Reveal>
-              </tfoot>
+              </tfoot> */}
             </Stagger>
           </Reveal>
 
-          <p className="honest-note" aria-live={rotation.userPicked ? "polite" : "off"}>Row one is a tie on purpose. We don&rsquo;t win on price either — we win on engineering. If {competitor.price} does it for you, we genuinely respect that.</p>
+          {/* <p className="honest-note" aria-live={rotation.userPicked ? "polite" : "off"}>Row one is a tie on purpose. We don&rsquo;t win on price either — we win on engineering. If {competitor.price} does it for you, we genuinely respect that.</p> */}
         </div>
       </div>
     </section>

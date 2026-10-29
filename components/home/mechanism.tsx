@@ -43,7 +43,7 @@ export function MechanismSection() {
               <Reveal as="span" className="jobs-product">{job.product}</Reveal>
               <Reveal as="h3">{job.title}</Reveal>
               <Reveal as="p">{job.body}</Reveal>
-              <Reveal as="p" className="jobs-note"><b>Note —</b> {job.note}</Reveal>
+              {/* <Reveal as="p" className="jobs-note"><b>Note —</b> {job.note}</Reveal> */}
             </Stagger>
           ))}
         </Stagger>

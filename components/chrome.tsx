@@ -32,7 +32,7 @@ export function SiteHeader() {
     {!pathname.startsWith("/products/") && <AnnouncementBar />}
     <header className={`nav site-nav${scrolled ? " scrolled" : ""}`}>
       <div className="wrap nav-in">
-        <Link href="/" className="nav-brand">Wipelo<span className="tm">Personal care wipes</span></Link>
+        <Link href="/" className="nav-brand">Wipelo<span className="tm">Functional wet wipe</span></Link>
         <nav className={`nav-links${menuOpen ? " open" : ""}`} aria-label="Main">
           {navItems.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenuOpen(false)} aria-current={pathname === href ? "page" : undefined}>{label}</Link>)}
         </nav>

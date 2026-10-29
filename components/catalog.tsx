@@ -31,7 +31,7 @@ function ProductCard({ product, compact = false }: { product: ShopifyProduct; co
   const image = product.featuredImage ?? product.images[0] ?? null;
   return <article className={`sku-card product-card${compact ? " product-card-compact" : ""}`}>
     <Link className="sku-stage st-cream product-stage" href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
-      {image ? <img className="product-card-image" src={image.url} alt={image.altText || product.title} /> : <div className="product-pack-art"><span className="p-cat">Personal care wipes</span><span className="p-name">Wipelo</span><span className="p-sku">{product.title}</span></div>}
+      {image ? <img className="product-card-image" src={image.url} alt={image.altText || product.title} /> : <div className="product-pack-art"><span className="p-cat">Functional wet wipe</span><span className="p-name">Wipelo</span><span className="p-sku">{product.title}</span></div>}
       {!product.availableForSale && <span className="sku-flag">Sold out</span>}
     </Link>
     <div className="sku-body">
