@@ -20,7 +20,7 @@ function UseItem({ index }: { index: number }) {
 export function ObjectSection() {
   return (
     <section className="hero portable-section" aria-labelledby="portable-title">
-      <picture className="portable-backdrop" aria-hidden="true">
+      {/* <picture className="portable-backdrop" aria-hidden="true">
         <source
           media="(max-width: 920px)"
           srcSet="/images/portable/wipe-mobile-small.webp 480w, /images/portable/wipe-mobile.webp 941w"
@@ -37,7 +37,7 @@ export function ObjectSection() {
           fetchPriority="high"
           decoding="async"
         />
-      </picture>
+      </picture> */}
       <div className="wrap">
         <div className="portable-head">
           <span className="portable-tag">// Thoughtful care, made portable</span>

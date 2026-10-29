@@ -6,7 +6,7 @@ import { MotionProvider } from "@/components/motion/motion-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Wipelo | Functional Wet Wipe for Body & Intimate Care", template: "%s | Wipelo" },
+  title: { default: "Wipelo | Functional Wet Wipes for Body & Intimate Care", template: "%s | Wipelo" },
   description: "Explore ON THE GO body wipes, SPOTLESS body breakout care, and HER fragrance-free wipes for external intimate use. Individually wrapped for life on the move.",
 };
 
