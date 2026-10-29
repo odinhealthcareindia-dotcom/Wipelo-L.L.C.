@@ -38,12 +38,8 @@ export default async function HomePage() {
   const herProduct = products.find((product) => /\bher\b/i.test(`${product.title} ${product.handle}`));
 
   return <RevealEffects>
-    <HeroSection />
+    <HeroSection /> 
     <FeaturedInStrip />
-    <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} price={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined} />
-    <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
-    <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
-    <ProblemSection />
     <HomeShopSection products={products} />
     <WellnessSections
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
@@ -55,24 +51,28 @@ export default async function HomePage() {
       onTheGoImage={(onTheGoProduct?.featuredImage ?? onTheGoProduct?.images[0])?.url}
       herImage={(herProduct?.featuredImage ?? herProduct?.images[0])?.url}
     />
+    <ReceiptsSection />
+    <ReviewsSectionHome />
+    <RitualSection />
+    <ComparisonSection />
+    <MechanismSection />
+    <FAQAccordion items={homeFaqItems} />
+    {/* <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} price={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined} />
+    <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
+    <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />
+    <ProblemSection />
     <FormulaSections
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
       spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
       herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
     />
-    <RitualSection />
     <QuizSection products={quizProducts} />
     <MarqueeSection />
-    <MechanismSection />
     <BrandBeatSection />
-    <ComparisonSection />
     <ObjectSection />
-    {/* <ReviewsSection /> */}
-    <ReviewsSectionHome />
-    <ReceiptsSection />
+    <ReviewsSection />
     <GuaranteeSection />
     <BrandBeatSection />
-    <FAQAccordion items={homeFaqItems} />
-    <HomeShopStrip products={products} />
+    <HomeShopStrip products={products} /> */}
   </RevealEffects>;
 }

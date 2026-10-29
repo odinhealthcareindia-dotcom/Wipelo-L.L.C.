@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Parallax } from "@/components/motion/parallax";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { cardHover } from "@/lib/motion";
+import { NeedsScience } from "./needs-science";
 
 type WellnessSectionProps = {
   onTheGoHref: string;
@@ -43,7 +44,7 @@ function BodyAreaIcon({ area }: { area: (typeof bodyAreas)[number]["name"] }) {
 
 export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPrice, spotlessPrice, spotlessImage, onTheGoImage, herImage }: WellnessSectionProps) {
   return <>
-    <section className="sec wellness-section refresh-section" aria-labelledby="wellness-cleansing-title">
+    {/* <section className="sec wellness-section refresh-section" aria-labelledby="wellness-cleansing-title">
       <div className="wrap">
         <div className="refresh-card">
           <Reveal variant="scaleIn" className="refresh-media">
@@ -70,9 +71,9 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
           </Stagger>
         </div>
       </div>
-    </section>
+    </section> */}
 
-    <section className="sec dark wellness-section body-care-section" aria-labelledby="wellness-body-title">
+    {/* <section className="sec dark wellness-section body-care-section" aria-labelledby="wellness-body-title">
       <div className="wrap body-care-grid">
         <Reveal variant="slideFromLeft" className="body-care-media">
           <Parallax fill offset={30}>
@@ -100,9 +101,9 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
           <Reveal variant="slideFromRight"><Link className="body-care-btn" href={spotlessHref}>Explore SPOTLESS <span aria-hidden="true">→</span></Link></Reveal>
         </Stagger>
       </div>
-    </section>
+    </section> */}
 
-    <section className="sec wellness-section her-care-section" aria-labelledby="wellness-her-title">
+    {/* <section className="sec wellness-section her-care-section" aria-labelledby="wellness-her-title">
       <div className="wrap">
         <Stagger className="her-care-head" gap={0.09}>
           <Reveal as="span" className="her-care-tag">// Feminine intimate hygiene</Reveal>
@@ -128,37 +129,53 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
           <Link className="her-care-btn" href={herHref}>Explore HER <span aria-hidden="true">→</span></Link>
         </Reveal>
       </div>
-    </section>
+    </section> */}
 
     <section className="sec dark wellness-section needs-section" aria-labelledby="wellness-purpose-title">
-      <div className="wrap needs-grid">
-        <Stagger className="needs-copy" gap={0.09}>
-          <Reveal as="span" className="needs-tag">// Functional personal care &amp; body wellness</Reveal>
-          <Reveal as="h2" id="wellness-purpose-title">Three needs.<br /><em>Each with its own purpose.</em></Reveal>
-          <Reveal as="p">Wipelo brings together functional cleansing wipes, body skincare, and feminine intimate hygiene. Each product is made for a specific area and moment, so you can choose care that fits your routine instead of asking one wipe to do everything.</Reveal>
-          <Reveal variant="scaleIn" className="needs-media">
-            <Image src="/wipelo-purposeful-care.png" width={1536} height={1024} sizes="(max-width: 920px) 92vw, 560px" alt="Three individually wrapped wipes arranged beside a folded cloth on a pale stone surface." />
-          </Reveal>
-        </Stagger>
-        <div className="needs-list-wrap">
-          <Stagger as="ul" className="needs-list" gap={0.15} aria-label="Wipelo's three care categories">
-            {[
-              { title: "Body freshness", detail: "ON THE GO · between showers", href: onTheGoHref, image: onTheGoImage },
-              { title: "Body breakouts", detail: "SPOTLESS · back, chest, shoulders", href: spotlessHref, image: spotlessImage },
-              { title: "External intimate care", detail: "HER · fragrance-free", href: herHref, image: herImage },
-            ].map((need, index) => (
-              <Reveal as="li" key={need.title}>
-                <Link className="needs-row" href={need.href}>
-                  <span className="needs-n">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="needs-text"><b>{need.title}</b><small>{need.detail}</small></span>
-                  {need.image && <span className="needs-pack" aria-hidden="true"><img src={need.image} alt="" /></span>}
-                  <span className="needs-arrow" aria-hidden="true">→</span>
-                </Link>
-              </Reveal>
-            ))}
-          </Stagger>
-          <Reveal><Link className="needs-btn" href="/shop#products">Find your Wipelo <span aria-hidden="true">→</span></Link></Reveal>
-        </div>
+      <div className="wrap">
+        <Reveal>
+          <NeedsScience heading={<Stagger className="needs-head" gap={0.09}>
+            <Reveal as="span" className="needs-tag">// Functional personal care &amp; body wellness</Reveal>
+            <Reveal as="h2" id="wellness-purpose-title">Three needs.<br /><em>Each with its own science.</em></Reveal>
+          </Stagger>} tabs={[
+            {
+              label: "Body freshness", product: "ON THE GO", tone: "mint", image: onTheGoImage, href: onTheGoHref,
+              headline: "Don’t just cover up body odor. Cleanse away the sweat and residue behind it.",
+              actives: [
+                { icon: "drop", dose: "0.4–0.8%", name: "Zinc ricinoleate", body: "Traps and neutralises odor molecules — not dependent on fragrance." },
+                { icon: "leaf", dose: "0.4–1.2%", name: "Sulfate-free cleansers", body: "Sodium cocoyl glutamate + coco-glucoside lift sweat without stripping." },
+                { icon: "heart", dose: "2–4%", name: "Glycerin + propanediol", body: "Non-sticky slip; prevents a tight afterfeel." },
+                { icon: "shield", dose: "0.5–2%", name: "Panthenol, allantoin, aloe", body: "Calms friction-stressed skin after the gym or a long commute." },
+              ],
+              specs: [{ label: "Lotion pH", value: "4.5–5.0" }, { label: "Size", value: "~20 × 20 cm" }, { label: "Cloth", value: "50–60 gsm" }, { label: "Fibre", value: "Lyocell / viscose" }],
+              note: "For external use. Not an antiperspirant or a substitute for washing.",
+            },
+            {
+              label: "Body breakouts", product: "SPOTLESS", tone: "stone", image: spotlessImage, href: spotlessHref,
+              headline: "Body acne doesn’t stop at your face. Neither should your skincare.",
+              actives: [
+                { icon: "dots", dose: "0.5%", name: "Salicylic acid (BHA)", body: "Helps exfoliate dead skin cells and address clogged pores." },
+                { icon: "shield", dose: "2%", name: "Niacinamide", body: "Barrier support; evens the look of marks." },
+                { icon: "spark", dose: "0.5%", name: "Zinc PCA", body: "Helps with an oily-looking back and chest." },
+                { icon: "drop", dose: "3% + 1%", name: "Glycerin + panthenol", body: "Offsets the dryness exfoliation can bring." },
+              ],
+              specs: [{ label: "Lotion pH", value: "~3.9" }, { label: "Format", value: "Leave-on" }, { label: "Cloth", value: "60 gsm" }, { label: "Lotion load", value: "~400%" }],
+              note: "Proposed 0.5% salicylic acid. Use on intact skin; start gradually if sensitive. Results not guaranteed.",
+            },
+            {
+              label: "External intimate care", product: "HER", tone: "sand", image: herImage, href: herHref,
+              headline: "A gentle, convenient external refresh — without added fragrance.",
+              actives: [
+                { icon: "flask", dose: "0.3–0.5%", name: "Lactic acid + 0.5% sodium lactate", body: "Supports an acidic, pH-considerate lotion design." },
+                { icon: "heart", dose: "1.5% + 2%", name: "Panthenol + aloe", body: "A soothing, comfortable afterfeel for sensitive skin." },
+                { icon: "leaf", dose: "0.5% + 0.5%", name: "Prebiotic + postbiotic", body: "Alpha-glucan oligosaccharide and lactobacillus ferment lysate." },
+                { icon: "drop", dose: "≤3%", name: "Glycerin, capped", body: "Hydrating, deliberately kept low for intimate skin." },
+              ],
+              specs: [{ label: "Lotion pH", value: "3.8–4.5" }, { label: "Size", value: "~15 × 20 cm" }, { label: "Cloth", value: "50 gsm cotton" }, { label: "Fragrance", value: "0%" }],
+              note: "External use only — never insert. Not a treatment or a way to regulate vaginal pH.",
+            },
+          ]} />
+        </Reveal>
       </div>
     </section>
   </>;
