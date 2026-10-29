@@ -42,6 +42,10 @@ export function useAutoRotate(count: number) {
     advance() {
       setActive((current) => (current + 1) % count);
     },
+    // Jump to an option without counting as a visitor's pick, so rotation carries on from there.
+    resumeFrom(index: number) {
+      setActive(index);
+    },
     rootProps: {
       ref: rootRef,
       onPointerEnter: () => setPaused(true),

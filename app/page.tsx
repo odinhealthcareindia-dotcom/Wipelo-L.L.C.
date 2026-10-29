@@ -38,7 +38,8 @@ export default async function HomePage() {
   const herProduct = products.find((product) => /\bher\b/i.test(`${product.title} ${product.handle}`));
 
   return <RevealEffects>
-    <HeroSection /> 
+    {/* <HeroSection />  */}
+    <ObjectSection />
     <FeaturedInStrip />
     <HomeShopSection products={products} />
     <WellnessSections
@@ -69,7 +70,6 @@ export default async function HomePage() {
     <QuizSection products={quizProducts} />
     <MarqueeSection />
     <BrandBeatSection />
-    <ObjectSection />
     <ReviewsSection />
     <GuaranteeSection />
     <BrandBeatSection />
