@@ -16,8 +16,10 @@ export type ProductGallerySlide = {
   image: string; alt: string; eyebrow: string; headline: string; caption: string;
   fit?: "contain" | "cover";
 };
+// `does` / `doesnt` split the body into the two columns of the ingredients table; `dose` is the planned amount.
 export type IngredientDetail = CopyCard & {
   status: string; image?: string; imageAlt?: string; evidenceLabel?: string; evidenceUrl?: string;
+  dose?: string; does?: string; doesnt?: string;
 };
 // `label` names what the figure measures ("Had back involvement"); `title` is the figure itself.
 export type QualityProof = CopyCard & { label?: string; sourceLabel?: string; sourceUrl?: string; image?: string; imageAlt?: string };
@@ -69,6 +71,10 @@ export type ProductProfile = {
   keyIngredients: IngredientDetail[];
   ingredients?: IngredientDetail[];
   formulaNote: string;
+  // Spec tiles under the ingredients image, and the free-from chips + closing note under the table.
+  ingredientSpecs: { label: string; value: string }[];
+  freeFrom: string[];
+  ingredientUseNote: string;
   qualityHeading: string;
   qualityProofs: QualityProof[];
   usageHeading: string;
@@ -76,7 +82,13 @@ export type ProductProfile = {
   usageRows: UsageRow[];
   expectationHeading: string;
   expectationIntro: string;
-  expectations: { window: string; title: string; body: string; img: string }[];
+  // `window` is the pill on each card's photo ("Week 1 · The habit"). A stat marked `placeholder` is a figure
+  // waiting on real data: it renders in development only, together with `expectationFootnote`.
+  expectations: { window: string; title: string; body: string; img: string; imgAlt?: string; stats: { value: string; label: string; placeholder?: boolean }[] }[];
+  // The word in `expectationHeading` set in italic accent ("What *actually* happens.").
+  expectationEmphasis?: string;
+  expectationWontDo: string[];
+  expectationFootnote?: string;
   expectationHighlight?: { title: string; checks: string[] };
   expectationDisclaimer?: string;
   faqs: AccordionItem[];
@@ -157,12 +169,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       ingredientHeading: "What’s in it.",
       ingredientIntro: "Current development formula; check the finished product label before use. The final INCI order must follow the manufactured batch.",
       keyIngredients: [
-        { title: "Zinc ricinoleate", body: "A zinc salt included to bind some odor molecules in a formulation. It is not an antiperspirant or disinfectant, and it is not proof of finished-wipe efficacy.", status: "Proposed formula" },
-        { title: "Lactic acid + sodium lactate", body: "The intended acidic pH adjustment and buffer. They do not sterilize skin or erase the normal microbiome.", status: "Proposed formula" },
-        { title: "Panthenol + glycerin", body: "Conditioning ingredients for a less tight afterfeel. They do not prevent sweat.", status: "Proposed formula" },
-        { title: "Cloth", body: "Proposed plant-derived lyocell/viscose spunlace, about 20 × 20 cm and 50–60 gsm, with a smooth and textured side. Verify fiber and biodegradation claims before publication.", status: "Proposed material" },
+        { title: "Zinc ricinoleate", status: "Proposed formula", dose: "0.4–0.8%", does: "A zinc salt included to bind some odor molecules in the formulation.", doesnt: "Not an antiperspirant or disinfectant, and not proof of finished-wipe efficacy.", body: "A zinc salt included to bind some odor molecules in a formulation. It is not an antiperspirant or disinfectant, and it is not proof of finished-wipe efficacy." },
+        { title: "Lactic acid + sodium lactate", status: "Proposed formula", dose: "q.s. pH 4.5–5.0", does: "Set the intended acidic pH and buffer it.", doesnt: "They don’t sterilize skin or erase the normal microbiome.", body: "The intended acidic pH adjustment and buffer. They do not sterilize skin or erase the normal microbiome." },
+        { title: "Panthenol + glycerin", status: "Proposed formula", dose: "0.5–2% · 2–4%", does: "Conditioning ingredients for a less tight afterfeel.", doesnt: "They don’t prevent sweat.", body: "Conditioning ingredients for a less tight afterfeel. They do not prevent sweat." },
+        { title: "Cloth", status: "Proposed material", dose: "50–60 gsm", does: "Plant-derived lyocell/viscose spunlace with one smooth and one textured side.", doesnt: "Fibre and biodegradation claims need verification before publication.", body: "Proposed plant-derived lyocell/viscose spunlace, about 20 × 20 cm and 50–60 gsm, with a smooth and textured side. Verify fiber and biodegradation claims before publication." },
       ],
       formulaNote: "No ethanol/denatured alcohol, parabens, or MIT/CMIT in the proposed formula. This version is fragranced.",
+      ingredientSpecs: [{ label: "Lotion pH", value: "4.5–5.0" }, { label: "Cloth", value: "~20 × 20 cm" }, { label: "Weight", value: "50–60 gsm" }, { label: "Lotion load", value: "280–340%" }],
+      freeFrom: ["0% ethanol", "No parabens", "No MIT/CMIT"],
+      ingredientUseNote: "This version contains fragrance.",
       qualityHeading: "Three numbers to know.",
       qualityProofs: [
         { title: "24 volunteers", label: "Axillary microbiota study", body: "One study linked bacterial communities with odor differences through the day.", sourceLabel: "Axillary microbiota and odor study · PMID 25653852", sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/25653852/" },
@@ -177,13 +192,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { label: "03", context: "Finish", direction: "Let skin dry, dress, and bin the wipe. Do not flush. Wash normally when facilities are available." },
       ],
       expectationHeading: "What actually happens.",
-      expectationIntro: "No promised transformation.",
+      expectationIntro: "No “transformation.” A wipe is not a serum — it’s a well-engineered tool. Here’s the honest arc.",
+      expectationEmphasis: "actually",
       expectations: [
-        { window: "First use", title: "A clean, light finish", body: "Skin may feel clean and lightly scented. Sweat production does not stop.", img: "/wipelo-between-shower-refresh.png" },
-        { window: "Week 1", title: "Useful at predictable gaps", body: "A sealed wipe can be useful at predictable gaps: commute, exercise, and travel. Use only on intact body skin.", img: "/on-the-go-home.png" },
-        { window: "Week 4", title: "A clean-up option", body: "The practical gain is a clean-up option where a shower is unavailable. No 24-hour odor control, antibacterial action, or shower-equivalent result is promised.", img: "/wipelo-lab-on-the-go.png" },
+        { window: "Wipe 1 · First use", title: "Clean, not perfumed.", body: "A textured cloth and mild, sulfate-free cleansers lift surface sweat and residue, while 0.4–0.8% zinc ricinoleate helps bind some odor molecules. A light scent, never a fragrance cloud.", img: "/wipelo-lab-on-the-go.png", imgAlt: "The ON THE GO sachet beside a folded wipe and glass labware.", stats: [{ value: "4.5–5.0", label: "lotion pH" }, { value: "0%", label: "alcohol" }] },
+        { window: "Week 1 · The habit", title: "It finds its places.", body: "One box migrates to the gym bag, a few singles to the jacket and the nightstand. Each wipe is individually sealed, so it’s still saturated whenever you open it.", img: "/wipelo-between-shower-refresh.png", imgAlt: "A woman packs an individually wrapped wipe into her gym bag after a workout.", stats: [{ value: "~20 cm", label: "cloth" }, { value: "1 wipe", label: "= 1 reset" }] },
+        { window: "Week 4 · The standard", title: "The baby wipe feels absurd.", body: "Going back feels like washing your face with a bar of soap. Body skin gets a formula made for it — dosed, pH-considered and honest about its limits.", img: "/wipelo-body-skincare-routine.png", imgAlt: "A woman wipes her upper arm with a cleansing wipe.", stats: [{ value: "[XX]%", label: "of testers*", placeholder: true }, { value: "24 mo", label: "shelf life" }] },
       ],
-      expectationDisclaimer: "The proposed wipe can physically clean skin but cannot reduce sweat production. Its finished-product odor effect still needs direct testing.",
+      expectationWontDo: ["Not an antiperspirant", "Not a shower replacement", "Lightly fragranced (0.1–0.4%)"],
+      expectationFootnote: "*Placeholder: add a tester figure only once a consumer study is complete, with sample size and method.",
       faqs: [
         { question: "Is it safe for sensitive or intimate skin?", answer: "This proposed scented version is for intact external body skin such as underarms and feet. Do not use on genital mucosa or the groin. Patch test if fragrance or cooling ingredients bother you. Children should use it only with adult supervision after age-appropriate safety review." },
         { question: "Does it replace washing or deodorant?", answer: "No. A wipe is a bridge until soap and water are available. It does not stop sweat like an antiperspirant; use your usual deodorant if you need longer odor management." },
@@ -250,12 +267,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       ingredientHeading: "What’s in it.",
       ingredientIntro: "Current development formula; check the finished product label before use. Finished-wipe delivery, stability, and final INCI order must be verified.",
       keyIngredients: [
-        { title: "Salicylic acid", body: "A beta hydroxy acid in the proposed lotion at 0.5%. It exfoliates and can help unclog pores. It does not establish finished-product acne-treatment status or clear cysts overnight.", status: "Proposed formula" },
-        { title: "Niacinamide + zinc PCA", body: "Ingredients selected for skin conditioning and oil-look support. They do not replace acne medicines or prove reduced sebum for this wipe.", status: "Proposed formula" },
-        { title: "Glycerin + panthenol", body: "Humectant and conditioning support for the feel of an acid routine. They do not make irritation impossible.", status: "Proposed formula" },
-        { title: "Cloth", body: "Proposed viscose or viscose/lyocell cloth, around 60 gsm and saturated to about 400% of dry weight. Verify salicylic-acid stability and delivered dose after contact with the chosen fiber.", status: "Proposed material" },
+        { title: "Salicylic acid", status: "Proposed formula", dose: "0.5%", does: "A beta hydroxy acid that exfoliates and can help unclog pores.", doesnt: "Doesn’t establish acne-treatment status or clear cysts overnight.", body: "A beta hydroxy acid in the proposed lotion at 0.5%. It exfoliates and can help unclog pores. It does not establish finished-product acne-treatment status or clear cysts overnight." },
+        { title: "Niacinamide + zinc PCA", status: "Proposed formula", dose: "2% · 0.5%", does: "Selected for skin conditioning and oil-look support.", doesnt: "They don’t replace acne medicines or prove reduced sebum for this wipe.", body: "Ingredients selected for skin conditioning and oil-look support. They do not replace acne medicines or prove reduced sebum for this wipe." },
+        { title: "Glycerin + panthenol", status: "Proposed formula", dose: "3% · 1%", does: "Humectant and conditioning support for the feel of an acid routine.", doesnt: "They don’t make irritation impossible.", body: "Humectant and conditioning support for the feel of an acid routine. They do not make irritation impossible." },
+        { title: "Cloth", status: "Proposed material", dose: "60 gsm", does: "Viscose or viscose/lyocell (not PET), saturated to ~400% of dry weight.", doesnt: "Salicylic-acid stability and delivered dose on the chosen fibre must be verified.", body: "Proposed viscose or viscose/lyocell cloth, around 60 gsm and saturated to about 400% of dry weight. Verify salicylic-acid stability and delivered dose after contact with the chosen fiber." },
       ],
       formulaNote: "No added fragrance, ethanol/denatured alcohol, or parabens in the proposed formula.",
+      ingredientSpecs: [{ label: "Lotion pH", value: "~3.9" }, { label: "Format", value: "Leave-on" }, { label: "Weight", value: "60 gsm" }, { label: "Lotion load", value: "~400%" }],
+      freeFrom: ["0% fragrance", "0% ethanol", "No parabens"],
+      ingredientUseNote: "Use on intact skin only.",
       qualityHeading: "Three numbers to know.",
       qualityProofs: [
         { title: "965 patients", label: "Dermatology referral cohort", body: "The cohort examined face, chest, and back acne rather than treating the face as the only site.", sourceLabel: "Facial and truncal acne referral cohort · PMID 18561586", sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/18561586/" },
@@ -270,13 +290,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { label: "03", context: "Leave on", direction: "Let the lotion air-dry; do not rinse. Bin the wipe. Start every other day if sensitive and use sunscreen on exposed skin." },
       ],
       expectationHeading: "What actually happens.",
-      expectationIntro: "No promised transformation.",
+      expectationIntro: "No “transformation.” A wipe is not a prescription — it’s a body-care step you can actually keep. Here’s the honest arc.",
+      expectationEmphasis: "actually",
       expectations: [
-        { window: "First use", title: "A lightly conditioned feel", body: "A clean, lightly conditioned feel. A tingle can occur; stinging is a reason to stop. No visible clearing is promised.", img: "/wipelo-body-skincare-routine.png" },
-        { window: "Week 1", title: "Consistency over scrubbing", body: "Consistency matters more than scrubbing. Begin conservatively and do not stack strong exfoliants without advice.", img: "/spotless-body-home.png" },
-        { window: "Week 4", title: "The honest picture", body: "Skin may look smoother, or it may not. No transformation, fixed lesion reduction, or clearance timeline is promised.", img: "/wipelo-lab-spotless.png" },
+        { window: "Wipe 1 · First use", title: "A clean, leave-on feel.", body: "One pass spreads a fragrance-free lotion with 0.5% salicylic acid and 2% niacinamide across skin your face routine never reaches. A tingle can happen; stinging is a reason to stop.", img: "/wipelo-lab-spotless.png", imgAlt: "The SPOTLESS sachet beside a folded wipe and a glass dish.", stats: [{ value: "~3.9", label: "lotion pH" }, { value: "0%", label: "fragrance" }] },
+        { window: "Week 1 · The habit", title: "Consistency over scrubbing.", body: "After the gym, after the backpack straps — one gentle pass over back, chest and shoulders, then let it air-dry. Start every other day if your skin is sensitive.", img: "/wipelo-body-skincare-routine.png", imgAlt: "A woman wipes her upper arm with a cleansing wipe.", stats: [{ value: "60 gsm", label: "cloth" }, { value: "1 wipe", label: "= 1 pass" }] },
+        { window: "Week 4 · The standard", title: "Body skin, on the routine.", body: "Skin may look smoother, or it may not — no clearance timeline is promised. What changes is that back and chest finally get a deliberate, dosed step.", img: "/spotless-body-home.png", imgAlt: "Three moments of a body-care routine: opening a wipe, a gentle pass, letting skin air-dry.", stats: [{ value: "[XX]%", label: "of testers*", placeholder: true }, { value: "~400%", label: "lotion load" }] },
       ],
-      expectationDisclaimer: "No wipe replaces washing. A compliant acne medicine also requires substantiation that this proposed cosmetic positioning does not provide.",
+      expectationWontDo: ["Not an acne medicine", "Not an overnight cure", "Not a replacement for diagnosis"],
+      expectationFootnote: "*Placeholder: add a tester figure only once a consumer study is complete, with sample size and method.",
       faqs: [
         { question: "Is it safe for sensitive or intimate skin?", answer: "This is for intact external body skin only, not genital or other mucosal skin. Salicylic acid can dry or irritate. Patch test and start slowly. For children, ask a pediatric clinician before use; this formula has no age-specific safety data." },
         { question: "Does it replace washing or my acne treatment?", answer: "No. Cleanse normally after heavy sweat when you can. If you use prescription or over-the-counter acne medicine, ask your clinician before layering another acid, especially on large areas." },
@@ -343,12 +365,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       ingredientHeading: "What’s in it.",
       ingredientIntro: "Current development formula; check the finished product label before use. The final INCI order must follow the manufactured batch.",
       keyIngredients: [
-        { title: "Lactic acid + sodium lactate", body: "A pH-adjusting acid and its salt. They set the lotion’s acidic target. They are not probiotics and cannot treat BV or yeast infection or restore vaginal pH.", status: "Proposed formula" },
-        { title: "Alpha-glucan oligosaccharide + lactobacillus ferment lysate", body: "A prebiotic-type ingredient and a nonliving ferment lysate in the proposed formula. They do not establish a clinical microbiome benefit for this wipe.", status: "Proposed formula" },
-        { title: "Panthenol + glycerin", body: "Humectant and conditioning ingredients chosen for skin feel. They are not a cure for irritation.", status: "Proposed formula" },
-        { title: "Cloth", body: "Proposed soft, smooth plant-fiber cloth, about 15 × 20 cm and 50 gsm. Confirm final fiber and plastic content before making environmental claims.", status: "Proposed material" },
+        { title: "Lactic acid + sodium lactate", status: "Proposed formula", dose: "0.3–0.5% · 0.5%", does: "A pH-adjusting acid and its salt set the lotion’s acidic target.", doesnt: "Not probiotics; they can’t treat BV or yeast infection or restore vaginal pH.", body: "A pH-adjusting acid and its salt. They set the lotion’s acidic target. They are not probiotics and cannot treat BV or yeast infection or restore vaginal pH." },
+        { title: "Alpha-glucan oligosaccharide + lactobacillus ferment lysate", status: "Proposed formula", dose: "0.5% · 0.5%", does: "A prebiotic-type ingredient and a nonliving ferment lysate.", doesnt: "They don’t establish a clinical microbiome benefit for this wipe.", body: "A prebiotic-type ingredient and a nonliving ferment lysate in the proposed formula. They do not establish a clinical microbiome benefit for this wipe." },
+        { title: "Panthenol + glycerin", status: "Proposed formula", dose: "1.5% · ≤3%", does: "Humectant and conditioning ingredients chosen for skin feel.", doesnt: "Not a cure for irritation.", body: "Humectant and conditioning ingredients chosen for skin feel. They are not a cure for irritation." },
+        { title: "Cloth", status: "Proposed material", dose: "50 gsm", does: "A soft, smooth, unembossed plant-fibre cloth.", doesnt: "Confirm final fibre and plastic content before environmental claims.", body: "Proposed soft, smooth plant-fiber cloth, about 15 × 20 cm and 50 gsm. Confirm final fiber and plastic content before making environmental claims." },
       ],
       formulaNote: "No added fragrance, ethanol/denatured alcohol, or parabens in the proposed formula.",
+      ingredientSpecs: [{ label: "Lotion pH", value: "3.8–4.5" }, { label: "Cloth", value: "~15 × 20 cm" }, { label: "Weight", value: "50 gsm" }, { label: "Lotion load", value: "400–500%" }],
+      freeFrom: ["0% fragrance", "0% ethanol", "No parabens"],
+      ingredientUseNote: "External use only.",
       qualityHeading: "Three numbers to know.",
       qualityProofs: [
         { title: "3.80 ± 0.20", label: "Vaginal pH in one cohort", body: "A 20-woman study of lactobacilli-dominant microbiota; vaginal data, not a universal vulvar target.", sourceLabel: "In-vivo vaginal pH study · PMID 30642259", sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/30642259/" },
@@ -363,13 +388,15 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { label: "03", context: "Finish", direction: "Let skin dry; bin the wipe and wrapper. Do not flush." },
       ],
       expectationHeading: "What actually happens.",
-      expectationIntro: "No promised transformation.",
+      expectationIntro: "No “transformation.” A wipe is not a treatment — it’s a gentle, external clean for when water isn’t close. Here’s the honest arc.",
+      expectationEmphasis: "actually",
       expectations: [
-        { window: "First use", title: "A light, unscented afterfeel", body: "A brief external clean and a light, unscented afterfeel. Stop if it stings.", img: "/wipelo-her-travel-care.png" },
-        { window: "Week 1", title: "An optional bag staple", body: "An optional bag staple for moments without water, not a daily hygiene requirement.", img: "/her-handbag-essential.png" },
-        { window: "Week 4", title: "Reliable access", body: "The practical value is reliable access to a gentle external clean. No transformed microbiome, fewer infections, or “better” natural scent is promised.", img: "/wipelo-lab-her.png" },
+        { window: "Wipe 1 · First use", title: "Gentle, unscented, done.", body: "A smooth cloth and a lactic acid lotion around pH 3.8–4.5 give a brief external clean with a light, unscented afterfeel. Stop if it stings.", img: "/wipelo-lab-her.png", imgAlt: "The HER sachet with a white wipe, glass dishes and an aloe leaf.", stats: [{ value: "3.8–4.5", label: "lotion pH" }, { value: "0%", label: "fragrance" }] },
+        { window: "Week 1 · The habit", title: "A quiet bag staple.", body: "A few sealed singles live in the period bag, the gym bag and the travel pouch — for moments without water, not as a daily requirement.", img: "/wipelo-her-travel-care.png", imgAlt: "A woman slips an individually wrapped wipe into a pouch on a bathroom counter.", stats: [{ value: "~15 × 20 cm", label: "cloth" }, { value: "1 wipe", label: "= 1 refresh" }] },
+        { window: "Week 4 · The standard", title: "Clean, with clear limits.", body: "The value is reliable access to a gentle external clean. No transformed microbiome, fewer infections or “better” natural scent is promised.", img: "/her-handbag-essential.png", imgAlt: "A woman slips a cream HER wipe into a deep-green handbag.", stats: [{ value: "[XX]%", label: "of testers*", placeholder: true }, { value: "0%", label: "alcohol" }] },
       ],
-      expectationDisclaimer: "The cloth and lotion details are proposed and should be checked against the final manufactured pack. No wipe replaces washing.",
+      expectationWontDo: ["Not for internal use", "Doesn’t change vaginal pH", "Doesn’t replace washing"],
+      expectationFootnote: "*Placeholder: add a tester figure only once a consumer study is complete, with sample size and method.",
       faqs: [
         { question: "Is it safe for sensitive or intimate skin?", answer: "It is designed for external vulvar skin, but “sensitive safe” needs finished-product testing. Patch test first if you react easily. Do not insert it, use it on broken skin, or continue if it burns. Persistent odor, itching, pain, or unusual discharge needs medical advice." },
         { question: "Does HER replace washing?", answer: "No. Water and gentle cleansing remain the baseline. HER is an occasional clean-up when a sink or shower is out of reach." },
@@ -435,6 +462,9 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
     ingredientIntro: "Formula details match the approved package label.",
     keyIngredients: [{ title: "Formula", body: "See the package label for the full ingredient list.", status: "Package label" }],
     formulaNote: "Check the package label before use.",
+    ingredientSpecs: [{ label: "Format", value: "Individually sealed" }, { label: "Formula", value: "See package label" }],
+    freeFrom: [],
+    ingredientUseNote: "Check the package label before use.",
     qualityHeading: "Made with care.",
     qualityProofs: [{ title: "Individually sealed", body: "Each wipe is sealed in its own sachet." }],
     usageHeading: "How to use it.",
@@ -445,10 +475,11 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       { label: "03", context: "Finish", direction: "Bin the wipe. Do not flush." },
     ],
     expectationHeading: "What to expect.",
-    expectationIntro: "No promised transformation.",
+    expectationIntro: "No “transformation.” A wipe is a practical tool. Here’s the honest arc.",
     expectations: [
-      { window: "First use", title: "A quick clean-up", body: "A practical clean-up when water is out of reach.", img: "/wipelo-purposeful-care.png" },
+      { window: "Wipe 1 · First use", title: "A quick clean-up", body: "A practical clean-up when water is out of reach.", img: "/wipelo-purposeful-care.png", stats: [] },
     ],
+    expectationWontDo: ["Not a shower replacement"],
     faqs: [
       { question: "Does it replace washing?", answer: "No. A wipe is a bridge until soap and water are available." },
     ],
