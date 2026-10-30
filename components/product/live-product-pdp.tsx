@@ -9,27 +9,36 @@ import { useStorefrontCart } from "@/components/storefront-provider";
 import { cleanTitle, getImageUrl, type CommerceProduct } from "@/lib/commerce";
 import { moneyLabel } from "@/lib/money";
 import { getProductProfile, type BenefitIconKey, type SubscriptionStory } from "@/lib/product-profiles";
-import { getApprovedReviews } from "@/lib/product-reviews";
+import { getReviewData } from "@/lib/product-reviews";
+import { ProductReviewsSection } from "./product-reviews";
+import { getExpertReview } from "@/lib/expert-reviews";
+import { ExpertReviewSection } from "./expert-review";
 import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
+import { ReceiptsSectionPdp } from "../home/receipts-pdp";
+import { GuaranteeSection } from "../home/guarantee";
 
 type PurchaseMode = "subscribe" | "one-time";
 
 const GALLERY_SIZE = 8;
+const FORMULA_PRODUCTS = [
+  { handle: "on-the-go", category: "on-the-go", label: "ON THE GO" },
+  { handle: "her", category: "her", label: "HER" },
+  { handle: "spotless", category: "spotless", label: "SPOTLESS" },
+];
 const BRAND_IMAGES = ["/wipelo-lab-range.png", "/wipelo-purposeful-care.png"];
 const SLIDE_HEADLINES = ["The pack", "Up close", "Inside the formula", "How to use it", "In real life", "Made to carry", "The detail", "Ready when you are"];
 
 const baseSectionLinks = [
   { id: "product", label: "Overview" },
   { id: "why-it-works", label: "Benefits" },
-  { id: "proof", label: "Expert" },
   { id: "ingredients", label: "Ingredients" },
-  { id: "quality", label: "Quality" },
-  { id: "care-guidance", label: "Care guidance" },
+  { id: "proof", label: "Expert" },
   { id: "expect", label: "What to expect" },
-  { id: "subscribe", label: "Subscribe" },
   { id: "reviews", label: "Reviews" },
+  { id: "how-to-use", label: "How to use" },
+  { id: "subscribe", label: "Subscribe" },
   { id: "faq", label: "FAQ" },
 ];
 
@@ -67,6 +76,16 @@ function durationLabel(variant: ShopifyVariant) {
   return match ? `${match[1]} ${match[2].toLowerCase()}${match[1] === "1" ? "" : "s"}` : null;
 }
 
+// Wraps one word of a heading in <em> ("What *actually* happens.").
+function emphasize(text: string, word?: string) {
+  if (!word || !text.includes(word)) return text;
+  const [before, after] = text.split(word);
+  return <>{before}<em>{word}</em>{after}</>;
+}
+
+// Placeholder figures and notes show while building the page, never on the live site.
+const showDrafts = process.env.NODE_ENV !== "production";
+
 function cycle<T>(items: T[], size: number) {
   if (!items.length) return [];
   return Array.from({ length: size }, (_, index) => items[index % items.length]);
@@ -97,17 +116,18 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
   // 2–4. Title, profile, reviews.
   const title = cleanTitle(product.title);
   const profile = getProductProfile(product);
-  const reviews = getApprovedReviews(profile.category);
-  const averageRating = reviews.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0;
+  const reviewData = getReviewData();
+  const ratingSummary = reviewData && profile.category !== "wipelo" ? reviewData.summaries[profile.category] : null;
+  const expertReview = getExpertReview(profile.category);
+  const hasPlaceholderStat = profile.expectations.some((item) => item.stats.some((stat) => stat.placeholder));
 
   // 5. Section links, matched to the sections that actually render.
   const sectionLinks = useMemo(() => baseSectionLinks.filter((link) => {
-    if (link.id === "reviews") return reviews.length > 0;
+    if (link.id === "reviews") return Boolean(reviewData);
     if (link.id === "subscribe") return hasSubscription;
-    if (link.id === "proof") return Boolean(profile.expertReview);
-    if (link.id === "care-guidance") return Boolean(profile.careGuidance);
+    if (link.id === "proof") return Boolean(expertReview);
     return true;
-  }), [reviews.length, hasSubscription, profile.expertReview, profile.careGuidance]);
+  }), [reviewData, hasSubscription, expertReview]);
 
   // 6. Gallery slides.
   const detailImage = profile.pdpProofSection;
@@ -146,7 +166,7 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
       ? { key: "expert", label: "Expert view", eyebrow: profile.expertReview.credentials, title: profile.expertReview.name, body: profile.expertReview.quote, image: profile.expertReview.image, alt: profile.expertReview.imageAlt, href: "#proof" }
       : { key: "role", label: "Product role", eyebrow: profile.badge, title: profile.heroPromise, body: profile.roleSummary, image: profile.lifestyleImage, alt: profile.lifestyleAlt, href: "#why-it-works" },
     { key: "ingredient", label: "Key ingredient", eyebrow: firstIngredient.status, title: firstIngredient.title, body: firstIngredient.body, image: ingredientImage(0), alt: firstIngredient.imageAlt ?? `Wipelo ${title} formula`, href: "#ingredients" },
-    { key: "directions", label: "Directions", eyebrow: profile.usageHeading, title: profile.usageIntro, body: profile.usageRows.map((row) => row.direction).join(" "), image: profile.pdpDirection, alt: `How to use Wipelo ${title}`, href: "#expect" },
+    { key: "directions", label: "Directions", eyebrow: profile.usageHeading, title: profile.usageIntro, body: profile.usageRows.map((row) => row.direction).join(" "), image: profile.pdpDirection, alt: `How to use Wipelo ${title}`, href: "#how-to-use" },
     { key: "benefit", label: "Benefit", eyebrow: firstBenefit.when ?? profile.benefitsHeading, title: firstBenefit.title, body: firstBenefit.body, image: profile.benefitsTabImage ?? profile.lifestyleImage, alt: `Wipelo ${title} in everyday use`, href: "#why-it-works" },
   ];
   const [tabIndex, setTabIndex] = useState(0);
@@ -205,9 +225,9 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
             <span className="pdp6-kicker">{profile.heroKicker}</span>
             <h1>{product.title}</h1>
             <div className="pdp6-rating">
-              <span className={`pdp6-stars${reviews.length ? " is-rated" : ""}`} aria-hidden="true">★★★★★</span>
-              {reviews.length > 0
-                ? <a href="#reviews">{averageRating.toFixed(1)} · {reviews.length} review{reviews.length === 1 ? "" : "s"}</a>
+              <span className={`pdp6-stars${ratingSummary ? " is-rated" : ""}`} aria-hidden="true">★★★★★</span>
+              {ratingSummary
+                ? <a href="#reviews">{ratingSummary.average.toFixed(1)} · {ratingSummary.count.toLocaleString("en-US")} reviews</a>
                 : <>New — no reviews yet. <a href={`mailto:founder@wipelo.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
             </div>
             <div className={`pdp6-overview-wrap${overviewOpen ? " is-open" : ""}`}>
@@ -337,79 +357,95 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
       </div>
     </section>
 
-    {/* Expert (only when a real expert review exists) */}
-    {profile.expertReview && <section className="pdp6-section pdp6-expert" id="proof">
-      <div className="wrap pdp6-expert-grid">
-        <img src={profile.expertReview.image} alt={profile.expertReview.imageAlt} loading="lazy" />
-        <div>
-          <span className="pdp6-eyebrow">{profile.expertReview.scope}</span>
-          <blockquote>{profile.expertReview.quote}</blockquote>
-          <p><b>{profile.expertReview.name}</b>, {profile.expertReview.credentials} · {profile.expertReview.jurisdiction}</p>
-          <p className="pdp6-fine">{profile.expertReview.relationship} {profile.expertReview.disclosure} Reviewed {profile.expertReview.reviewedAt}.</p>
-        </div>
-      </div>
-    </section>}
 
     {/* Ingredients */}
-    <section className="pdp6-section pdp6-tint" id="ingredients">
-      <div className="wrap pdp6-ingredients-grid">
-        <Reveal variant="scaleIn" className="pdp6-texture"><img src={profile.ingredientTextureImg} alt={`Wipelo ${title} formula`} loading="lazy" /></Reveal>
-        <div>
-          <Stagger className="pdp6-head is-left" gap={0.09}>
-            <Reveal as="span" className="pdp6-eyebrow">Inside the formula</Reveal>
-            <Reveal as="h2">{profile.ingredientHeading}</Reveal>
+    <section className="pdp6-section pdp6-formula" id="ingredients" aria-labelledby="pdp6-formula-title">
+      <div className="wrap">
+        <div className="pdp6-formula-head">
+          <Stagger gap={0.09}>
+            <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal>
+            <Reveal as="h2" id="pdp6-formula-title">What’s in it — <em>and what it isn’t.</em></Reveal>
             <Reveal as="p">{profile.ingredientIntro}</Reveal>
           </Stagger>
-          <Stagger className="pdp6-ingredients" gap={0.08}>
-            {profileIngredients.map((ingredient) => <Reveal className="pdp6-ingredient" key={ingredient.title}>
-              <small>{ingredient.status}</small>
-              <h3>{ingredient.title}</h3>
-              <p>{ingredient.body}</p>
-              {ingredient.evidenceUrl && <a href={ingredient.evidenceUrl} target="_blank" rel="noopener noreferrer">{ingredient.evidenceLabel ?? "Evidence"} ↗</a>}
-            </Reveal>)}
-          </Stagger>
-          <p className="pdp6-fine">{profile.formulaNote}</p>
+          {/* <nav className="pdp6-formula-switch" aria-label="Compare formulas">
+            {FORMULA_PRODUCTS.map((item) => <Link key={item.handle} href={`/products/${item.handle}#ingredients`} aria-current={item.category === profile.category ? "page" : undefined} className={item.category === profile.category ? "is-active" : undefined}>{item.label}</Link>)}
+          </nav> */}
         </div>
-      </div>
-    </section>
 
-    {/* Quality */}
-    <section className="pdp6-section" id="quality">
-      <div className="wrap pdp6-quality-grid">
-        <div>
-          <Stagger className="pdp6-head is-left" gap={0.09}>
-            <Reveal as="span" className="pdp6-eyebrow">The evidence</Reveal>
-            <Reveal as="h2">{profile.qualityHeading}</Reveal>
-          </Stagger>
-          <Stagger className="pdp6-proofs" gap={0.1}>
-            {profile.qualityProofs.map((proof) => <Reveal className="pdp6-proof" key={proof.title + proof.body}>
-              <b>{proof.title}</b>
-              {proof.label && <span>{proof.label}</span>}
-              <p>{proof.body}</p>
-              {proof.sourceUrl && <a href={proof.sourceUrl} target="_blank" rel="noopener noreferrer">{proof.sourceLabel ?? "Source"} ↗</a>}
-            </Reveal>)}
-          </Stagger>
+        <div className="pdp6-formula-grid">
+          <Reveal variant="scaleIn" className="pdp6-formula-side">
+            <img src={profile.ingredientTextureImg} alt={`Wipelo ${title} beside a folded wipe and glass labware`} loading="lazy" />
+            <dl className="pdp6-formula-specs">{profile.ingredientSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl>
+          </Reveal>
+
+          <Reveal className="pdp6-formula-table" role="table" aria-label={`${title} ingredients`}>
+            <div className="pdp6-formula-row is-head" role="row">
+              <span role="columnheader">Ingredient · Dose</span>
+              <span role="columnheader">✓ What it does</span>
+              <span role="columnheader">× What it doesn’t</span>
+            </div>
+            {profileIngredients.map((ingredient) => <div className="pdp6-formula-row" role="row" key={ingredient.title}>
+              <div role="cell" className="pdp6-formula-name">
+                <small>{ingredient.status}</small>
+                <h3>{ingredient.title}</h3>
+                {ingredient.dose && <b>{ingredient.dose}</b>}
+              </div>
+              <div role="cell" className="pdp6-formula-does" data-label="What it does">{ingredient.does ?? ingredient.body}</div>
+              <div role="cell" className="pdp6-formula-doesnt" data-label="What it doesn’t">{ingredient.doesnt ?? "—"}</div>
+            </div>)}
+          </Reveal>
         </div>
-        <Reveal variant="slideFromRight" className="pdp6-quality-media"><img src={profile.pdpProofSection} alt={`Wipelo ${title} beside glass labware`} loading="lazy" /></Reveal>
-      </div>
-    </section>
 
-    {/* Care guidance */}
-    {profile.careGuidance && <section className="pdp6-section pdp6-care" id="care-guidance">
-      <div className="wrap">
-        <Reveal className="pdp6-care-card">
-          <span className="pdp6-eyebrow">Independent guidance</span>
-          <blockquote>{profile.careGuidance.body}</blockquote>
-          <a href={profile.careGuidance.url} target="_blank" rel="noopener noreferrer">{profile.careGuidance.source} ↗</a>
-          <p className="pdp6-fine">{profile.careGuidance.disclaimer}</p>
+        <Reveal className="pdp6-formula-foot">
+          {profile.freeFrom.map((item) => <span key={item}>{item}</span>)}
+          <p>{profile.ingredientUseNote}</p>
         </Reveal>
       </div>
-    </section>}
-
-    {/* Directions + what to expect */}
-    <section className="pdp6-section pdp6-tint" id="expect">
+    </section>
+    {/* Expert review (drafts render in development only) */}
+    {expertReview && <ExpertReviewSection review={expertReview} />}
+    {/* What actually happens */}
+    <section className="pdp6-section pdp6-arc" id="expect" aria-labelledby="pdp6-arc-title">
       <div className="wrap">
-        <div className="pdp6-usage">
+        <Stagger className="pdp6-arc-head" gap={0.09}>
+          <Reveal as="span" className="pdp6-eyebrow">// Honest expectations</Reveal>
+          <Reveal as="h2" id="pdp6-arc-title">{emphasize(profile.expectationHeading, profile.expectationEmphasis)}</Reveal>
+          <Reveal as="p">{profile.expectationIntro}</Reveal>
+        </Stagger>
+        <Stagger as="ol" className="pdp6-arc-cards" gap={0.12}>
+          {profile.expectations.map((item, index) => <Reveal as="li" className="pdp6-arc-card" key={item.window}>
+            <div className="pdp6-arc-media">
+              <img src={item.img} alt={item.imgAlt ?? ""} loading="lazy" />
+              <span className="pdp6-arc-window">{item.window}</span>
+              <span className="pdp6-arc-num" aria-hidden="true">{index + 1}</span>
+            </div>
+            <div className="pdp6-arc-body">
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+              {item.stats.some((stat) => showDrafts || !stat.placeholder) && <ul className="pdp6-arc-stats">
+                {item.stats.filter((stat) => showDrafts || !stat.placeholder).map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}
+              </ul>}
+            </div>
+          </Reveal>)}
+        </Stagger>
+        {/* <Reveal className="pdp6-arc-limits">
+          <div className="pdp6-arc-wont">
+            <b>And what it won’t do:</b>
+            <ul>{profile.expectationWontDo.map((item) => <li key={item}><span aria-hidden="true">×</span>{item}</li>)}</ul>
+          </div>
+          {showDrafts && hasPlaceholderStat && profile.expectationFootnote && <p className="pdp6-arc-foot">{profile.expectationFootnote}</p>}
+        </Reveal> */}
+      </div>
+    </section>
+
+    {/* Customer reviews */}
+    {reviewData && <ProductReviewsSection initial={profile.category === "wipelo" ? "all" : profile.category} reviews={reviewData.reviews} summaries={reviewData.summaries} productTitle={title} />}
+    {/* Receipts */}
+    <ReceiptsSectionPdp />
+    {/* Directions */}
+    {/* <section className="pdp6-section pdp6-tint" id="how-to-use">
+      <div className="wrap">
+        <div className="pdp6-usage is-last">
           <Reveal variant="slideFromLeft" className="pdp6-usage-media"><img src={profile.pdpDirection} alt={`How to use Wipelo ${title}`} loading="lazy" /></Reveal>
           <div>
             <Stagger className="pdp6-head is-left" gap={0.09}>
@@ -423,23 +459,9 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
           </div>
         </div>
 
-        <Stagger className="pdp6-head" gap={0.09}>
-          <Reveal as="span" className="pdp6-eyebrow">{profile.expectationIntro}</Reveal>
-          <Reveal as="h2">{profile.expectationHeading}</Reveal>
-        </Stagger>
-        {profile.expectationHighlight && <div className="pdp6-highlight"><b>{profile.expectationHighlight.title}</b><ul>{profile.expectationHighlight.checks.map((check) => <li key={check}>{check}</li>)}</ul></div>}
-        <Stagger className="pdp6-timeline" gap={0.12}>
-          {profile.expectations.map((item) => <Reveal className="pdp6-moment" key={item.window}>
-            <img src={item.img} alt="" loading="lazy" />
-            <span>{item.window}</span>
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
-          </Reveal>)}
-        </Stagger>
-        {profile.expectationDisclaimer && <p className="pdp6-fine is-center">{profile.expectationDisclaimer}</p>}
       </div>
-    </section>
-
+    </section> */}
+    <GuaranteeSection />
     {/* Subscribe (only when Shopify selling plans exist) */}
     {hasSubscription && <section className="pdp6-section pdp6-subscribe" id="subscribe">
       <div className="wrap">
@@ -453,13 +475,6 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
       </div>
     </section>}
 
-    {/* Reviews (only when approved reviews exist) */}
-    {reviews.length > 0 && <section className="pdp6-section" id="reviews">
-      <div className="wrap">
-        <div className="pdp6-head"><span className="pdp6-eyebrow">Verified reviews</span><h2>★ {averageRating.toFixed(1)} from {reviews.length} review{reviews.length === 1 ? "" : "s"}</h2></div>
-        <div className="pdp6-reviews">{reviews.map((review) => <article key={review.name + review.date}><b>{"★".repeat(review.rating)}</b><h3>{review.title}</h3><p>{review.body}</p><small>{review.name}{review.verified ? " · Verified buyer" : ""} · {review.date}</small></article>)}</div>
-      </div>
-    </section>}
 
     <FAQAccordion items={allFaqs} />
 
