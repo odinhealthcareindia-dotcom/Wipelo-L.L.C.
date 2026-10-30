@@ -16,7 +16,7 @@ export function ProductIntro({ product, category }: { product: CommerceProduct; 
   if (!content) return null;
   const lowestPrice = product.variants.filter((variant) => variant.availableForSale).reduce<(typeof product.variants)[number] | undefined>((lowest, variant) => !lowest || Number(variant.price.amount) < Number(lowest.price.amount) ? variant : lowest, undefined)?.price;
 
-  return <section className={`${styles.section} ${styles[category]}`} aria-labelledby="product-intro-title">
+  return <section className={`${styles.section} ${styles[category]}`} aria-labelledby="product-intro-title" id="intro">
     <div className={styles.copy}>
       <p className={styles.kicker}><span>New</span>{content.kicker}</p>
       <h2 id="product-intro-title" className={styles.title}>{content.title}<br /><em>{content.titleEnd}</em></h2>
