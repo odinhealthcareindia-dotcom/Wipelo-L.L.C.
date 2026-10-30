@@ -31,13 +31,14 @@ const BRAND_IMAGES = ["/wipelo-lab-range.png", "/wipelo-purposeful-care.png"];
 const SLIDE_HEADLINES = ["The pack", "Up close", "Inside the formula", "How to use it", "In real life", "Made to carry", "The detail", "Ready when you are"];
 
 const baseSectionLinks = [
-  { id: "product", label: "Overview" },
+  // { id: "product", label: "Overview" },
+  { id: "intro", label: "Info" },
   { id: "why-it-works", label: "Benefits" },
   { id: "ingredients", label: "Ingredients" },
   { id: "proof", label: "Expert" },
   { id: "expect", label: "What to expect" },
   { id: "reviews", label: "Reviews" },
-  { id: "how-to-use", label: "How to use" },
+  // { id: "how-to-use", label: "How to use" },
   { id: "subscribe", label: "Subscribe" },
   { id: "faq", label: "FAQ" },
 ];
@@ -180,14 +181,24 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
   ];
   const allFaqs = [...faqItems, { question: profile.careBoundary.title, answer: profile.careBoundary.body }, ...commerceFaqs];
 
-  // Sticky buy bar: shown once the main add-to-bag button has scrolled above the header.
+  // Sticky buy bar: shown once the main add-to-bag button has scrolled above the header,
+  // and tucked away again while the footer is on screen so it never covers the footer.
   const mainButtonRef = useRef<HTMLButtonElement>(null);
-  const [stickyVisible, setStickyVisible] = useState(false);
+  const [pastButton, setPastButton] = useState(false);
+  const [footerInView, setFooterInView] = useState(false);
+  const stickyVisible = pastButton && !footerInView;
   useEffect(() => {
     const button = mainButtonRef.current;
     if (!button) return;
-    const observer = new IntersectionObserver(([entry]) => setStickyVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0), { rootMargin: "-80px 0px 0px 0px" });
+    const observer = new IntersectionObserver(([entry]) => setPastButton(!entry.isIntersecting && entry.boundingClientRect.top < 0), { rootMargin: "-80px 0px 0px 0px" });
     observer.observe(button);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const footer = document.querySelector(".wipe-footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(([entry]) => setFooterInView(entry.isIntersecting));
+    observer.observe(footer);
     return () => observer.disconnect();
   }, []);
 

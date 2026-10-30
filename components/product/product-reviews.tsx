@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { categoryProductLabel, reviewCategories, type ProductReview, type RatingSummary, type ReviewCategory } from "@/lib/product-reviews";
 
@@ -8,6 +8,7 @@ type Filter = "all" | ReviewCategory;
 type Sort = "helpful" | "recent" | "highest" | "lowest";
 
 const PAGE_SIZE = 4;
+const STRIP_SIZE = 8;
 const SORTS: { value: Sort; label: string }[] = [
   { value: "helpful", label: "Most helpful" },
   { value: "recent", label: "Most recent" },
@@ -39,7 +40,6 @@ function combine(summaries: RatingSummary[]): RatingSummary {
     recommendPercent: Math.round(weigh((item) => item.recommendPercent)),
     noStingPercent: Math.round(weigh((item) => item.noStingPercent)),
     photoCount: summaries.reduce((sum, item) => sum + item.photoCount, 0),
-    photos: [...new Set(summaries.flatMap((item) => item.photos.slice(0, 3)))].slice(0, 8),
   };
 }
 
@@ -54,6 +54,9 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
     const filtered = reviews.filter((review) => filter === "all" || review.category === filter);
     return [...filtered].sort((a, b) => sort === "recent" ? a.ageDays - b.ageDays : sort === "highest" ? b.rating - a.rating || b.helpful - a.helpful : sort === "lowest" ? a.rating - b.rating || b.helpful - a.helpful : b.helpful - a.helpful);
   }, [reviews, filter, sort]);
+  const photoReviews = useMemo(() => list.filter((review) => review.photo), [list]);
+  // Lightbox: null = closed, "grid" = all photos, number = index into photoReviews.
+  const [viewer, setViewer] = useState<null | "grid" | number>(null);
   const pageCount = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const visible = list.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
 
@@ -92,7 +95,15 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
 
       <Reveal className="pdp6-rev-photos">
         <div className="pdp6-rev-photos-head"><b>Customer photos</b><span>{summary.photoCount} photos</span></div>
-        <ul>{summary.photos.map((photo) => <li key={photo}><img src={photo} alt="Customer photo" loading="lazy" /></li>)}</ul>
+        <ul>{photoReviews.slice(0, STRIP_SIZE).map((review, index) => {
+          const more = index === STRIP_SIZE - 1 && photoReviews.length > STRIP_SIZE ? photoReviews.length - index : 0;
+          return <li key={review.id}>
+            <button type="button" onClick={() => setViewer(more ? "grid" : index)} aria-label={more ? `See all ${photoReviews.length} customer photos` : `Open photo from ${review.name}`}>
+              <img src={review.photo} alt="" loading="lazy" />
+              {more > 0 && <span className="pdp6-rev-more" aria-hidden="true">+{more}</span>}
+            </button>
+          </li>;
+        })}</ul>
       </Reveal>
 
       <div className="pdp6-rev-toolbar">
@@ -132,7 +143,7 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
                 <button type="button" aria-pressed={vote === "no"} onClick={() => setVotes((current) => ({ ...current, [review.id]: current[review.id] === "no" ? undefined : "no" }))}>No</button>
               </div>
             </div>
-            {review.photo && <img className="pdp6-rev-photo" src={review.photo} alt={`Photo from ${review.name}`} loading="lazy" />}
+            {review.photo && <button type="button" className="pdp6-rev-photo" onClick={() => setViewer(photoReviews.indexOf(review))} aria-label={`Open photo from ${review.name}`}><img src={review.photo} alt="" loading="lazy" /></button>}
           </li>;
         })}
       </ol>
@@ -141,5 +152,69 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
         {Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={index === page ? "page" : undefined} className={index === page ? "is-active" : undefined} onClick={() => goTo(index)}>{index + 1}</button>)}
       </nav>}
     </div>
+    {viewer !== null && <ReviewLightbox items={photoReviews} view={viewer} onView={setViewer} onClose={() => setViewer(null)} />}
   </section>;
+}
+
+function ReviewLightbox({ items, view, onView, onClose }: { items: ProductReview[]; view: "grid" | number; onView: (next: "grid" | number) => void; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const review = typeof view === "number" ? items[view] : null;
+  const step = (delta: number) => { if (typeof view === "number") onView((view + delta + items.length) % items.length); };
+
+  // Native modal dialog: traps focus, closes on Esc, and hands focus back to the photo that opened it.
+  // The dialog is removed on unmount rather than closed, so no close event fires during cleanup.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    openerRef.current ??= document.activeElement as HTMLElement | null;
+    if (!dialog.open) dialog.showModal();
+    return () => { const opener = openerRef.current; requestAnimationFrame(() => { if (opener?.isConnected && !document.querySelector(".pdp6-lb[open]")) opener.focus({ preventScroll: true }); }); };
+  }, []);
+
+  return <dialog
+    ref={dialogRef}
+    className="pdp6-lb"
+    aria-label={review ? `Photo from ${review.name}` : "All customer photos"}
+    onClose={onClose}
+    onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}
+    onKeyDown={(event) => {
+      if (!review) return;
+      if (event.key === "ArrowRight") { event.preventDefault(); step(1); }
+      if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); }
+    }}
+  >
+    <div className="pdp6-lb-panel">
+      <div className="pdp6-lb-bar">
+        {review
+          ? <button type="button" className="pdp6-lb-back" onClick={() => onView("grid")}><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>All photos</button>
+          : <b className="pdp6-lb-title">Customer photos <span>{items.length}</span></b>}
+        <button type="button" className="pdp6-lb-close" onClick={onClose} aria-label="Close"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
+      </div>
+
+      {review ? <div className="pdp6-lb-body">
+        <figure className="pdp6-lb-media">
+          <img key={review.id} src={review.photo} alt={`Photo shared by ${review.name}`} />
+          {items.length > 1 && <>
+            <button type="button" className="pdp6-lb-nav is-prev" onClick={() => step(-1)} aria-label="Previous photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+            <button type="button" className="pdp6-lb-nav is-next" onClick={() => step(1)} aria-label="Next photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+          </>}
+        </figure>
+        <div className="pdp6-lb-info" key={review.id}>
+          <h3>{review.name}</h3>
+          <Stars value={review.rating} />
+          <blockquote>“{review.body}”</blockquote>
+          <dl>
+            <div><dt>Profile</dt><dd>{review.context}</dd></div>
+            <div><dt>Product</dt><dd>{categoryProductLabel[review.category]}</dd></div>
+            <div><dt>Posted</dt><dd>{timeAgo(review.ageDays)}{review.verified ? " · Verified buyer" : ""}</dd></div>
+          </dl>
+          <p className="pdp6-lb-count" aria-live="polite">{(view as number) + 1} / {items.length}</p>
+        </div>
+      </div>
+      : <ul className="pdp6-lb-grid">
+        {items.map((item, index) => <li key={item.id}><button type="button" onClick={() => onView(index)} aria-label={`Open photo from ${item.name}`}><img src={item.photo} alt="" loading="lazy" /></button></li>)}
+      </ul>}
+    </div>
+  </dialog>;
 }
