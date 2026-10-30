@@ -15,6 +15,7 @@ import { FormulaSections } from "@/components/home/formula-sections";
 import { RevealEffects } from "@/components/reveal-effects";
 import { getProducts } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
+import { getProductCategory } from "@/lib/product-profiles";
 import { ProblemSection } from "@/components/home/problem";
 import { MarqueeSection } from "@/components/home/marquee";
 import { ComparisonSection } from "@/components/home/comparison";
@@ -30,6 +31,7 @@ export default async function HomePage() {
   const products = await getProducts();
   const quizProducts = products.map((product) => ({
     handle: product.handle,
+    category: getProductCategory(product),
     title: product.title,
     price: moneyLabel(product.priceRange.minVariantPrice),
   }));

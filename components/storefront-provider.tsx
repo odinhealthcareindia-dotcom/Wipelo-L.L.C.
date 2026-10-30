@@ -13,7 +13,7 @@ type CartContextValue = {
   error: string | null;
   openCart: () => void;
   closeCart: () => void;
-  addToCart: (variant: ShopifyVariant, sellingPlanId?: string) => Promise<void>;
+  addToCart: (variant: ShopifyVariant, sellingPlanId?: string, quantity?: number) => Promise<void>;
   setLineQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeLine: (lineId: string) => Promise<void>;
 };
@@ -69,12 +69,12 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const addToCart = useCallback(async (variant: ShopifyVariant, sellingPlanId?: string) => {
+  const addToCart = useCallback(async (variant: ShopifyVariant, sellingPlanId?: string, quantity = 1) => {
     const action = cart?.id ? "add" : "create";
     const result = await cartMutation({
       action,
       ...(cart?.id ? { cartId: cart.id } : {}),
-      lines: [{ merchandiseId: variant.id, quantity: 1, ...(sellingPlanId ? { sellingPlanId } : {}) }],
+      lines: [{ merchandiseId: variant.id, quantity, ...(sellingPlanId ? { sellingPlanId } : {}) }],
     });
     if (result) setCartOpen(true);
   }, [cart?.id, cartMutation]);

@@ -1,21 +1,17 @@
 import Link from "next/link";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
-import { AddProductButton } from "@/components/product-buy";
+import { AddProductButton } from "@/components/add-product-button";
 import { Parallax } from "@/components/motion/parallax";
 import { Reveal, Stagger } from "@/components/motion/reveal";
+import { getProductCategory, getProductProfile } from "@/lib/product-profiles";
 
 function firstVariant(product: ShopifyProduct) {
   return product.variants.find((variant) => variant.availableForSale) ?? product.variants[0] ?? null;
 }
 
 function productSummary(product: ShopifyProduct) {
-  const summaries: Record<string, string> = {
-    "on-the-go": "Individually sealed body cleansing wipes to help lift surface sweat and everyday residue between showers.",
-    spotless: "Leave-on body wipes with a proposed 0.5% salicylic acid formula for breakout-prone skin on the back, chest, and shoulders.",
-    her: "Fragrance-free, individually wrapped wipes for occasional cleansing of external intimate skin.",
-  };
-  return summaries[product.handle] ?? product.description?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().slice(0, 180);
+  return getProductProfile(product).shortBenefit;
 }
 
 export function StoreSetupNote({ compact = false }: { compact?: boolean }) {
@@ -35,7 +31,7 @@ function ProductCard({ product, compact = false }: { product: ShopifyProduct; co
       {!product.availableForSale && <span className="sku-flag">Sold out</span>}
     </Link>
     <div className="sku-body">
-      <span className="who">{product.handle === "on-the-go" ? "Between-shower body care" : product.handle === "spotless" ? "Targeted body acne care" : product.handle === "her" ? "External intimate care" : "Individually wrapped wipes"}</span>
+      <span className="who">{getProductProfile(product).badge}</span>
       <Link href={`/products/${product.handle}`}><h3>{product.title}</h3></Link>
       {productSummary(product) && <p className="tag">{productSummary(product)}</p>}
       <div className="sku-foot">
@@ -68,11 +64,8 @@ const compareSpecs: Record<string, CompareSpec> = {
 };
 
 function compareKey(product: ShopifyProduct) {
-  const text = `${product.title} ${product.handle}`;
-  if (/on[\s-]?the[\s-]?go/i.test(text)) return "otg";
-  if (/spotless/i.test(text)) return "spotless";
-  if (/\bher\b/i.test(text)) return "her";
-  return null;
+  const category = getProductCategory(product);
+  return category === "on-the-go" ? "otg" : category === "wipelo" ? null : category;
 }
 
 function compareSpec(product: ShopifyProduct) {
