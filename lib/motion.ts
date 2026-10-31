@@ -3,7 +3,8 @@ import type { Variants } from "framer-motion";
 // One motion vocabulary for the whole site. Sections pick from these; they never hard-code timings.
 
 export const EASE = [0.22, 1, 0.36, 1] as const; // soft "glide" ease-out
-export const DUR = { fast: 0.45, base: 0.7, slow: 0.9 };
+export const SHUTTLE_EASE = [0.45, 0.05, 0.15, 1] as const; // gentle start and long settle, for long travel
+export const DUR = { fast: 0.45, base: 0.7, slow: 0.9, shuttle: 1.2 };
 export const VIEWPORT = { once: true, amount: 0.25, margin: "0px 0px -10% 0px" } as const;
 
 // Full distance on a 1440px screen, roughly half on a phone, without needing JS to measure the screen.
@@ -28,6 +29,15 @@ export const slideFromLeft: Variants = {
 export const slideFromRight: Variants = {
   hidden: { opacity: 0, x: travel(40) },
   show: { opacity: 1, x: 0, transition: { duration: DUR.slow, ease: EASE } },
+};
+// A full panel gliding in from off-screen. The panel starts outside the viewport, so a parent has to trigger it.
+export const shuttleFromLeft: Variants = {
+  hidden: { x: "-100%" },
+  show: { x: 0, transition: { duration: DUR.shuttle, ease: SHUTTLE_EASE } },
+};
+export const shuttleFromRight: Variants = {
+  hidden: { x: "100%" },
+  show: { x: 0, transition: { duration: DUR.shuttle, ease: SHUTTLE_EASE } },
 };
 export const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.96 },
@@ -72,7 +82,7 @@ export const stagger = (gap = 0.08, delay = 0): Variants => ({
   show: { transition: { staggerChildren: gap, delayChildren: delay } },
 });
 
-export const VARIANTS = { fadeUp, fadeIn, slideFromLeft, slideFromRight, scaleIn, softScale, pop, nudgeIn, settle, drawLine, deal } as const;
+export const VARIANTS = { fadeUp, fadeIn, slideFromLeft, slideFromRight, shuttleFromLeft, shuttleFromRight, scaleIn, softScale, pop, nudgeIn, settle, drawLine, deal } as const;
 export type VariantName = keyof typeof VARIANTS;
 
 // Hover/tap feedback for buttons and cards (applied with CSS where the element is server-rendered).

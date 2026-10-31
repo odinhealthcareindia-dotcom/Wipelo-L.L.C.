@@ -50,9 +50,9 @@ export default async function HomePage() {
       herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
       onTheGoPrice={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined}
       spotlessPrice={spotlessProduct ? moneyLabel(spotlessProduct.priceRange.minVariantPrice) : undefined}
-      spotlessImage={(spotlessProduct?.featuredImage ?? spotlessProduct?.images[0])?.url}
-      onTheGoImage={(onTheGoProduct?.featuredImage ?? onTheGoProduct?.images[0])?.url}
-      herImage={(herProduct?.featuredImage ?? herProduct?.images[0])?.url}
+      spotlessImage="/images/wellness/spotless-carton-pouch.webp"
+      onTheGoImage="/images/wellness/on-the-go-carton-pouch.webp"
+      herImage="/images/wellness/her-carton-pouch.webp"
     />
     <ReceiptsSection />
     <ReviewsSectionHome />
