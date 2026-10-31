@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, type KeyboardEvent } from "react";
 import { nextTabIndex, useAutoRotate } from "./use-auto-rotate";
 
@@ -84,7 +85,7 @@ export function NeedsScience({ tabs, heading }: { tabs: NeedsScienceTab[]; headi
           <b>{tab.product}</b>
         </div>
         <div className="science-pack">
-          {tab.image && <span className="science-pack-img"><img src={tab.image} alt={`Wipelo ${tab.product} individually wrapped wipe`} /></span>}
+          {tab.image && <span className="science-pack-img"><Image src={tab.image} width={1402} height={1122} sizes="(max-width: 640px) 90vw, (max-width: 1020px) 80vw, 40vw" alt={`Wipelo ${tab.product} carton and individually wrapped wipe pouch`} /></span>}
         </div>
         <dl className="science-specs">
           {tab.specs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}
