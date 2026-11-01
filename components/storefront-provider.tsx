@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { ShopifyCart, ShopifyVariant } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
+import { deliveryLabel } from "@/lib/subscriptions";
 
 export { moneyLabel };
 
@@ -123,6 +124,7 @@ function CartDrawer() {
   const { cart, cartOpen, busy, error, closeCart, setLineQuantity, removeLine } = useStorefrontCart();
   const lines = cart?.lines.nodes ?? [];
   const count = cart?.totalQuantity ?? 0;
+  const hasSubscription = lines.some((line) => line.sellingPlanAllocation?.sellingPlan.recurringDeliveries);
 
   return <>
     <button className={`scrim${cartOpen ? " on" : ""}`} aria-label="Close cart" onClick={closeCart} />
@@ -132,7 +134,7 @@ function CartDrawer() {
       <div className="dr-items">
         {!lines.length ? <div className="dr-empty">Your cart is empty.<br />Find the wipe for your kind of care.</div> : lines.map((line) => <div className="dr-item" key={line.id}>
           <div className="di-pack">{line.merchandise.image ? <img src={line.merchandise.image.url} alt={line.merchandise.image.altText || line.merchandise.product.title} /> : "W"}</div>
-          <div className="di-copy"><a className="di-name" href={`/products/${line.merchandise.product.handle}`}>{line.merchandise.product.title}</a><div className="di-meta">{line.merchandise.title}{line.sellingPlanAllocation ? ` · ${line.sellingPlanAllocation.sellingPlan.name}` : ""}</div>
+          <div className="di-copy"><a className="di-name" href={`/products/${line.merchandise.product.handle}`}>{line.merchandise.product.title}</a><div className="di-meta">{line.merchandise.title}{line.sellingPlanAllocation ? ` · ${deliveryLabel(line.sellingPlanAllocation.sellingPlan)}` : ""}</div>
             <div className="dr-qty"><button disabled={busy} onClick={() => void setLineQuantity(line.id, line.quantity - 1)} aria-label="Decrease quantity">−</button><span>{line.quantity}</span><button disabled={busy} onClick={() => void setLineQuantity(line.id, line.quantity + 1)} aria-label="Increase quantity">+</button><button className="cart-remove" disabled={busy} onClick={() => void removeLine(line.id)}>Remove</button></div>
           </div><div className="di-price">{moneyLabel(line.cost.totalAmount)}</div>
         </div>)}
@@ -141,7 +143,7 @@ function CartDrawer() {
         {error && <p className="cart-error" role="alert">{error}</p>}
         <div className="dr-total"><span>Subtotal</span><b>{moneyLabel(cart?.cost.subtotalAmount) || moneyLabel({ amount: "0", currencyCode: "USD" })}</b></div>
         {cart?.checkoutUrl ? <a className="btn btn-ink btn-wide cart-checkout" href={cart.checkoutUrl}>Checkout securely <span>→</span></a> : <button className="btn btn-ink btn-wide" disabled={!count || busy} onClick={closeCart}>Continue shopping</button>}
-        <div className="dr-guar">You’ll complete checkout and payment in the next step.</div>
+        <div className="dr-guar">{hasSubscription ? "Subscriptions renew automatically until you cancel. You’ll see the full terms at checkout." : "You’ll complete checkout and payment in the next step."}</div>
       </div>
     </aside>
   </>;

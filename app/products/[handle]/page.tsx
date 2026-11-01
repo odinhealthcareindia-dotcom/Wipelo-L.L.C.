@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LiveProductPdp } from "@/components/product/live-product-pdp";
 import { getProductProfile } from "@/lib/product-profiles";
-import { getProductByHandle, getProducts } from "@/lib/shopify";
+import { getProductByHandle, getProducts, getSubscriptionPolicyUrl, subscriptionPortalUrl } from "@/lib/shopify";
 
 export const revalidate = 60;
 
@@ -30,5 +30,5 @@ export default async function ProductPage({ params }: Props) {
   const { relatedHandles } = getProductProfile(product);
   const related = relatedHandles.length ? (await getProducts()).filter((candidate) => relatedHandles.includes(candidate.handle)) : [];
 
-  return <LiveProductPdp key={product.id} product={product} related={related} />;
+  return <LiveProductPdp key={product.id} product={product} related={related} subscriptionPolicyUrl={await getSubscriptionPolicyUrl()} subscriptionPortalUrl={subscriptionPortalUrl()} />;
 }

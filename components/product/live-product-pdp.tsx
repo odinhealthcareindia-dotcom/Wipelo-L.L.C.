@@ -13,6 +13,7 @@ import { getReviewData } from "@/lib/product-reviews";
 import { ProductReviewsSection } from "./product-reviews";
 import { getExpertReview } from "@/lib/expert-reviews";
 import { ExpertReviewSection } from "./expert-review";
+import { deliveryLabel, planSavingsPercent, subscriptionAllocations } from "@/lib/subscriptions";
 import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
@@ -46,8 +47,8 @@ const baseSectionLinks = [
 const defaultSubscriptionStory: SubscriptionStory = {
   eyebrow: "Subscribe",
   title: "Never run out between showers.",
-  body: "Choose a delivery rhythm at checkout. Terms and pricing are shown before you pay, and you can manage the subscription from your account.",
-  benefits: ["Delivered on your schedule", "Terms shown before you pay", "Manage it from your account"],
+  body: "Pick how often it arrives and save on every delivery. Terms and pricing are shown before you pay, and you can change or cancel from your account.",
+  benefits: ["Delivered on your schedule", "A lower price on every delivery", "Change or cancel from your account"],
 };
 
 const benefitIcons: Record<BenefitIconKey, ReactNode> = {
@@ -92,7 +93,7 @@ function cycle<T>(items: T[], size: number) {
   return Array.from({ length: size }, (_, index) => items[index % items.length]);
 }
 
-export function LiveProductPdp({ product, related = [] }: { product: CommerceProduct; related?: CommerceProduct[] }) {
+export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, subscriptionPortalUrl }: { product: CommerceProduct; related?: CommerceProduct[]; subscriptionPolicyUrl?: string | null; subscriptionPortalUrl?: string | null }) {
   const { addToCart, busy } = useStorefrontCart();
 
   // 1. Offer logic from live variants.
@@ -105,14 +106,21 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
     return ranked[0]?.id ?? null;
   }, [variants]);
   const recommendedVariantId = variants.length > 2 && variants[Math.floor(variants.length / 2)].id !== bestValueVariantId ? variants[Math.floor(variants.length / 2)].id : null;
-  const hasSubscription = variants.some((variant) => variant.sellingPlanAllocations.length > 0);
+  const hasSubscription = variants.some((variant) => subscriptionAllocations(variant).length > 0);
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(hasSubscription ? "subscribe" : "one-time");
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [overviewOpen, setOverviewOpen] = useState(false);
   const hasLaunchPrice = variants.some((variant) => savingsPercent(variant) > 0);
-  const plan = purchaseMode === "subscribe" ? selected?.sellingPlanAllocations[0] ?? null : null;
+  const planOptions = useMemo(() => selected ? subscriptionAllocations(selected) : [], [selected]);
+  // The middle cadence (every 4 weeks on the current plans) until the shopper picks one; the choice carries across packs.
+  const activePlan = planOptions.find((option) => option.sellingPlan.id === selectedPlanId) ?? planOptions[Math.floor(planOptions.length / 2)] ?? null;
+  const canBuyOnce = !product.requiresSellingPlan;
+  const subscribing = Boolean(activePlan) && (purchaseMode === "subscribe" || !canBuyOnce);
+  const plan = subscribing ? activePlan : null;
+  const purchasable = Boolean(selected?.availableForSale) && (canBuyOnce || Boolean(activePlan));
   const effectivePrice = plan ? plan.checkoutChargeAmount : selected?.price;
-  const planSaving = plan && selected ? Number(selected.price.amount) - Number(plan.checkoutChargeAmount.amount) : 0;
+  const activePlanSaving = selected && activePlan ? planSavingsPercent(selected, activePlan) : 0;
 
   // 2–4. Title, profile, reviews.
   const title = cleanTitle(product.title);
@@ -175,7 +183,7 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
 
   // 9. Commerce FAQs depend on live data, so they live here rather than in the profile.
   const commerceFaqs = [
-    { question: "How does the subscription work?", answer: hasSubscription ? "Choose Subscribe in the buy box. The delivery rhythm, price, and terms are shown before you pay, and you can manage the subscription from your account." : "Subscriptions aren’t available yet, so every order is a one-time purchase for now." },
+    ...(hasSubscription ? [{ question: "How does the subscription work?", answer: `Choose Subscribe in the buy box and pick how often it arrives. Each delivery is charged automatically at the discounted price shown, and it continues until you cancel. You can change or cancel from your account.` }] : []),
     { question: "What if it does not work for me?", answer: `The First Pack Promise: try your first delivery for 30 days. If ${title} does not earn a place in your routine, contact Wipelo for a refund of that first order.` },
     { question: "Where does payment happen?", answer: "On Shopify’s secure checkout. Wipelo never sees your full card details." },
   ];
@@ -204,7 +212,7 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
 
   const addSelected = () => { if (selected) void addToCart(selected, plan?.sellingPlan.id, quantity); };
   const total = effectivePrice ? { amount: (Number(effectivePrice.amount) * quantity).toFixed(2), currencyCode: effectivePrice.currencyCode } : null;
-  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `Add to cart — ${moneyLabel(total)}`;
+  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `${plan ? "Subscribe" : "Add to cart"} — ${moneyLabel(total)}`;
   // Saving against buying the same number of wipes as single packs (the compare-at price).
   const totalSaving = selected?.compareAtPrice && effectivePrice ? (Number(selected.compareAtPrice.amount) - Number(effectivePrice.amount)) * quantity : 0;
 
@@ -271,21 +279,32 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
               </div>
             </fieldset>
 
-            {(hasSubscription || profile.plannedSubscription) && <div className="pdp6-frequency">
+            {hasSubscription && <div className="pdp6-frequency">
               <span className="pdp6-step">02 · How often</span>
-              <div className="pdp6-mode" role="radiogroup" aria-label="Purchase type">
-                <button type="button" role="radio" aria-checked={purchaseMode === "one-time"} className={purchaseMode === "one-time" ? "is-active" : undefined} onClick={() => setPurchaseMode("one-time")}>
+              <div className={`pdp6-mode${canBuyOnce ? "" : " is-single"}`} role="radiogroup" aria-label="Purchase type">
+                {canBuyOnce && <button type="button" role="radio" aria-checked={!subscribing} className={!subscribing ? "is-active" : undefined} onClick={() => setPurchaseMode("one-time")}>
                   <b>One-time</b><small>{moneyLabel(selected?.price)} · no recurring charge</small>
+                </button>}
+                <button type="button" role="radio" aria-checked={subscribing} disabled={!activePlan} className={subscribing ? "is-active" : undefined} onClick={() => setPurchaseMode("subscribe")}>
+                  {activePlan
+                    ? <><b>Subscribe{activePlanSaving > 0 ? ` & save ${activePlanSaving}%` : ""}</b><small>{moneyLabel(activePlan.checkoutChargeAmount)} · {deliveryLabel(activePlan.sellingPlan).toLowerCase()}</small></>
+                    : <><b>Subscribe</b><small>Not available for this pack</small></>}
                 </button>
-                {hasSubscription
-                  ? <button type="button" role="radio" aria-checked={purchaseMode === "subscribe"} className={purchaseMode === "subscribe" ? "is-active" : undefined} onClick={() => setPurchaseMode("subscribe")}>
-                      <b>Subscribe{planSaving > 0 ? ` & save ${moneyLabel({ amount: planSaving.toFixed(2), currencyCode: selected!.price.currencyCode })}` : ""}</b><small>{moneyLabel(selected?.sellingPlanAllocations[0]?.checkoutChargeAmount)} · {selected?.sellingPlanAllocations[0]?.sellingPlan.name}</small>
-                    </button>
-                  : profile.plannedSubscription && selected && <div className="pdp6-mode-soon" role="radio" aria-checked={false} aria-disabled="true">
-                      <b>Subscribe &amp; save {profile.plannedSubscription.savingsPercent}% <i>Soon</i></b>
-                      <small>{moneyLabel({ amount: (Number(selected.price.amount) * (1 - profile.plannedSubscription.savingsPercent / 100)).toFixed(2), currencyCode: selected.price.currencyCode })} · {profile.plannedSubscription.perk}</small>
-                    </div>}
               </div>
+              {subscribing && planOptions.length > 1 && <fieldset className="pdp6-cadence">
+                <legend>Deliver</legend>
+                <div className="pdp6-cadence-grid">
+                  {planOptions.map((option) => {
+                    const saving = selected ? planSavingsPercent(selected, option) : 0;
+                    const isActive = option.sellingPlan.id === activePlan?.sellingPlan.id;
+                    return <label key={option.sellingPlan.id} className={isActive ? "is-active" : undefined}>
+                      <input type="radio" name={`plan-${product.id}`} checked={isActive} onChange={() => setSelectedPlanId(option.sellingPlan.id)} />
+                      <b>{deliveryLabel(option.sellingPlan)}</b>
+                      <small>{moneyLabel(option.checkoutChargeAmount)}{saving > 0 ? ` · ${saving}% off` : ""}</small>
+                    </label>;
+                  })}
+                </div>
+              </fieldset>}
             </div>}
 
             <div className="pdp6-cart-row">
@@ -294,8 +313,9 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
                 <span aria-live="polite">{quantity}</span>
                 <button type="button" aria-label="Increase quantity" disabled={quantity >= 10} onClick={() => setQuantity((value) => Math.min(10, value + 1))}>+</button>
               </div>
-              <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !selected?.availableForSale} onClick={addSelected}>{buttonLabel}</button>
+              <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
             </div>
+            {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
             {totalSaving > 0 && <p className="pdp6-saving">You save {moneyLabel({ amount: totalSaving.toFixed(2), currencyCode: selected!.price.currencyCode })} vs. single packs</p>}
 
             <ul className="pdp6-trust">
@@ -498,8 +518,8 @@ export function LiveProductPdp({ product, related = [] }: { product: CommercePro
 
     <div className={`pdp6-sticky${stickyVisible ? " is-visible" : ""}`} aria-hidden={!stickyVisible} inert={!stickyVisible}>
       <div className="wrap pdp6-sticky-in">
-        <span className="pdp6-sticky-name"><b>{title}</b><small>{selected?.title}</small></span>
-        <button type="button" className="pdp6-add is-small" disabled={busy || !selected?.availableForSale} onClick={addSelected}>{buttonLabel}</button>
+        <span className="pdp6-sticky-name"><b>{title}</b><small>{selected?.title}{plan ? ` · ${deliveryLabel(plan.sellingPlan)}` : ""}</small></span>
+        <button type="button" className="pdp6-add is-small" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
       </div>
     </div>
   </div>;
