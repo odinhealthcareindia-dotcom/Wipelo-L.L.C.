@@ -36,7 +36,21 @@ test("one-time purchases never send a selling plan", async ({ page }) => {
 
 test("the cart API rejects a malformed selling plan instead of selling one-time", async ({ request }) => {
   const response = await request.post("/api/cart", {
+    headers: { Origin: "http://127.0.0.1:3100" },
     data: { action: "create", lines: [{ merchandiseId: "gid://shopify/ProductVariant/1", quantity: 1, sellingPlanId: "not-a-plan" }] },
   });
   expect(response.status()).toBe(400);
+});
+
+test("the guest cart survives a reload and checkout hands off to the store", async ({ page }) => {
+  await page.goto("/products/her");
+  await page.waitForLoadState("networkidle");
+  await page.locator(".pdp6-cart-row .pdp6-add").click();
+  await expect(page.locator(".drawer.on .di-name")).toBeVisible();
+  expect(await page.evaluate(() => window.localStorage.getItem("wipelo-shopify-cart-v1"))).toMatch(/^gid:\/\/shopify\/Cart\//);
+  await page.reload();
+  await expect(page.locator(".cart-count")).not.toHaveText("0");
+  await page.locator(".cart-btn").click();
+  await page.locator(".cart-checkout").click();
+  await page.waitForURL(/myshopify\.com|wipelo\.com/);
 });

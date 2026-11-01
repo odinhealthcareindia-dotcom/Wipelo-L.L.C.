@@ -34,8 +34,11 @@ The Headless channel controls which products are available to this storefront. P
 - `/science` — science and formulation content
 - `/our-story` — Wipelo story
 - `/manage-subscription` — subscription portal entry point and FAQs
+- `/account` — customer overview, profile, addresses and orders; `/account/sign-in` is the entry point
 
-The cart API proxy is at `/api/cart`. It creates and updates Shopify carts on the server, stores the cart ID in the browser, and sends buyers to Shopify's `checkoutUrl` to complete payment.
+The cart API is at `/api/cart`. It creates and updates Shopify carts on the server, the browser keeps the cart ID in `localStorage`, and buyers go to Shopify's `checkoutUrl` to pay.
+
+Customer sign-in, account pages and cart merging are described in [docs/customer-accounts.md](docs/customer-accounts.md), including environment variables, customer metafields and Shopify settings. There is no database.
 
 ## Content note
 
