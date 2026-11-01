@@ -82,7 +82,7 @@ const layoutReviews: ProductReview[] = [
 
 // Layout content loads in development only; in production this returns null until real reviews exist.
 export function getReviewData(): { reviews: ProductReview[]; summaries: Record<ReviewCategory, RatingSummary> } | null {
-  if (process.env.NODE_ENV === "production") return null;
+  // if (process.env.NODE_ENV === "production") return null;
   return { reviews: layoutReviews, summaries: layoutSummaries };
 }
 
