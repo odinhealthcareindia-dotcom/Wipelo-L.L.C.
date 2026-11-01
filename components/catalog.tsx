@@ -5,6 +5,7 @@ import { AddProductButton } from "@/components/add-product-button";
 import { Parallax } from "@/components/motion/parallax";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { getProductCategory, getProductProfile } from "@/lib/product-profiles";
+import { maxPlanSavingsPercent } from "@/lib/subscriptions";
 
 function firstVariant(product: ShopifyProduct) {
   return product.variants.find((variant) => variant.availableForSale) ?? product.variants[0] ?? null;
@@ -25,6 +26,7 @@ export function StoreSetupNote({ compact = false }: { compact?: boolean }) {
 function ProductCard({ product, compact = false }: { product: ShopifyProduct; compact?: boolean }) {
   const variant = firstVariant(product);
   const image = product.featuredImage ?? product.images[0] ?? null;
+  const subscribeSaving = maxPlanSavingsPercent(product);
   return <article className={`sku-card product-card${compact ? " product-card-compact" : ""}`}>
     <Link className="sku-stage st-cream product-stage" href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
       {image ? <img className="product-card-image" src={image.url} alt={image.altText || product.title} /> : <div className="product-pack-art"><span className="p-cat">Functional wet wipes</span><span className="p-name">Wipelo</span><span className="p-sku">{product.title}</span></div>}
@@ -34,9 +36,10 @@ function ProductCard({ product, compact = false }: { product: ShopifyProduct; co
       <span className="who">{getProductProfile(product).badge}</span>
       <Link href={`/products/${product.handle}`}><h3>{product.title}</h3></Link>
       {productSummary(product) && <p className="tag">{productSummary(product)}</p>}
+      {subscribeSaving > 0 && <Link className="sku-subscribe" href={`/products/${product.handle}`}>Subscribe &amp; save up to {subscribeSaving}%</Link>}
       <div className="sku-foot">
         <div className="price">{moneyLabel(product.priceRange.minVariantPrice)}{product.priceRange.minVariantPrice.amount !== product.priceRange.maxVariantPrice.amount && <span className="per"> – {moneyLabel(product.priceRange.maxVariantPrice)}</span>}</div>
-        {variant?.availableForSale ? <AddProductButton variant={variant} className="sku-add">Add +</AddProductButton> : <Link className="sku-add" href={`/products/${product.handle}`}>View →</Link>}
+        {variant?.availableForSale && !product.requiresSellingPlan ? <AddProductButton variant={variant} className="sku-add">Add +</AddProductButton> : <Link className="sku-add" href={`/products/${product.handle}`}>View →</Link>}
       </div>
     </div>
   </article>;
@@ -93,7 +96,7 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
       {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}
       <Link href={`/products/${product.handle}`}><h3>{product.title.replace(/^wipelo\s*/i, "")}</h3></Link>
       <div className="cmpx-price">{moneyLabel(min)}{min.amount !== max.amount && <span> – {moneyLabel(max)}</span>}</div>
-      {variant?.availableForSale ? <AddProductButton variant={variant} className="cmpx-add">Add to bag</AddProductButton> : <Link className="cmpx-add" href={`/products/${product.handle}`}>View product</Link>}
+      {variant?.availableForSale && !product.requiresSellingPlan ? <AddProductButton variant={variant} className="cmpx-add">Add to bag</AddProductButton> : <Link className="cmpx-add" href={`/products/${product.handle}`}>View product</Link>}
     </div>
     {compareRows.map((row) => <div className="cmpx-cell" data-label={row.label} key={row.key}>{spec?.[row.key] ?? (row.key === "bestFor" ? productSummary(product) : "—")}</div>)}
   </Reveal>;

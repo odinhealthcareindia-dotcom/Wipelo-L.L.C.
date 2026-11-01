@@ -22,13 +22,9 @@ function validateLines(value: unknown): ShopifyCartLineInput[] | null {
     if (!item || typeof item.merchandiseId !== "string" || !item.merchandiseId.startsWith("gid://shopify/ProductVariant/")) return null;
     const quantity = Number(item.quantity);
     if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) return null;
-    result.push({
-      merchandiseId: item.merchandiseId,
-      quantity,
-      ...(typeof item.sellingPlanId === "string" && item.sellingPlanId.startsWith("gid://shopify/SellingPlan/")
-        ? { sellingPlanId: item.sellingPlanId }
-        : {}),
-    });
+    // A bad plan ID must fail: dropping it would quietly turn a subscription into a one-time purchase.
+    if (item.sellingPlanId != null && (typeof item.sellingPlanId !== "string" || !item.sellingPlanId.startsWith("gid://shopify/SellingPlan/"))) return null;
+    result.push({ merchandiseId: item.merchandiseId, quantity, ...(item.sellingPlanId ? { sellingPlanId: item.sellingPlanId } : {}) });
   }
   return result;
 }

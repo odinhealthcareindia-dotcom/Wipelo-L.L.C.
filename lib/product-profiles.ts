@@ -105,8 +105,6 @@ export type ProductProfile = {
   heroSpecs: { label: string; value: string }[];
   // Short safety line under the buy box.
   heroSafety: string;
-  // A subscription offer from the product brief, shown as "Soon" until Shopify selling plans exist.
-  plannedSubscription?: { savingsPercent: number; perk: string };
 };
 
 /* ---------- Category detection ---------- */
@@ -221,7 +219,6 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       heroKicker: "Between-shower body care · Underarms · Feet · Body",
       heroSpecs: [{ label: "Odor binder", value: "Zinc ricinoleate" }, { label: "Lotion pH", value: "Target 4.5–5.0" }, { label: "Cloth", value: "~20 × 20 cm, two-sided" }, { label: "Free from", value: "Ethanol · parabens · MIT/CMIT" }],
       heroSafety: "For external use only. Not an antiperspirant or a substitute for washing. This version contains fragrance. Do not flush.",
-      plannedSubscription: { savingsPercent: 10, perk: "+ Welcome Kit on first order" },
       relatedHandles: ["her", "spotless"],
     };
   }
@@ -319,7 +316,6 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       heroKicker: "Body pore care · Chest · Shoulders · Back",
       heroSpecs: [{ label: "Active", value: "Proposed 0.5% salicylic acid" }, { label: "Lotion pH", value: "Target ~3.9" }, { label: "Cloth", value: "~60 gsm, leave-on" }, { label: "Free from", value: "Fragrance · ethanol · parabens" }],
       heroSafety: "For external use only. Avoid eyes, lips, mucosa and broken skin. Use sunscreen on exposed skin. Do not flush.",
-      plannedSubscription: { savingsPercent: 10, perk: "+ Welcome Kit on first order" },
       relatedHandles: ["her", "on-the-go"],
     };
   }
@@ -417,7 +413,6 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       heroKicker: "External intimate skin care · Fragrance-free",
       heroSpecs: [{ label: "pH system", value: "Lactic acid + sodium lactate" }, { label: "Lotion pH", value: "Target 3.8–4.5" }, { label: "Cloth", value: "~15 × 20 cm, smooth" }, { label: "Free from", value: "Fragrance · ethanol · parabens" }],
       heroSafety: "External use only — never insert. Not a treatment or a way to regulate vaginal pH. Do not flush.",
-      plannedSubscription: { savingsPercent: 10, perk: "+ Welcome Kit on first order" },
       relatedHandles: ["on-the-go", "spotless"],
     };
   }

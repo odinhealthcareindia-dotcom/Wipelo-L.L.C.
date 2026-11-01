@@ -1,7 +1,6 @@
 const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN?.trim().replace(/^https?:\/\//, "").replace(/\/$/, "");
 const SHOPIFY_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN?.trim();
 export const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION || "2026-07";
-const SHOPIFY_API_ENABLED = process.env.SHOPIFY_ENABLE_SELLING_PLANS === "true";
 const DEFAULT_PRODUCT_METAFIELDS = [
   "wipelo.function",
   "wipelo.active",
@@ -23,7 +22,7 @@ const PRODUCT_METAFIELDS = [...new Set([
 export type ShopifyMoney = { amount: string; currencyCode: string };
 export type ShopifyImage = { url: string; altText: string | null; width?: number | null; height?: number | null };
 export type ShopifyOption = { name: string; value: string };
-export type ShopifySellingPlan = { id: string; name: string; description: string | null };
+export type ShopifySellingPlan = { id: string; name: string; description: string | null; recurringDeliveries: boolean; options: { name: string | null; value: string | null }[] };
 export type ShopifyPlanAllocation = {
   sellingPlan: ShopifySellingPlan;
   checkoutChargeAmount: ShopifyMoney;
@@ -48,6 +47,7 @@ export type ShopifyProduct = {
   description: string;
   descriptionHtml: string;
   availableForSale: boolean;
+  requiresSellingPlan: boolean;
   featuredImage: ShopifyImage | null;
   images: ShopifyImage[];
   priceRange: { minVariantPrice: ShopifyMoney; maxVariantPrice: ShopifyMoney };
@@ -75,24 +75,48 @@ export function shopifyStoreDomain() {
   return SHOPIFY_DOMAIN || null;
 }
 
+type StorefrontPayload<T> = { data?: T | null; errors?: { message: string; extensions?: { code?: string } }[] };
+
+async function storefrontRequest<T>(query: string, variables: Record<string, unknown> | undefined, cache: RequestCache): Promise<StorefrontPayload<T>> {
+  const response = await fetch(`https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Storefront-Access-Token": SHOPIFY_TOKEN!,
+    },
+    body: JSON.stringify({ query, variables }),
+    cache,
+    ...(cache === "force-cache" ? { next: { revalidate: 60, tags: ["shopify", "shopify-products"] } } : {}),
+  });
+  if (!response.ok) throw new Error(`Shopify responded with HTTP ${response.status}`);
+  return response.json();
+}
+
+// Selling-plan fields fail the whole query unless the token has unauthenticated_read_selling_plans,
+// so they are only requested once Shopify confirms access. Products keep selling one-time without it.
+let warnedPlanAccess = false;
+async function canReadSellingPlans() {
+  try {
+    const payload = await storefrontRequest(`{ products(first: 1) { nodes { sellingPlanGroups(first: 1) { nodes { name } } } } }`, undefined, "force-cache");
+    const denied = Boolean(payload.errors?.some((error) => error.extensions?.code === "ACCESS_DENIED"));
+    if (denied && !warnedPlanAccess) {
+      warnedPlanAccess = true;
+      console.warn("Shopify Storefront token lacks unauthenticated_read_selling_plans; subscriptions are hidden.");
+    }
+    return !denied;
+  } catch {
+    return false;
+  }
+}
+
 async function storefrontQuery<T>(query: string, variables?: Record<string, unknown>, cache: RequestCache = "force-cache"): Promise<T | null> {
   if (!isShopifyConfigured()) return null;
 
   try {
-    const response = await fetch(`https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": SHOPIFY_TOKEN!,
-      },
-      body: JSON.stringify({ query, variables }),
-      cache,
-      ...(cache === "force-cache" ? { next: { revalidate: 60, tags: ["shopify", "shopify-products"] } } : {}),
-    });
-    if (!response.ok) throw new Error(`Shopify responded with HTTP ${response.status}`);
-    const payload = await response.json();
-    if (payload.errors?.length) throw new Error(payload.errors.map((error: { message: string }) => error.message).join("; "));
-    return (payload.data ?? null) as T | null;
+    const planVariables = query.includes("$sellingPlans") ? { sellingPlans: await canReadSellingPlans() } : {};
+    const payload = await storefrontRequest<T>(query, { ...variables, ...planVariables }, cache);
+    if (payload.errors?.length) throw new Error(payload.errors.map((error) => error.message).join("; "));
+    return payload.data ?? null;
   } catch (error) {
     console.error("Shopify Storefront API request failed:", error);
     return null;
@@ -100,15 +124,15 @@ async function storefrontQuery<T>(query: string, variables?: Record<string, unkn
 }
 
 const IMAGE_FIELDS = `url altText width height`;
-const VARIANT_PLAN_FIELDS = SHOPIFY_API_ENABLED ? `
-  sellingPlanAllocations(first: 20) {
+const VARIANT_PLAN_FIELDS = `
+  sellingPlanAllocations(first: 20) @include(if: $sellingPlans) {
     nodes {
       checkoutChargeAmount { amount currencyCode }
-      sellingPlan { id name description }
+      sellingPlan { id name description recurringDeliveries options { name value } }
     }
-  }` : "";
+  }`;
 const PRODUCT_FIELDS = `
-  id handle title productType tags description descriptionHtml availableForSale
+  id handle title productType tags description descriptionHtml availableForSale requiresSellingPlan
   featuredImage { ${IMAGE_FIELDS} }
   images(first: 20) { nodes { ${IMAGE_FIELDS} } }
   priceRange { minVariantPrice { amount currencyCode } maxVariantPrice { amount currencyCode } }
@@ -147,7 +171,7 @@ export async function getProducts(first = 50): Promise<ShopifyProduct[]> {
   let after: string | null = null;
   for (let page = 0; page < 50; page += 1) {
     const data: { products: ShopifyProductConnection } | null = await storefrontQuery<{ products: ShopifyProductConnection }>(
-      `query WipeloProducts($first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!) {
+      `query WipeloProducts($first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!, $sellingPlans: Boolean!) {
         products(first: $first, after: $after, sortKey: TITLE) {
           nodes { ${PRODUCT_FIELDS} }
           pageInfo { hasNextPage endCursor }
@@ -165,7 +189,7 @@ export async function getProducts(first = 50): Promise<ShopifyProduct[]> {
 
 export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {
   const data = await storefrontQuery<{ product: ShopifyProductPayload | null }>(
-    `query WipeloProduct($handle: String!, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!) { product(handle: $handle) { ${PRODUCT_FIELDS} } }`,
+    `query WipeloProduct($handle: String!, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!, $sellingPlans: Boolean!) { product(handle: $handle) { ${PRODUCT_FIELDS} } }`,
     { handle, metafieldIdentifiers: PRODUCT_METAFIELDS },
   );
   return data?.product ? normalizeProduct(data.product) : null;
@@ -173,7 +197,7 @@ export async function getProductByHandle(handle: string): Promise<ShopifyProduct
 
 export async function getCollectionByHandle(handle: string): Promise<ShopifyCollection | null> {
   const data = await storefrontQuery<{ collection: Omit<ShopifyCollection, "products"> & { products: ShopifyProductConnection } | null }>(
-    `query WipeloCollection($handle: String!, $first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!) {
+    `query WipeloCollection($handle: String!, $first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!, $sellingPlans: Boolean!) {
       collection(handle: $handle) {
         id handle title description
         products(first: $first, after: $after, sortKey: TITLE) {
@@ -190,7 +214,7 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
   let after = firstPage.pageInfo.endCursor;
   for (let page = 1; page < 50 && firstPage.pageInfo.hasNextPage && after; page += 1) {
     const next = await storefrontQuery<{ collection: { products: ShopifyProductConnection } | null }>(
-      `query WipeloCollectionPage($handle: String!, $first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!) {
+      `query WipeloCollectionPage($handle: String!, $first: Int!, $after: String, $metafieldIdentifiers: [HasMetafieldsIdentifier!]!, $sellingPlans: Boolean!) {
         collection(handle: $handle) {
           products(first: $first, after: $after, sortKey: TITLE) {
             nodes { ${PRODUCT_FIELDS} }
@@ -207,6 +231,16 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
     if (!connection.pageInfo.hasNextPage) break;
   }
   return { ...collection, products };
+}
+
+export async function getSubscriptionPolicyUrl() {
+  const data = await storefrontQuery<{ shop: { subscriptionPolicy: { url: string } | null } }>(`{ shop { subscriptionPolicy { url } } }`);
+  return data?.shop.subscriptionPolicy?.url ?? null;
+}
+
+// Customer accounts is where Shopify Subscriptions lets buyers change or cancel. /account redirects there.
+export function subscriptionPortalUrl() {
+  return process.env.NEXT_PUBLIC_SHOPIFY_ACCOUNT_URL?.trim() || (SHOPIFY_DOMAIN ? `https://${SHOPIFY_DOMAIN}/account` : null);
 }
 
 export type ShopifyCartLineInput = { merchandiseId: string; quantity: number; sellingPlanId?: string | null };
@@ -227,7 +261,7 @@ export type ShopifyCart = {
         price: ShopifyMoney;
         product: { title: string; handle: string };
       };
-      sellingPlanAllocation?: { sellingPlan: { name: string } } | null;
+      sellingPlanAllocation?: { sellingPlan: Pick<ShopifySellingPlan, "id" | "name" | "recurringDeliveries" | "options"> } | null;
     }[];
   };
 };
@@ -244,7 +278,7 @@ const CART_FIELDS = `
           product { title handle }
         }
       }
-      ${SHOPIFY_API_ENABLED ? "sellingPlanAllocation { sellingPlan { name } }" : ""}
+      sellingPlanAllocation @include(if: $sellingPlans) { sellingPlan { id name recurringDeliveries options { name value } } }
     }
   }
 `;
@@ -253,7 +287,7 @@ type CartMutationData = { cart: ShopifyCart | null; userErrors: { message: strin
 
 export async function getCart(cartId: string) {
   const data = await storefrontQuery<{ cart: ShopifyCart | null }>(
-    `query WipeloCart($id: ID!) { cart(id: $id) { ${CART_FIELDS} } }`,
+    `query WipeloCart($id: ID!, $sellingPlans: Boolean!) { cart(id: $id) { ${CART_FIELDS} } }`,
     { id: cartId },
     "no-store",
   );
@@ -262,7 +296,7 @@ export async function getCart(cartId: string) {
 
 export async function createCart(lines: ShopifyCartLineInput[]) {
   return storefrontQuery<{ cartCreate: CartMutationData }>(
-    `mutation WipeloCartCreate($input: CartInput!) {
+    `mutation WipeloCartCreate($input: CartInput!, $sellingPlans: Boolean!) {
       cartCreate(input: $input) { cart { ${CART_FIELDS} } userErrors { field message } }
     }`,
     { input: { lines } },
@@ -272,7 +306,7 @@ export async function createCart(lines: ShopifyCartLineInput[]) {
 
 export async function addCartLines(cartId: string, lines: ShopifyCartLineInput[]) {
   return storefrontQuery<{ cartLinesAdd: CartMutationData }>(
-    `mutation WipeloCartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    `mutation WipeloCartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!, $sellingPlans: Boolean!) {
       cartLinesAdd(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } userErrors { field message } }
     }`,
     { cartId, lines },
@@ -282,7 +316,7 @@ export async function addCartLines(cartId: string, lines: ShopifyCartLineInput[]
 
 export async function updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
   return storefrontQuery<{ cartLinesUpdate: CartMutationData }>(
-    `mutation WipeloCartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    `mutation WipeloCartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!, $sellingPlans: Boolean!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } userErrors { field message } }
     }`,
     { cartId, lines },
@@ -292,7 +326,7 @@ export async function updateCartLines(cartId: string, lines: { id: string; quant
 
 export async function removeCartLines(cartId: string, lineIds: string[]) {
   return storefrontQuery<{ cartLinesRemove: CartMutationData }>(
-    `mutation WipeloCartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    `mutation WipeloCartLinesRemove($cartId: ID!, $lineIds: [ID!]!, $sellingPlans: Boolean!) {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { ${CART_FIELDS} } userErrors { field message } }
     }`,
     { cartId, lineIds },
