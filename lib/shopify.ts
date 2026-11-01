@@ -1,3 +1,5 @@
+import "server-only";
+
 const SHOPIFY_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN?.trim().replace(/^https?:\/\//, "").replace(/\/$/, "");
 const SHOPIFY_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN?.trim();
 export const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION || "2026-07";
@@ -77,15 +79,17 @@ export function shopifyStoreDomain() {
 
 type StorefrontPayload<T> = { data?: T | null; errors?: { message: string; extensions?: { code?: string } }[] };
 
-async function storefrontRequest<T>(query: string, variables: Record<string, unknown> | undefined, cache: RequestCache): Promise<StorefrontPayload<T>> {
+export async function storefrontRequest<T>(query: string, variables: Record<string, unknown> | undefined, cache: RequestCache, headers: Record<string, string> = {}): Promise<StorefrontPayload<T>> {
   const response = await fetch(`https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-Shopify-Storefront-Access-Token": SHOPIFY_TOKEN!,
+      ...headers,
     },
     body: JSON.stringify({ query, variables }),
     cache,
+    signal: AbortSignal.timeout(10_000),
     ...(cache === "force-cache" ? { next: { revalidate: 60, tags: ["shopify", "shopify-products"] } } : {}),
   });
   if (!response.ok) throw new Error(`Shopify responded with HTTP ${response.status}`);
@@ -95,7 +99,7 @@ async function storefrontRequest<T>(query: string, variables: Record<string, unk
 // Selling-plan fields fail the whole query unless the token has unauthenticated_read_selling_plans,
 // so they are only requested once Shopify confirms access. Products keep selling one-time without it.
 let warnedPlanAccess = false;
-async function canReadSellingPlans() {
+export async function canReadSellingPlans() {
   try {
     const payload = await storefrontRequest(`{ products(first: 1) { nodes { sellingPlanGroups(first: 1) { nodes { name } } } } }`, undefined, "force-cache");
     const denied = Boolean(payload.errors?.some((error) => error.extensions?.code === "ACCESS_DENIED"));
@@ -233,6 +237,11 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
   return { ...collection, products };
 }
 
+export async function getAvailableCountries() {
+  const data = await storefrontQuery<{ localization: { availableCountries: { isoCode: string; name: string }[] } }>(`{ localization { availableCountries { isoCode name } } }`);
+  return [...(data?.localization.availableCountries ?? [])].sort((x, y) => x.name.localeCompare(y.name));
+}
+
 export async function getSubscriptionPolicyUrl() {
   const data = await storefrontQuery<{ shop: { subscriptionPolicy: { url: string } | null } }>(`{ shop { subscriptionPolicy { url } } }`);
   return data?.shop.subscriptionPolicy?.url ?? null;
@@ -241,95 +250,4 @@ export async function getSubscriptionPolicyUrl() {
 // Customer accounts is where Shopify Subscriptions lets buyers change or cancel. /account redirects there.
 export function subscriptionPortalUrl() {
   return process.env.NEXT_PUBLIC_SHOPIFY_ACCOUNT_URL?.trim() || (SHOPIFY_DOMAIN ? `https://${SHOPIFY_DOMAIN}/account` : null);
-}
-
-export type ShopifyCartLineInput = { merchandiseId: string; quantity: number; sellingPlanId?: string | null };
-export type ShopifyCart = {
-  id: string;
-  checkoutUrl: string;
-  cost: { subtotalAmount: ShopifyMoney; totalAmount: ShopifyMoney };
-  totalQuantity: number;
-  lines: {
-    nodes: {
-      id: string;
-      quantity: number;
-      cost: { totalAmount: ShopifyMoney };
-      merchandise: {
-        id: string;
-        title: string;
-        image: ShopifyImage | null;
-        price: ShopifyMoney;
-        product: { title: string; handle: string };
-      };
-      sellingPlanAllocation?: { sellingPlan: Pick<ShopifySellingPlan, "id" | "name" | "recurringDeliveries" | "options"> } | null;
-    }[];
-  };
-};
-
-const CART_FIELDS = `
-  id checkoutUrl totalQuantity
-  cost { subtotalAmount { amount currencyCode } totalAmount { amount currencyCode } }
-  lines(first: 100) {
-    nodes {
-      id quantity cost { totalAmount { amount currencyCode } }
-      merchandise {
-        ... on ProductVariant {
-          id title image { ${IMAGE_FIELDS} } price { amount currencyCode }
-          product { title handle }
-        }
-      }
-      sellingPlanAllocation @include(if: $sellingPlans) { sellingPlan { id name recurringDeliveries options { name value } } }
-    }
-  }
-`;
-
-type CartMutationData = { cart: ShopifyCart | null; userErrors: { message: string; field: string[] | null }[] };
-
-export async function getCart(cartId: string) {
-  const data = await storefrontQuery<{ cart: ShopifyCart | null }>(
-    `query WipeloCart($id: ID!, $sellingPlans: Boolean!) { cart(id: $id) { ${CART_FIELDS} } }`,
-    { id: cartId },
-    "no-store",
-  );
-  return data?.cart ?? null;
-}
-
-export async function createCart(lines: ShopifyCartLineInput[]) {
-  return storefrontQuery<{ cartCreate: CartMutationData }>(
-    `mutation WipeloCartCreate($input: CartInput!, $sellingPlans: Boolean!) {
-      cartCreate(input: $input) { cart { ${CART_FIELDS} } userErrors { field message } }
-    }`,
-    { input: { lines } },
-    "no-store",
-  );
-}
-
-export async function addCartLines(cartId: string, lines: ShopifyCartLineInput[]) {
-  return storefrontQuery<{ cartLinesAdd: CartMutationData }>(
-    `mutation WipeloCartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!, $sellingPlans: Boolean!) {
-      cartLinesAdd(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } userErrors { field message } }
-    }`,
-    { cartId, lines },
-    "no-store",
-  );
-}
-
-export async function updateCartLines(cartId: string, lines: { id: string; quantity: number }[]) {
-  return storefrontQuery<{ cartLinesUpdate: CartMutationData }>(
-    `mutation WipeloCartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!, $sellingPlans: Boolean!) {
-      cartLinesUpdate(cartId: $cartId, lines: $lines) { cart { ${CART_FIELDS} } userErrors { field message } }
-    }`,
-    { cartId, lines },
-    "no-store",
-  );
-}
-
-export async function removeCartLines(cartId: string, lineIds: string[]) {
-  return storefrontQuery<{ cartLinesRemove: CartMutationData }>(
-    `mutation WipeloCartLinesRemove($cartId: ID!, $lineIds: [ID!]!, $sellingPlans: Boolean!) {
-      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) { cart { ${CART_FIELDS} } userErrors { field message } }
-    }`,
-    { cartId, lineIds },
-    "no-store",
-  );
 }

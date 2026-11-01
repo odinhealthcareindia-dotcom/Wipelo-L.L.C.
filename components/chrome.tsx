@@ -16,7 +16,9 @@ const navItems = [
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { cart, openCart } = useStorefrontCart();
+  const { cart, openCart, signedIn } = useStorefrontCart();
+  // "Account" until the first response, and for signed-in customers. /account handles both states.
+  const accountLabel = signedIn === false ? "Sign in" : "Account";
 
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
@@ -35,8 +37,9 @@ export function SiteHeader() {
         <Link href="/" className="nav-brand">Wipelo<span className="tm">Functional wet wipes</span></Link>
         <nav className={`nav-links${menuOpen ? " open" : ""}`} aria-label="Main">
           {navItems.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenuOpen(false)} aria-current={pathname === href ? "page" : undefined}>{label}</Link>)}
+          <Link className="nav-account-menu" href="/account" onClick={() => setMenuOpen(false)} aria-current={pathname.startsWith("/account") ? "page" : undefined}>{accountLabel}</Link>
         </nav>
-        <div className="nav-cta"><button className="cart-btn" onClick={openCart}>Cart <m.span key={count} className="cart-count" initial={firstCount.current ? false : { scale: 0.8 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 18 }}>{count}</m.span></button><button className={`burger${menuOpen ? " on" : ""}`} aria-label="Toggle menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><span /><span /><span /></button></div>
+        <div className="nav-cta"><Link className="nav-account" href="/account" aria-current={pathname.startsWith("/account") ? "page" : undefined}>{accountLabel}</Link><button className="cart-btn" onClick={openCart}>Cart <m.span key={count} className="cart-count" initial={firstCount.current ? false : { scale: 0.8 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 18 }}>{count}</m.span></button><button className={`burger${menuOpen ? " on" : ""}`} aria-label="Toggle menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><span /><span /><span /></button></div>
       </div>
     </header>
   </>;
