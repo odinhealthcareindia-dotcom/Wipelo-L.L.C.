@@ -8,9 +8,9 @@ import { useAutoRotate } from "./use-auto-rotate";
 const SHUFFLE_MS = 2000;
 
 const packs = [
-  { id: "otg", href: "/products/on-the-go", image: "/images/portable-packs/on-the-go.webp", sku: "ON THE GO", value: "Zinc ricinoleate", tag: "odor-binding" },
-  { id: "spotless", href: "/products/spotless", image: "/images/portable-packs/spotless.webp", sku: "SPOTLESS", value: "0.5% salicylic acid", tag: "planned" },
-  { id: "her", href: "/products/her", image: "/images/portable-packs/her.webp", sku: "HER", value: "Fragrance-free", tag: "external use" },
+  { id: "otg", href: "/products/on-the-go", image: "/images/portable-packs/on-the-go.png", sku: "ON THE GO", value: "Zinc ricinoleate", tag: "odor-binding" },
+  { id: "spotless", href: "/products/spotless", image: "/images/portable-packs/spotless.png", sku: "SPOTLESS", value: "0.5% salicylic acid", tag: "planned" },
+  { id: "her", href: "/products/her", image: "/images/portable-packs/her.png", sku: "HER", value: "Fragrance-free", tag: "external use" },
 ];
 
 const slotNames = ["front", "middle", "back"];

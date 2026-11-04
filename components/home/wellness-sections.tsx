@@ -131,7 +131,7 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
       </div>
     </section> */}
 
-    <section className="sec dark wellness-section needs-section" aria-labelledby="wellness-purpose-title">
+    <section className="sec wellness-section needs-section" aria-labelledby="wellness-purpose-title">
       <div className="wrap">
         <Reveal>
           <NeedsScience heading={<Stagger className="needs-head" gap={0.09}>

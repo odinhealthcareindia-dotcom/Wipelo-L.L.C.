@@ -39,9 +39,9 @@ const jobs = [
     body: "A fragrance-free wipe for occasional external cleansing. The planned lactic acid and sodium lactate formula is pH-considerate.",
     active: "0% fragrance",
     use: "External skin only",
-    image: "/images/mechanism/her-use.webp",
+    image: "/images/mechanism/her-use2.png",
     alt: "Hand holding a Wipelo wipe against the upper thigh, below linen shorts",
-    pack: "/images/mechanism/her-sachet.webp",
+    pack: "/images/mechanism/her-use2.png",
   },
 ];
 
