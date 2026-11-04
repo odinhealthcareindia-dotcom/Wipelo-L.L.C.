@@ -26,9 +26,9 @@ const jobs = [
     body: "The planned 0.5% salicylic acid leave-on formula is designed for breakout-prone body skin. Niacinamide, glycerin and panthenol support skin conditioning.",
     active: "0.5% salicylic acid",
     use: "Back · chest · shoulders",
-    image: "/images/mechanism/spotless-use.webp",
+    image: "/images/mechanism/spotless-use.png",
     alt: "Person pressing a Wipelo wipe onto their shoulder, with small breakouts visible across their back",
-    pack: "/images/mechanism/spotless-sachet.webp",
+    pack: "/images/mechanism/spotless-use.png",
   },
   {
     numeral: "III",
