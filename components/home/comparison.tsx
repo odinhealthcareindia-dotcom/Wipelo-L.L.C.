@@ -37,9 +37,7 @@ const markPop: Variants = {
 function MarkCell({ mark, us = false }: { mark: Mark; us?: boolean }) {
   // Only Wipelo's column pops in on scroll; the competitor column re-mounts on every switch and fades in instead.
   return <m.span className="honest-mark" variants={us ? markPop : undefined}>
-    {mark.ok === true && <span className={`honest-yes${us ? " is-us" : ""}`} aria-label="Yes">
-      <svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2.5 6.2 5 8.6l4.6-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-    </span>}
+    {mark.ok === true && <span className={`honest-yes${us ? " is-us" : ""}`} aria-label="Yes">✓</span>}
     {mark.ok === false && <span className="honest-no" aria-label="No">
       <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
     </span>}

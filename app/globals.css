@@ -1827,8 +1827,7 @@ body::after{
 .honest-price{font:600 clamp(26px,2.6vw,34px)/1 var(--fr)!important;color:var(--hn-ink)}
 .honest-table td.is-them.honest-price{color:rgba(16,33,31,.68)}
 .honest-mark{display:inline-flex;align-items:center;justify-content:center;gap:10px}
-.honest-yes{display:inline-flex;align-items:center;justify-content:center;flex:none;width:24px;height:24px;border-radius:50%;background:#DDEDE7;color:var(--hn-yes)}
-.honest-yes.is-us{width:26px;height:26px;background:var(--hn-yes);color:#fff}
+.honest-yes{display:inline-flex;flex:none;color:var(--teal-deep);font-weight:700;line-height:1}
 .honest-no{display:inline-flex;color:rgba(16,33,31,.5)}
 .honest-na{color:rgba(16,33,31,.45)}
 .honest-text{color:rgba(16,33,31,.66);font-size:.92em}
@@ -2312,8 +2311,6 @@ main{overflow-x:clip}
 .honest-table thead th.is-them{background:rgba(255,255,255,.4)}
 .honest-table td.is-us{background:rgba(19,184,159,.1)}
 .honest-table td.is-them{background:rgba(255,255,255,.28)}
-.honest-yes{background:rgba(255,255,255,.65);box-shadow:inset 0 0 0 1px rgba(15,140,122,.18)}
-.honest-yes.is-us{box-shadow:0 4px 10px -4px rgba(15,140,122,.6)}
 
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .honest-card{background:#fff}
@@ -2363,8 +2360,6 @@ main{overflow-x:clip}
   /* .honest-table tbody tr:hover td.is-us{background:linear-gradient(90deg,rgba(19,184,159,.3),rgba(255,255,255,.3) 50%,rgba(19,184,159,.3))} */
   .honest-table tbody tr:hover td.is-them{background:rgba(255,255,255,.55)}
 }
-.honest-yes.is-us{background:linear-gradient(160deg,#16A58F,#0C7A6A);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 10px -4px rgba(15,140,122,.6)}
-.honest-yes:not(.is-us){background:rgba(255,255,255,.7);box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgba(15,140,122,.2)}
 
 /* "A wipe for the moment you need it most" on the same dark green as the science section. */
 .portable-section{--pt-ink:var(--cream);--pt-teal:#5BC0A6;background:#0C2420;color:var(--cream)}
@@ -2520,39 +2515,42 @@ main{overflow-x:clip}
 
 .portable-section .portable-facts{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.38);box-shadow:none;color:#05221E}
 
-/* "Each with its own science" on flat brand teal (#00B4A0): no gradients or glows,
-   dark-green text for contrast, flat translucent white panes. */
-.needs-section{--nd-bg:#00B4A0;background:#00B4A0;color:#05221E}
+/* "Each with its own science" on the quiz palette: mist ground, abyss text,
+   teal-deep accents, flat cream cards. */
+.needs-section{--nd-bg:var(--mist);background:var(--mist);color:var(--ink)}
 .needs-section::before,.needs-section::after,.needs-section .wrap::before,
 .science-panel::before,.science-panel::after,
 .science-product::before{display:none}
-.needs-section .needs-tag{color:#05221E;opacity:.8}
-.needs-section .needs-head h2{color:#05221E}
-.needs-section .needs-head h2 em{color:#fff}
+.needs-section .needs-tag{color:var(--teal-deep)}
+.needs-section .needs-head h2{color:var(--ink)}
+.needs-section .needs-head h2 em{color:var(--teal-deep)}
 
-.needs-section .science-switch{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.38);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-.needs-section .science-switch button{color:#05221E}
-.needs-section .science-switch button:hover{color:#05221E;background:rgba(255,255,255,.18)}
-.needs-section .science-switch button.is-active{background:#05221E;color:#fff;box-shadow:0 8px 20px -12px rgba(5,34,30,.7)}
-.needs-section .science-switch button:focus-visible{outline-color:#05221E}
-.needs-section .science-progress{background:rgba(255,255,255,.2)}
+.needs-section .science-switch{background:var(--cream);border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.needs-section .science-switch button{color:var(--ink)}
+.needs-section .science-switch button:hover{color:var(--teal-deep);background:#fff}
+.needs-section .science-switch button.is-active{background:var(--ink);color:var(--cream);box-shadow:0 8px 20px -12px rgba(5,34,30,.7)}
+.needs-section .science-switch button:focus-visible{outline-color:var(--teal-deep)}
+.needs-section .science-progress{background:rgba(250,245,239,.18)}
 
-.needs-section .science-product{border-color:rgba(255,255,255,.6);box-shadow:0 22px 44px -28px rgba(5,34,30,.5);backdrop-filter:none;-webkit-backdrop-filter:none}
-.needs-section .science-tone-mint{background:#E2F1EC}
-.needs-section .science-tone-stone{background:#EDEFEE}
-.needs-section .science-tone-sand{background:#F4EDE2}
+.needs-section .science-product{border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.needs-section .science-tone-mint,.needs-section .science-tone-stone,.needs-section .science-tone-sand{background:var(--cream)}
+/* The pack shot fills the whole card; the head and spec tiles sit on top of it. */
+.needs-section .science-pack{position:static}
+.needs-section .science-pack-img{position:absolute;inset:0;z-index:0;width:auto;height:auto;min-height:0;max-height:none;aspect-ratio:auto;border-radius:0}
+.needs-section .science-pack-img img{object-position:center}
+.needs-section .science-pack-img::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(250,245,239,.7),rgba(250,245,239,0) 22%,rgba(250,245,239,0) 70%,rgba(250,245,239,.5))}
 .needs-section .science-specs div{background:#fff;border-color:rgba(5,34,30,.06);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
 
-.needs-section .science-detail{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.38);box-shadow:0 22px 44px -28px rgba(5,34,30,.5);backdrop-filter:none;-webkit-backdrop-filter:none}
-.needs-section .science-detail h3{color:#05221E}
-.needs-section .science-dose{color:#fff}
-.needs-section .science-actives b{color:#05221E}
-.needs-section .science-actives p{color:rgba(5,34,30,.78)}
-.needs-section .science-actives{border-bottom-color:rgba(5,34,30,.14)}
-.needs-section .science-icon{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.45);color:#05221E;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-.needs-section .science-note{color:rgba(5,34,30,.7)}
-.needs-section .science-btn{background:#05221E;color:#fff;box-shadow:0 14px 30px -16px rgba(5,34,30,.7)}
-.needs-section .science-btn span{color:#8FE3CC}
+.needs-section .science-detail{background:var(--cream);border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.needs-section .science-detail h3{color:var(--ink)}
+.needs-section .science-dose{color:var(--teal-deep)}
+.needs-section .science-actives b{color:var(--ink)}
+.needs-section .science-actives p{color:var(--ink-60)}
+.needs-section .science-actives{border-bottom-color:var(--hairline)}
+.needs-section .science-icon{background:var(--mist);border-color:transparent;color:var(--teal-deep);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.needs-section .science-note{color:var(--ink-40)}
+.needs-section .science-btn{background:var(--ink);color:var(--cream);box-shadow:0 14px 30px -16px rgba(5,34,30,.7)}
+.needs-section .science-btn span{color:var(--teal-bright)}
 .needs-section .science-btn:hover{filter:none;background:#0b2f2a}
 
 /* ===================== Product page (pdp6) =====================
