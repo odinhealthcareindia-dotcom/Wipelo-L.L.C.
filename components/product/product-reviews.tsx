@@ -116,7 +116,7 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
               {SORTS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
             </select>
           </label>
-          <a className="pdp6-rev-write" href={`mailto:founder@wipelo.com?subject=${encodeURIComponent(`Review: ${productTitle}`)}`}>Write a review</a>
+          <a className="pdp6-rev-write" href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${productTitle}`)}`}>Write a review</a>
         </div>
       </div>
 

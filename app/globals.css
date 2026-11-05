@@ -3318,3 +3318,34 @@ html:has(.pdp6-lb[open]){overflow:hidden}
   .account-nav{position:static;flex-direction:row;flex-wrap:wrap;align-items:center;gap:0 16px;padding-bottom:10px;border-bottom:1px solid rgba(5,34,30,.15)}
   .account-nav form{margin:0 0 0 auto;padding:0;border:0;width:auto}
 }
+
+/* ---------- return policy ---------- */
+.policy-intro{background:var(--mist)}
+.policy-updated{margin-top:18px;font:11px var(--mo);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-60)}
+.policy-body{padding-top:clamp(48px,6vw,80px)}
+.policy-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:clamp(32px,6vw,88px);align-items:start}
+.policy-toc{position:sticky;top:110px}
+.policy-toc .mono-tag{display:block;margin-bottom:14px}
+.policy-toc ol{list-style:none;padding:0;margin:0;border-left:1px solid var(--hairline)}
+.policy-toc a{display:block;padding:7px 0 7px 16px;font-size:13.5px;color:var(--ink-60);text-decoration:none;transition:color .2s}
+.policy-toc a:hover,.policy-toc a:focus-visible{color:var(--teal-deep)}
+.policy-content{max-width:72ch}
+.policy-content>section{padding-bottom:clamp(36px,4vw,52px);margin-bottom:clamp(36px,4vw,52px);border-bottom:1px solid var(--hairline);scroll-margin-top:110px}
+.policy-content>section:last-child{border-bottom:0;margin-bottom:0}
+.policy-content h2{font-size:clamp(26px,2.6vw,34px);margin-bottom:18px}
+.policy-content p,.policy-content li{font-size:15.5px;line-height:1.7;color:var(--ink-60)}
+.policy-content p+p{margin-top:14px}
+.policy-content strong{color:var(--ink);font-weight:600}
+.policy-content ul,.policy-content ol{padding-left:20px;margin:14px 0 0;display:grid;gap:10px}
+.policy-content a{color:var(--teal-deep);text-decoration:underline;text-underline-offset:3px}
+.policy-content .policy-note{margin-top:20px;padding:16px 18px;border-radius:var(--r);background:var(--cream);font-size:14px}
+.policy-highlight{background:var(--teal);color:#fff;border-radius:18px;padding:clamp(28px,4vw,48px)!important;border-bottom:0!important}
+.policy-highlight .mono-tag{display:block;margin-bottom:12px;color:rgba(255,255,255,.8)}
+.policy-highlight h2{color:#fff}
+.policy-highlight p,.policy-highlight li{color:rgba(255,255,255,.9)}
+.policy-highlight strong,.policy-highlight a{color:#fff}
+.policy-steps li::marker{font-family:var(--mo);color:var(--teal-deep)}
+@media (max-width:860px){
+  .policy-grid{grid-template-columns:1fr}
+  .policy-toc{position:static}
+}

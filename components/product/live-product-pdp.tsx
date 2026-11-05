@@ -247,7 +247,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
               <span className={`pdp6-stars${ratingSummary ? " is-rated" : ""}`} aria-hidden="true">★★★★★</span>
               {ratingSummary
                 ? <a href="#reviews">{ratingSummary.average.toFixed(1)} · {ratingSummary.count.toLocaleString("en-US")} reviews</a>
-                : <>New — no reviews yet. <a href={`mailto:founder@wipelo.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
+                : <>New — no reviews yet. <a href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
             </div>
             <div className={`pdp6-overview-wrap${overviewOpen ? " is-open" : ""}`}>
               <p className="pdp6-overview" id="pdp6-overview">{profile.overview}</p>
