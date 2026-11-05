@@ -22,7 +22,12 @@ const footerNavigation = [
   },
   {
     title: "Support",
-    links: [{ label: "FAQs", href: "/#faq" }],
+    links: [
+      { label: "FAQs", href: "/#faq" },
+      { label: "Return Policy", href: "/return-policy" },
+      { label: "Dispute Resolution", href: "/dispute-resolution" },
+      // { label: "30-Day Free Guarantee", href: "/return-policy#guarantee" },
+    ],
   },
 ];
 

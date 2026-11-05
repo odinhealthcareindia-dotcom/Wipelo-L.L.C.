@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "@/components/motion/reveal";
 
 export function GuaranteeSection() {
@@ -9,7 +10,7 @@ export function GuaranteeSection() {
             <span className="mono-tag" style={{ color: "rgba(255,255,255,.8)" }}>// Risk, reversed</span>
             <h2>30 Days Guarantee.</h2>
             <p>Use it for 30 days — really use it. If your body isn't convinced, tell us and we refund every dollar. No return label, no interrogation, no fine print doing push-ups.</p>
-            <p className="fine">Fewer than 1% ever ask.</p>
+            <p className="fine">Fewer than 1% ever ask. <Link href="/return-policy#guarantee" style={{ color: "inherit", textDecoration: "underline", textUnderlineOffset: "3px" }}>See full terms</Link></p>
           </div>
           <div className="guar-seal">
             <div className="seal">
