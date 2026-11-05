@@ -428,7 +428,7 @@ h1,h2,h3{font-family:var(--fr);font-weight:600;letter-spacing:-.02em;line-height
 .wipe-footer-news-field button:hover{background:var(--cream);border-color:var(--cream);color:var(--abyss)}
 .wipe-footer-news-field button:focus-visible{outline:2px solid var(--teal-bright);outline-offset:4px}
 .wipe-footer-news-status{min-height:1.6em;margin:12px 0 0;color:var(--teal-bright);font:400 13px/1.6 var(--in)}
-.wipe-footer-top{display:flex;justify-content:space-between;gap:48px;padding-top:36px;border-top:1px solid rgba(250,245,239,.42)}
+.wipe-footer-top{position:relative;z-index:1;display:flex;justify-content:space-between;gap:48px;padding-top:36px;border-top:1px solid rgba(250,245,239,.42)}
 .wipe-footer-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,72px);width:min(52%,600px)}
 .wipe-footer-column h2{font:500 11px/1.4 var(--in);letter-spacing:.11em;text-transform:uppercase;margin:0 0 14px;color:var(--cream)}
 .wipe-footer-column ul{list-style:none;margin:0;padding:0}
