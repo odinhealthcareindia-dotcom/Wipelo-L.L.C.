@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en">
+  return <html lang="en" data-scroll-behavior="smooth">
     <head><link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" /><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" /><noscript><style>{"[data-motion]{opacity:1!important;transform:none!important}"}</style></noscript></head>
     <body suppressHydrationWarning><MotionProvider><StorefrontProvider><SiteHeader /><main>{children}</main>
     <SiteFooter />

@@ -269,7 +269,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
     {/* Hero: gallery + buy box */}
     <section className="pdp6-hero wrap" id="product">
-      <m.div className="pdp6-gallery" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: heroEase }}>
+      <div className="pdp6-gallery">
         <div className="pdp6-media-frame">
           <div className="pdp6-main-media" onPointerDown={(event) => { swipeStartX.current = event.clientX; }} onPointerUp={(event) => {
             if (swipeStartX.current === null) return;
@@ -288,9 +288,9 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={`Image ${index + 1}: ${item.headline}`} className={index === slideIndex ? "active" : undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" /></button>)}
         </div>
         <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
-      </m.div>
+      </div>
 
-      <m.div className="pdp6-buy" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.08, ease: heroEase }}>
+      <div className="pdp6-buy">
         <span className="pdp6-kicker">{profile.heroKicker}</span>
         <h1>{product.title}</h1>
         <div className="pdp6-rating">
@@ -415,7 +415,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           })}
         </div>
         <p className="pdp6-safety">{profile.heroSafety}</p>
-      </m.div>
+      </div>
     </section>
     <FeaturedInStrip />
     <ProductIntro product={product} category={profile.category} />
