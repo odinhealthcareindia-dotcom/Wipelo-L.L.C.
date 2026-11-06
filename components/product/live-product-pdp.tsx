@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { AnimatePresence, m } from "framer-motion";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ProductGrid } from "@/components/catalog";
 import { FAQAccordion } from "@/components/faq-accordion";
 import { Reveal, Stagger } from "@/components/motion/reveal";
@@ -67,6 +68,12 @@ function Icon({ name }: { name: BenefitIconKey }) {
   return <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{benefitIcons[name]}</svg>;
 }
 
+const heroEase = [0.22, 1, 0.36, 1] as const;
+
+function CheckIcon() {
+  return <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m4.5 10.5 3.5 3.5 7.5-8" /></svg>;
+}
+
 function savingsPercent(variant: ShopifyVariant) {
   const price = Number(variant.price.amount);
   const compareAt = Number(variant.compareAtPrice?.amount ?? 0);
@@ -109,8 +116,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
   const hasSubscription = variants.some((variant) => subscriptionAllocations(variant).length > 0);
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(hasSubscription ? "subscribe" : "one-time");
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [overviewOpen, setOverviewOpen] = useState(false);
+  const quantity = 1;
   const hasLaunchPrice = variants.some((variant) => savingsPercent(variant) > 0);
   const planOptions = useMemo(() => selected ? subscriptionAllocations(selected) : [], [selected]);
   // The middle cadence (every 4 weeks on the current plans) until the shopper picks one; the choice carries across packs.
@@ -159,7 +165,8 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     });
   }, [product.images, profile, title, detailImage]);
   const [slideIndex, setSlideIndex] = useState(0);
-  const slide = slides[slideIndex];
+  const swipeStartX = useRef<number | null>(null);
+  const goToSlide = (step: number) => setSlideIndex((index) => (index + step + slides.length) % slides.length);
 
   // 8. Fallback merges.
   const profileIngredients = profile.ingredients ?? profile.keyIngredients;
@@ -175,11 +182,45 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
       ? { key: "expert", label: "Expert view", eyebrow: profile.expertReview.credentials, title: profile.expertReview.name, body: profile.expertReview.quote, image: profile.expertReview.image, alt: profile.expertReview.imageAlt, href: "#proof" }
       : { key: "role", label: "Product role", eyebrow: profile.badge, title: profile.heroPromise, body: profile.roleSummary, image: profile.lifestyleImage, alt: profile.lifestyleAlt, href: "#why-it-works" },
     { key: "ingredient", label: "Key ingredient", eyebrow: firstIngredient.status, title: firstIngredient.title, body: firstIngredient.body, image: ingredientImage(0), alt: firstIngredient.imageAlt ?? `Wipelo ${title} formula`, href: "#ingredients" },
-    { key: "directions", label: "Directions", eyebrow: profile.usageHeading, title: profile.usageIntro, body: profile.usageRows.map((row) => row.direction).join(" "), image: profile.pdpDirection, alt: `How to use Wipelo ${title}`, href: "#how-to-use" },
+    { key: "directions", label: "Directions", eyebrow: profile.usageHeading, title: profile.usageIntro, body: profile.usageRows.map((row) => row.direction).join(" "), image: profile.pdpDirection, alt: `How to use Wipelo ${title}`, href: "#pdp6-details" },
     { key: "benefit", label: "Benefit", eyebrow: firstBenefit.when ?? profile.benefitsHeading, title: firstBenefit.title, body: firstBenefit.body, image: profile.benefitsTabImage ?? profile.lifestyleImage, alt: `Wipelo ${title} in everyday use`, href: "#why-it-works" },
   ];
   const [tabIndex, setTabIndex] = useState(0);
   const tab = tabs[tabIndex];
+
+  // Product details accordion, closing with shipping and returns.
+  const details = [...profile.productDetails, { label: "Shipping & returns", body: "Free U.S. shipping on orders of $50 or more. The First Pack Promise gives you 30 days from delivery to contact Wipelo about a refund of your first order." }];
+  const [openDetail, setOpenDetail] = useState<number | null>(0);
+  const usageDetailIndex = details.findIndex((detail) => /how to use/i.test(detail.label));
+  const openUsageDetail = () => { if (usageDetailIndex >= 0) setOpenDetail(usageDetailIndex); };
+
+  // Subnav: highlight the section in view and glide one shared underline to its link.
+  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const subnavLinksRef = useRef<HTMLElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const sections = sectionLinks.map((link) => document.getElementById(link.id)).filter((node): node is HTMLElement => Boolean(node));
+    if (!sections.length) return;
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) visible.add(entry.target.id); else visible.delete(entry.target.id); });
+      const current = sectionLinks.find((link) => visible.has(link.id));
+      setActiveSection(current?.id ?? null);
+    }, { rootMargin: "-140px 0px -55% 0px" });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [sectionLinks]);
+  useLayoutEffect(() => {
+    const container = subnavLinksRef.current;
+    const indicator = indicatorRef.current;
+    if (!container || !indicator) return;
+    const link = activeSection ? container.querySelector<HTMLAnchorElement>(`a[href="#${activeSection}"]`) : null;
+    if (!link) { indicator.style.opacity = "0"; return; }
+    indicator.style.opacity = "1";
+    indicator.style.width = `${link.offsetWidth}px`;
+    indicator.style.transform = `translateX(${link.offsetLeft}px)`;
+    if (container.scrollWidth > container.clientWidth) container.scrollTo({ left: link.offsetLeft - container.clientWidth / 2 + link.offsetWidth / 2, behavior: "smooth" });
+  }, [activeSection]);
 
   // 9. Commerce FAQs depend on live data, so they live here rather than in the profile.
   const commerceFaqs = [
@@ -212,152 +253,172 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
   const addSelected = () => { if (selected) void addToCart(selected, plan?.sellingPlan.id, quantity); };
   const total = effectivePrice ? { amount: (Number(effectivePrice.amount) * quantity).toFixed(2), currencyCode: effectivePrice.currencyCode } : null;
-  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `${plan ? "Subscribe" : "Add to cart"} — ${moneyLabel(total)}`;
-  // Saving against buying the same number of wipes as single packs (the compare-at price).
-  const totalSaving = selected?.compareAtPrice && effectivePrice ? (Number(selected.compareAtPrice.amount) - Number(effectivePrice.amount)) * quantity : 0;
+  const heroButtonLabel: ReactNode = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : <>{plan ? "Subscribe" : "Add to bag"} <span aria-hidden="true">·</span> {moneyLabel(total)}</>;
+  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `${plan ? "Subscribe" : "Add to bag"} · ${moneyLabel(total)}`;
 
   return <div className={`pdp6-page product-tone-${profile.category}`}>
-    <nav className="pdp6-subnav" aria-label="On this page">
-      <div className="wrap pdp6-subnav-in">
-        <span className="pdp6-crumb"><Link href="/shop">Shop</Link> / {profile.audience} / <b>{title}</b></span>
-        <div className="pdp6-subnav-links">{sectionLinks.map((link) => <a key={link.id} href={`#${link.id}`}>{link.label}</a>)}</div>
-      </div>
-    </nav>
+    <div className="pdp6-subnav">
+      <nav className="pdp6-subnav-crumbs" aria-label="Breadcrumb">
+        <Link href="/">Home</Link><span aria-hidden="true">/</span><Link href="/shop">Shop</Link><span aria-hidden="true">/</span><b>{title}</b>
+      </nav>
+      <nav ref={subnavLinksRef} className="pdp6-subnav-links" aria-label="Product page sections">
+        <span ref={indicatorRef} className="pdp6-subnav-indicator" aria-hidden="true" />
+        {sectionLinks.map((link) => <a key={link.id} href={`#${link.id}`} className={activeSection === link.id ? "active" : undefined} aria-current={activeSection === link.id ? "location" : undefined}>{link.label}</a>)}
+      </nav>
+    </div>
 
     {/* Hero: gallery + buy box */}
-    <section className="pdp6-hero" id="product">
-      <div className="wrap">
-        <nav className="pdp6-breadcrumb" aria-label="Breadcrumb"><Link href="/shop">Shop</Link> / <span>{profile.audience}</span> / <b>{title}</b></nav>
-        <div className="pdp6-hero-grid">
-          <div className="pdp6-gallery">
-            <div className="pdp6-thumbs" role="tablist" aria-label="Product images">
-              {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={`Image ${index + 1}: ${item.headline}`} className={index === slideIndex ? "is-active" : undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" loading="lazy" /></button>)}
-            </div>
-            <div className="pdp6-stage">
-              {slides.map((item, index) => <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
-              {hasLaunchPrice && <span className="pdp6-stage-pill">New · Launch price</span>}
-              <span className="pdp6-stage-count">{slideIndex + 1} / {slides.length}</span>
-            </div>
+    <section className="pdp6-hero wrap" id="product">
+      <m.div className="pdp6-gallery" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, ease: heroEase }}>
+        <div className="pdp6-media-frame">
+          <div className="pdp6-main-media" onPointerDown={(event) => { swipeStartX.current = event.clientX; }} onPointerUp={(event) => {
+            if (swipeStartX.current === null) return;
+            const deltaX = event.clientX - swipeStartX.current;
+            swipeStartX.current = null;
+            if (Math.abs(deltaX) >= 40) goToSlide(deltaX < 0 ? 1 : -1);
+          }}>
+            {slides.map((item, index) => <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
+            {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>}
+            <span className="pdp6-media-count">{slideIndex + 1} / {slides.length}</span>
           </div>
-
-          <div className="pdp6-buy">
-            <span className="pdp6-kicker">{profile.heroKicker}</span>
-            <h1>{product.title}</h1>
-            <div className="pdp6-rating">
-              <span className={`pdp6-stars${ratingSummary ? " is-rated" : ""}`} aria-hidden="true">★★★★★</span>
-              {ratingSummary
-                ? <a href="#reviews">{ratingSummary.average.toFixed(1)} · {ratingSummary.count.toLocaleString("en-US")} reviews</a>
-                : <>New — no reviews yet. <a href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
-            </div>
-            <div className={`pdp6-overview-wrap${overviewOpen ? " is-open" : ""}`}>
-              <p className="pdp6-overview" id="pdp6-overview">{profile.overview}</p>
-              <button type="button" className="pdp6-more" aria-expanded={overviewOpen} aria-controls="pdp6-overview" onClick={() => setOverviewOpen((open) => !open)}>{overviewOpen ? "Show less" : "Read more"}</button>
-            </div>
-            <dl className="pdp6-specs">{profile.heroSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl>
-
-            <fieldset className="pdp6-variants">
-              <legend>01 · Choose your supply</legend>
-              <div className="pdp6-variant-grid">
-                {variants.map((variant) => {
-                  const saving = savingsPercent(variant);
-                  const isSelected = variant.id === selected?.id;
-                  const [packLabel, countLabel] = variant.title.split("·").map((part) => part.trim());
-                  const wipes = Number(countLabel?.match(/\d+/)?.[0] ?? 0);
-                  return <label key={variant.id} className={`pdp6-variant${isSelected ? " is-selected" : ""}${variant.availableForSale ? "" : " is-unavailable"}`}>
-                    <input type="radio" name={`variant-${product.id}`} checked={isSelected} disabled={!variant.availableForSale} onChange={() => setSelectedId(variant.id)} />
-                    {variant.id === recommendedVariantId && <span className="pdp6-flag">Most popular</span>}
-                    {variant.id === bestValueVariantId && <span className="pdp6-flag is-dark">Best value</span>}
-                    <b className="pdp6-variant-name">{packLabel}</b>
-                    <small className="pdp6-variant-count">{countLabel ?? durationLabel(variant) ?? (variant.availableForSale ? "In stock" : "Sold out")}</small>
-                    <span className="pdp6-variant-price">{moneyLabel(variant.price)}</span>
-                    <small className="pdp6-variant-per">
-                      {variant.compareAtPrice && saving > 0 && <s>{moneyLabel(variant.compareAtPrice)}</s>}
-                      {wipes > 0 && <> {moneyLabel({ amount: (Number(variant.price.amount) / wipes).toFixed(2), currencyCode: variant.price.currencyCode })} / wipe</>}
-                    </small>
-                  </label>;
-                })}
-              </div>
-            </fieldset>
-
-            {hasSubscription && <div className="pdp6-frequency">
-              <span className="pdp6-step">02 · How often</span>
-              <div className={`pdp6-mode${canBuyOnce ? "" : " is-single"}`} role="radiogroup" aria-label="Purchase type">
-                {canBuyOnce && <button type="button" role="radio" aria-checked={!subscribing} className={!subscribing ? "is-active" : undefined} onClick={() => setPurchaseMode("one-time")}>
-                  <b>One-time</b><small>{moneyLabel(selected?.price)} · no recurring charge</small>
-                </button>}
-                <button type="button" role="radio" aria-checked={subscribing} disabled={!activePlan} className={subscribing ? "is-active" : undefined} onClick={() => setPurchaseMode("subscribe")}>
-                  {activePlan
-                    ? <><b>Subscribe{activePlanSaving > 0 ? ` & save ${activePlanSaving}%` : ""}</b><small>{moneyLabel(activePlan.checkoutChargeAmount)} · {deliveryLabel(activePlan.sellingPlan).toLowerCase()}</small></>
-                    : <><b>Subscribe</b><small>Not available for this pack</small></>}
-                </button>
-              </div>
-              {subscribing && planOptions.length > 1 && <fieldset className="pdp6-cadence">
-                <legend>Deliver</legend>
-                <div className="pdp6-cadence-grid">
-                  {planOptions.map((option) => {
-                    const saving = selected ? planSavingsPercent(selected, option) : 0;
-                    const isActive = option.sellingPlan.id === activePlan?.sellingPlan.id;
-                    return <label key={option.sellingPlan.id} className={isActive ? "is-active" : undefined}>
-                      <input type="radio" name={`plan-${product.id}`} checked={isActive} onChange={() => setSelectedPlanId(option.sellingPlan.id)} />
-                      <b>{deliveryLabel(option.sellingPlan)}</b>
-                      <small>{moneyLabel(option.checkoutChargeAmount)}{saving > 0 ? ` · ${saving}% off` : ""}</small>
-                    </label>;
-                  })}
-                </div>
-              </fieldset>}
-            </div>}
-
-            <div className="pdp6-cart-row">
-              <div className="pdp6-qty" role="group" aria-label="Quantity">
-                <button type="button" aria-label="Decrease quantity" disabled={quantity <= 1} onClick={() => setQuantity((value) => Math.max(1, value - 1))}>−</button>
-                <span aria-live="polite">{quantity}</span>
-                <button type="button" aria-label="Increase quantity" disabled={quantity >= 10} onClick={() => setQuantity((value) => Math.min(10, value + 1))}>+</button>
-              </div>
-              <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
-            </div>
-            {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
-            {totalSaving > 0 && <p className="pdp6-saving">You save {moneyLabel({ amount: totalSaving.toFixed(2), currencyCode: selected!.price.currencyCode })} vs. single packs</p>}
-
-            <ul className="pdp6-trust">
-              <li><Icon name="shield" /><b>30-day First Pack Promise</b><span>Refund on your first order. No return label.</span></li>
-              <li><Icon name="travel" /><b>Free U.S. shipping</b><span>On orders of $50 or more.</span></li>
-              <li><Icon name="clock" /><b>Ships in 1–2 days</b><span>Proposed dispatch, in business days.</span></li>
-            </ul>
-            <p className="pdp6-safety">{profile.heroSafety}</p>
-          </div>
+          <button type="button" className="pdp6-media-arrow pdp6-media-prev" aria-label="Show previous image" onClick={() => goToSlide(-1)}><span aria-hidden="true" /></button>
+          <button type="button" className="pdp6-media-arrow pdp6-media-next" aria-label="Show next image" onClick={() => goToSlide(1)}><span aria-hidden="true" /></button>
         </div>
-      </div>
-    </section>
-    <FeaturedInStrip />
-    <ProductIntro product={product} category={profile.category} />
+        <div className="pdp6-media-nav" role="tablist" aria-label="Product images">
+          {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={`Image ${index + 1}: ${item.headline}`} className={index === slideIndex ? "active" : undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" /></button>)}
+        </div>
+        <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
+      </m.div>
 
-    {/* Tell me about + details */}
-    {/* <section className="pdp6-about">
-      <div className="wrap pdp6-about-grid">
-        <div className="pdp6-tabs">
-          <span className="pdp6-eyebrow">Tell me about</span>
-          <div className="pdp6-tablist" role="tablist" aria-label={`About ${title}`}>
-            {tabs.map((item, index) => <button key={item.key} type="button" role="tab" id={`pdp6-tab-${item.key}`} aria-selected={index === tabIndex} aria-controls="pdp6-tabpanel" className={index === tabIndex ? "is-active" : undefined} onClick={() => setTabIndex(index)}>{item.label}</button>)}
+      <m.div className="pdp6-buy" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.08, ease: heroEase }}>
+        <span className="pdp6-kicker">{profile.heroKicker}</span>
+        <h1>{product.title}</h1>
+        <div className="pdp6-rating">
+          <span className={`pdp6-stars${ratingSummary ? " is-rated" : ""}`} aria-hidden="true">★★★★★</span>
+          {ratingSummary
+            ? <a href="#reviews">{ratingSummary.average.toFixed(1)} from {ratingSummary.count.toLocaleString("en-US")} reviews</a>
+            : <>New, no reviews yet. <a href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
+        </div>
+        <p className="pdp6-lead">{profile.overview}</p>
+
+        <div className="pdp6-short-pitch">
+          <span>The short version</span>
+          <p>{profile.shortBenefit}</p>
+          <a href="#why-it-works">See why it earns its place <b aria-hidden="true">→</b></a>
+        </div>
+
+        {variants.length > 1 && <fieldset className="pdp6-variants">
+          <legend>Choose your pack</legend>
+          <div className="pdp6-variant-grid">
+            {variants.map((variant) => {
+              const saving = savingsPercent(variant);
+              const isSelected = variant.id === selected?.id;
+              const [packLabel, countLabel] = variant.title.split("·").map((part) => part.trim());
+              return <label key={variant.id} className={`${isSelected ? "active" : ""}${variant.availableForSale ? "" : " is-unavailable"}`}>
+                {variant.id === recommendedVariantId && <span className="pdp6-variant-badge">Most popular</span>}
+                {variant.id === bestValueVariantId && <span className="pdp6-variant-badge">Best value</span>}
+                <input type="radio" name={`variant-${product.id}`} checked={isSelected} disabled={!variant.availableForSale} onChange={() => setSelectedId(variant.id)} />
+                <span className="pdp6-variant-box">
+                  <strong>{packLabel}</strong>
+                  <small>{variant.availableForSale ? countLabel ?? durationLabel(variant) : "Sold out"}</small>
+                </span>
+                {saving > 0 && <span className="pdp6-variant-save">Save {saving}%</span>}
+              </label>;
+            })}
           </div>
-          <div className="pdp6-tabpanel" role="tabpanel" id="pdp6-tabpanel" aria-labelledby={`pdp6-tab-${tab.key}`} key={tab.key}>
-            <img src={tab.image} alt={tab.alt} loading="lazy" />
+        </fieldset>}
+
+        <fieldset className="pdp6-purchase-options">
+          <legend>Select your plan</legend>
+          {hasSubscription && <label className={subscribing ? "active" : undefined}>
+            <input type="radio" name={`purchase-${product.id}`} checked={subscribing} disabled={!activePlan} onChange={() => setPurchaseMode("subscribe")} />
+            <span>
+              <strong>Subscribe{activePlanSaving > 0 ? ` & save ${activePlanSaving}%` : ""}</strong>
+              {!activePlan && <small>Not available for this pack</small>}
+              {subscribing && planOptions.length > 1 && <span className="pdp6-frequency-picker" role="group" aria-label="Delivery frequency">
+                {planOptions.map((option) => {
+                  const saving = selected ? planSavingsPercent(selected, option) : 0;
+                  const isActive = option.sellingPlan.id === activePlan?.sellingPlan.id;
+                  return <button key={option.sellingPlan.id} type="button" className={isActive ? "active" : undefined} aria-pressed={isActive} onClick={(event) => { event.preventDefault(); setSelectedPlanId(option.sellingPlan.id); }}>
+                    {deliveryLabel(option.sellingPlan)}{saving > 0 && <i>{saving}% off</i>}
+                  </button>;
+                })}
+              </span>}
+              <AnimatePresence initial={false}>
+                {subscribing && <m.ul className="pdp6-subscribe-benefits" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ height: { duration: 0.35, ease: heroEase }, opacity: { duration: 0.25 } }}>
+                  {activePlan && <li><CheckIcon /><span>Arrives {deliveryLabel(activePlan.sellingPlan).toLowerCase()}</span></li>}
+                  {subscriptionStory.benefits.slice(1).map((item) => <li key={item}><CheckIcon /><span>{item}</span></li>)}
+                </m.ul>}
+              </AnimatePresence>
+            </span>
+            {activePlan && <span className="pdp6-purchase-price">
+              {activePlanSaving > 0 && <s>{moneyLabel(selected?.price)}</s>}
+              <b>{moneyLabel(activePlan.checkoutChargeAmount)}</b>
+            </span>}
+          </label>}
+          {canBuyOnce && <label className={!subscribing ? "active" : undefined}>
+            <input type="radio" name={`purchase-${product.id}`} checked={!subscribing} onChange={() => setPurchaseMode("one-time")} />
+            <span>
+              <strong>One-time purchase</strong>
+              <small>No automatic renewal.</small>
+            </span>
+            <span className="pdp6-purchase-price">
+              {selected?.compareAtPrice && savingsPercent(selected) > 0 && <s>{moneyLabel(selected.compareAtPrice)}</s>}
+              <b>{moneyLabel(selected?.price)}</b>
+            </span>
+          </label>}
+        </fieldset>
+
+        <div className="pdp6-cart-row">
+          <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !purchasable} onClick={addSelected}>{heroButtonLabel}</button>
+        </div>
+        {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
+        <div className="pdp6-micro-trust">
+          <span>Secure checkout</span>
+          <span>30-day First Pack Promise</span>
+          <span>Free U.S. shipping over $50</span>
+          <span>{plan ? "Change or cancel online" : "Shipping shown at checkout"}</span>
+        </div>
+
+        <section className="pdp6-tell" aria-labelledby="pdp6-tell-title">
+          <h2 id="pdp6-tell-title">Tell me about:</h2>
+          <div className="pdp6-tell-tabs" role="tablist" aria-label={`About ${title}`}>
+            {tabs.map((item, index) => <button key={item.key} type="button" role="tab" id={`pdp6-tab-${item.key}`} aria-selected={index === tabIndex} aria-controls="pdp6-tell-panel" className={index === tabIndex ? "active" : undefined} onClick={() => setTabIndex(index)}>{item.label}</button>)}
+          </div>
+          <div className="pdp6-tell-panel" role="tabpanel" id="pdp6-tell-panel" aria-labelledby={`pdp6-tab-${tab.key}`} key={tab.key}>
+            <div className="pdp6-tell-photo"><img src={tab.image} alt="" width="224" height="224" loading="lazy" /></div>
             <div>
               <span>{tab.eyebrow}</span>
               <h3>{tab.title}</h3>
               <p>{tab.body}</p>
-              <a href={tab.href}>Read more ↓</a>
+              <a href={tab.href} onClick={tab.key === "directions" ? openUsageDetail : undefined}>Read the full detail <b aria-hidden="true">→</b></a>
             </div>
           </div>
+        </section>
+
+        <div className="pdp6-details" id="pdp6-details">
+          {details.map((detail, index) => {
+            const isOpen = openDetail === index;
+            return <div key={detail.label} className={`pdp6-details-item${isOpen ? " is-open" : ""}`}>
+              <button type="button" className="pdp6-details-trigger" id={`pdp6-detail-trigger-${index}`} aria-controls={`pdp6-detail-panel-${index}`} aria-expanded={isOpen} onClick={() => setOpenDetail(isOpen ? null : index)}>
+                {detail.label}<span className="pdp6-details-icon" aria-hidden="true" />
+              </button>
+              <AnimatePresence initial={false}>
+                {isOpen && <m.div className="pdp6-details-body" id={`pdp6-detail-panel-${index}`} role="region" aria-labelledby={`pdp6-detail-trigger-${index}`} initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ height: { duration: 0.35, ease: heroEase }, opacity: { duration: 0.25 } }}>
+                  <div className="pdp6-details-body-inner">
+                    {detail.body && <p>{detail.body}</p>}
+                    {detail.list && <ul>{detail.list.map((item) => <li key={item}>{item}</li>)}</ul>}
+                  </div>
+                </m.div>}
+              </AnimatePresence>
+            </div>;
+          })}
         </div>
-        <div className="pdp6-details">
-          {[...profile.productDetails, { label: "Shipping & returns", body: "Free U.S. shipping on orders of $50 or more. The First Pack Promise gives you 30 days from delivery to contact Wipelo about a refund of your first order." }].map((detail, index) => <details key={detail.label} open={index === 0}>
-            <summary>{detail.label}</summary>
-            {detail.body && <p>{detail.body}</p>}
-            {detail.list && <ul>{detail.list.map((item) => <li key={item}>{item}</li>)}</ul>}
-          </details>)}
-        </div>
-      </div>
-    </section> */}
+        <p className="pdp6-safety">{profile.heroSafety}</p>
+      </m.div>
+    </section>
+    <FeaturedInStrip />
+    <ProductIntro product={product} category={profile.category} />
 
     {/* Benefits */}
     <section className="pdp6-section" id="why-it-works">
