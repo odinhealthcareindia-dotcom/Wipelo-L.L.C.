@@ -11,6 +11,7 @@ const navItems = [
   ["Shop", "/shop"],
   ["The Science", "/science"],
   ["Our Story", "/our-story"],
+  ["Journal", "/blog"],
 ] as const;
 
 export function SiteHeader() {

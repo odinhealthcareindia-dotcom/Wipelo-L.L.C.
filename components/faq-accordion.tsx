@@ -5,7 +5,7 @@ import { Reveal, Stagger } from "@/components/motion/reveal";
 
 export type FAQItem = { question: string; answer: ReactNode };
 
-export function FAQAccordion({ items }: { items: FAQItem[] }) {
+export function FAQAccordion({ items, tag = "// Wipelo, explained", title = "A few helpful answers." }: { items: FAQItem[]; tag?: string; title?: string }) {
   const [openItems, setOpenItems] = useState<Set<number>>(() => new Set());
 
   function toggleItem(index: number) {
@@ -20,8 +20,8 @@ export function FAQAccordion({ items }: { items: FAQItem[] }) {
   return <section className="sec" id="faq">
     <div className="wrap">
       <Stagger className="sec-head" gap={0.09}>
-        <Reveal as="span" className="mono-tag">// Wipelo, explained</Reveal>
-        <Reveal as="h2" className="h-section">A few helpful answers.</Reveal>
+        <Reveal as="span" className="mono-tag">{tag}</Reveal>
+        <Reveal as="h2" className="h-section">{title}</Reveal>
       </Stagger>
       <Stagger className="faq-list" gap={0.06}>
         {items.map((item, index) => {

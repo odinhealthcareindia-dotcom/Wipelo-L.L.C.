@@ -18,6 +18,7 @@ const footerNavigation = [
     links: [
       { label: "The Science", href: "/science" },
       { label: "Our Story", href: "/our-story" },
+      { label: "Journal", href: "/blog" },
     ],
   },
   {
