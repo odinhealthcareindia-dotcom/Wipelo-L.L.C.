@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { ShopifyProduct } from "@/lib/shopify";
 import { moneyLabel } from "@/lib/money";
 import { AddProductButton } from "@/components/add-product-button";
-import { Parallax } from "@/components/motion/parallax";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { getProductCategory, getProductProfile } from "@/lib/product-profiles";
 import { maxPlanSavingsPercent } from "@/lib/subscriptions";
@@ -90,7 +89,7 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
   return <Reveal className="cmpx-col">
     <div className="cmpx-cell cmpx-product">
       <Link className={`cmpx-stage cmpx-tone-${spec?.tone ?? "mint"}`} href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
-        {image ? <Parallax fill offset={12}><img src={image.url} alt={image.altText || product.title} /></Parallax> : <span className="cmpx-stage-name">{product.title}</span>}
+        {image ? <img src={image.url} alt={image.altText || product.title} width={image.width ?? undefined} height={image.height ?? undefined} /> : <span className="cmpx-stage-name">{product.title}</span>}
         {!product.availableForSale && <span className="cmpx-flag">Sold out</span>}
       </Link>
       {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}

@@ -18,11 +18,13 @@ import { deliveryLabel, planSavingsPercent, subscriptionAllocations } from "@/li
 import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
+import { ProductLightbox } from "./product-lightbox";
 import { ReceiptsSectionPdp } from "../home/receipts-pdp";
 import { GuaranteeSection } from "../home/guarantee";
 
 type PurchaseMode = "subscribe" | "one-time";
 
+/** Minimum gallery length; a product with more Shopify images shows all of them. */
 const GALLERY_SIZE = 8;
 const FORMULA_PRODUCTS = [
   { handle: "on-the-go", category: "on-the-go", label: "ON THE GO" },
@@ -158,14 +160,29 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     ];
     const unique = sources.filter((source, index) => sources.findIndex((other) => other.image === source.image) === index);
     const captions = [profile.ingredientIntro, profile.usageIntro, profile.galleryCaption];
-    return cycle(unique, GALLERY_SIZE).map((source, index) => {
-      if (index === 0) return { ...source, eyebrow: profile.badge, headline: profile.heroPromise, caption: profile.galleryHighlight, fit: "contain" as const };
+    // Every image uploaded in Shopify is shown, in Shopify's order. Brand and lifestyle shots only top up galleries with fewer than GALLERY_SIZE images.
+    const size = Math.max(GALLERY_SIZE, liveImages.length);
+    return cycle(unique, size).map((source, index) => {
+      if (index === 0) return { ...source, eyebrow: profile.badge, headline: profile.heroPromise, caption: profile.galleryHighlight, fit: "cover" as const };
       if (index === 2 && profile.expertReview) return { ...source, eyebrow: "Expert review", headline: profile.expertReview.name, caption: profile.expertReview.scope, fit: "cover" as const };
-      return { ...source, eyebrow: `${profile.audience}`, headline: SLIDE_HEADLINES[index], caption: captions[index % captions.length], fit: index < liveImages.length ? "contain" as const : "cover" as const };
+      return { ...source, eyebrow: `${profile.audience}`, headline: SLIDE_HEADLINES[index % SLIDE_HEADLINES.length], caption: captions[index % captions.length], fit: "cover" as const };
     });
   }, [product.images, profile, title, detailImage]);
   const [slideIndex, setSlideIndex] = useState(0);
+  const thumbsRef = useRef<HTMLDivElement>(null);
+  // Keep the active thumbnail in view when the slide changes (swipe, arrows, or a click near the edge).
+  useEffect(() => {
+    const rail = thumbsRef.current;
+    const thumb = rail?.children[slideIndex] as HTMLElement | undefined;
+    if (!rail || !thumb) return;
+    const left = thumb.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+    if (left < rail.scrollLeft || left + thumb.offsetWidth > rail.scrollLeft + rail.clientWidth) {
+      const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      rail.scrollTo({ left: left - (rail.clientWidth - thumb.offsetWidth) / 2, behavior: smooth ? "smooth" : "auto" });
+    }
+  }, [slideIndex]);
   const swipeStartX = useRef<number | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const goToSlide = (step: number) => setSlideIndex((index) => (index + step + slides.length) % slides.length);
 
   // 8. Fallback merges.
@@ -276,17 +293,22 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             const deltaX = event.clientX - swipeStartX.current;
             swipeStartX.current = null;
             if (Math.abs(deltaX) >= 40) goToSlide(deltaX < 0 ? 1 : -1);
+            else if (Math.abs(deltaX) < 8 && event.button === 0) setLightboxOpen(true);
           }}>
             {slides.map((item, index) => <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
             {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>}
             <span className="pdp6-media-count">{slideIndex + 1} / {slides.length}</span>
+            <button type="button" className="pdp6-media-expand" onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={() => setLightboxOpen(true)} aria-label="View image full screen">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
           </div>
           <button type="button" className="pdp6-media-arrow pdp6-media-prev" aria-label="Show previous image" onClick={() => goToSlide(-1)}><span aria-hidden="true" /></button>
           <button type="button" className="pdp6-media-arrow pdp6-media-next" aria-label="Show next image" onClick={() => goToSlide(1)}><span aria-hidden="true" /></button>
         </div>
-        <div className="pdp6-media-nav" role="tablist" aria-label="Product images">
+        <div className="pdp6-media-nav" ref={thumbsRef} role="tablist" aria-label="Product images">
           {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={`Image ${index + 1}: ${item.headline}`} className={index === slideIndex ? "active" : undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" /></button>)}
         </div>
+        <ProductLightbox slides={slides} index={slideIndex} onIndexChange={setSlideIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} title={product.title} />
         <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
       </div>
 

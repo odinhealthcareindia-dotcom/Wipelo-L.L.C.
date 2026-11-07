@@ -138,7 +138,7 @@ const VARIANT_PLAN_FIELDS = `
 const PRODUCT_FIELDS = `
   id handle title productType tags description descriptionHtml availableForSale requiresSellingPlan
   featuredImage { ${IMAGE_FIELDS} }
-  images(first: 20) { nodes { ${IMAGE_FIELDS} } }
+  images(first: 50) { nodes { ${IMAGE_FIELDS} } }
   priceRange { minVariantPrice { amount currencyCode } maxVariantPrice { amount currencyCode } }
   options { id name values }
   variants(first: 100) {
