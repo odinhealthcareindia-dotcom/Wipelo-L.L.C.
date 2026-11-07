@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { SiteShell } from "@/components/site-shell";
+import "./globals.css";
 
+// Shown for any URL that matches no route. It sits outside the (site) group, so it brings the site shell and CSS itself.
 export default function NotFound() {
-  return <section className="sec not-found-page"><div className="wrap">
+  return <SiteShell><section className="sec not-found-page"><div className="wrap">
     <span className="mono-tag">// Nothing at this address</span>
     <h1 className="h-section">This page isn’t here.</h1>
     <p className="lede">Products appear here once they are published to the Headless sales channel in Shopify.</p>
     <div className="not-found-links"><Link className="btn btn-teal" href="/shop">Browse the shop →</Link><Link className="link-arrow" href="/">Back to Wipelo</Link></div>
-  </div></section>;
+  </div></section></SiteShell>;
 }
