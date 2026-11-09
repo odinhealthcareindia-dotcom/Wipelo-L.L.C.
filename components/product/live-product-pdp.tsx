@@ -249,23 +249,26 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
   // Sticky buy bar: shown once the main add-to-bag button has scrolled above the header,
   // and tucked away again while the footer is on screen so it never covers the footer.
+  // Measured from scroll position rather than IntersectionObserver crossings: an observer only fires when the
+  // button enters or leaves view, so a jump straight past it (subnav link, scroll restore, fast fling, or the
+  // button starting below the fold) never fired and left the bar hidden.
   const mainButtonRef = useRef<HTMLButtonElement>(null);
-  const [pastButton, setPastButton] = useState(false);
-  const [footerInView, setFooterInView] = useState(false);
-  const stickyVisible = pastButton && !footerInView;
+  const [stickyVisible, setStickyVisible] = useState(false);
   useEffect(() => {
-    const button = mainButtonRef.current;
-    if (!button) return;
-    const observer = new IntersectionObserver(([entry]) => setPastButton(!entry.isIntersecting && entry.boundingClientRect.top < 0), { rootMargin: "-80px 0px 0px 0px" });
-    observer.observe(button);
-    return () => observer.disconnect();
-  }, []);
-  useEffect(() => {
-    const footer = document.querySelector(".wipe-footer");
-    if (!footer) return;
-    const observer = new IntersectionObserver(([entry]) => setFooterInView(entry.isIntersecting));
-    observer.observe(footer);
-    return () => observer.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const button = mainButtonRef.current;
+      if (!button) return;
+      const pastButton = button.getBoundingClientRect().bottom < 80;
+      const footerTop = document.querySelector(".wipe-footer")?.getBoundingClientRect().top ?? Infinity;
+      setStickyVisible(pastButton && footerTop >= window.innerHeight);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); cancelAnimationFrame(frame); };
   }, []);
 
   const addSelected = () => { if (selected) void addToCart(selected, plan?.sellingPlan.id, quantity); };

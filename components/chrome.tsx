@@ -23,8 +23,15 @@ export function SiteHeader() {
 
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 80));
-  useEffect(() => setScrolled(window.scrollY > 80), []);
+  // Which half of the page we're in decides the overscroll colour (html[data-edge] in globals.css):
+  // a bounce at the top shows cream behind the header, a bounce at the bottom shows Abyss behind the footer.
+  const syncEdges = (y: number) => {
+    setScrolled(y > 80);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    document.documentElement.dataset.edge = max > 0 && y > max / 2 ? "bottom" : "top";
+  };
+  useMotionValueEvent(scrollY, "change", syncEdges);
+  useEffect(() => syncEdges(window.scrollY), [pathname]);
 
   // Pop the badge when the count changes, but not on first load.
   const count = cart?.totalQuantity ?? 0;
