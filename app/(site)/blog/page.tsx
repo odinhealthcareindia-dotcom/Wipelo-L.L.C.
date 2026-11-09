@@ -4,7 +4,7 @@ import { getCategories, getPosts } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Journal",
-  description: "Practical, evidence-minded reads on body freshness, breakout-prone skin, and external intimate care from the Wipelo team.",
+  description: "Practical, evidence-minded reads on body freshness, breakout-prone skin, and intimate care from the Wipelo team.",
   alternates: { canonical: "/blog" },
 };
 

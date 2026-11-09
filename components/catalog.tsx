@@ -62,7 +62,7 @@ type CompareSpec = { tone: string; eyebrow: string } & Record<(typeof compareRow
 const compareSpecs: Record<string, CompareSpec> = {
   otg: { tone: "mint", eyebrow: "Between showers", bestFor: "Lifting surface sweat and everyday residue", useOn: "Underarms, feet, body", ingredients: "Mild cleansers + zinc ricinoleate", format: "Individually sealed · no rinse", note: "Not an antiperspirant or a shower replacement" },
   spotless: { tone: "stone", eyebrow: "Body breakouts", bestFor: "Breakout-prone body skin", useOn: "Back, chest, shoulders", ingredients: "Planned 0.5% salicylic acid, niacinamide, glycerin, panthenol", format: "Individually sealed · leave-on", note: "Check the finished pack for confirmed ingredients" },
-  her: { tone: "sand", eyebrow: "External intimate care", bestFor: "Occasional external intimate cleansing", useOn: "External intimate skin only", ingredients: "Planned lactic acid + sodium lactate, glycerin, panthenol, aloe", format: "Individually wrapped · fragrance-free", note: "Does not change or regulate vaginal pH" },
+  her: { tone: "sand", eyebrow: "Intimate care", bestFor: "Occasional external intimate cleansing", useOn: "External intimate skin only", ingredients: "Planned lactic acid + sodium lactate, glycerin, panthenol, aloe", format: "Individually wrapped · fragrance-free", note: "Does not change or regulate vaginal pH" },
 };
 
 function compareKey(product: ShopifyProduct) {

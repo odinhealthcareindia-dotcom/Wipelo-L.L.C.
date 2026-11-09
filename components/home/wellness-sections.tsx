@@ -163,7 +163,7 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
               note: "Proposed 0.5% salicylic acid. Use on intact skin; start gradually if sensitive. Results not guaranteed.",
             },
             {
-              label: "External intimate care", product: "HER", tone: "sand", image: herImage, href: herHref,
+              label: "Intimate care", product: "HER", tone: "sand", image: herImage, href: herHref,
               headline: "A gentle, convenient external refresh — without added fragrance.",
               actives: [
                 { icon: "flask", dose: "0.3–0.5%", name: "Lactic acid + 0.5% sodium lactate", body: "Supports an acidic, pH-considerate lotion design." },

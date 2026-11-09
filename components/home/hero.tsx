@@ -16,7 +16,7 @@ export function HeroSection() {
           <div className="trust-chips">
             <span className="tchip"><b>01</b> Between-shower freshness</span>
             <span className="tchip"><b>02</b> Body breakout care</span>
-            <span className="tchip"><b>03</b> External intimate care</span>
+            <span className="tchip"><b>03</b> Intimate care</span>
           </div>
            <div className="hero-spec spec" style={{ marginTop: "28px" }}>
             <div className="spec-row"><span className="k marker">//</span><span className="k">ON THE GO</span><span className="dots"></span><span className="v">Zinc ricinoleate <span className="marker">[odor-binding]</span></span></div>

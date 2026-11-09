@@ -113,7 +113,7 @@ export function getProductCategory(product: CommerceProduct): ProductCategory {
   const searchable = getProductSearchText(product);
   // HER is checked first: its intimate-care wording is the most specific, and the body-care products
   // must never be routed to intimate-care copy (or the reverse) by a passing word in a description.
-  if (/\bwipelo her\b|external intimate|intimate skin|vulv/i.test(searchable)) return "her";
+  if (/\bwipelo her\b|Intimate|intimate skin|vulv/i.test(searchable)) return "her";
   if (/\bspotless\b|salicylic|breakout|exfoliat/i.test(searchable)) return "spotless";
   if (/on[\s-]?the[\s-]?go|between[- ]shower|zinc ricinoleate|odou?r/i.test(searchable)) return "on-the-go";
   return "wipelo";
@@ -323,14 +323,14 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
   if (category === "her") {
     return {
       category,
-      audience: "External intimate skin care",
+      audience: "Intimate skin care",
       badge: "pH-considerate cleansing",
-      shortBenefit: "Fragrance-free, individually wrapped wipes for occasional cleansing of external intimate skin.",
+      shortBenefit: "Fragrance-free, individually wrapped wipes for occasional cleansing of Intimate skin.",
       galleryHighlight: "Lactic acid + sodium lactate: an acidic lotion target, not a vaginal treatment.",
       galleryCaption: "One smooth, individually wrapped wipe for a clean reset away from home.",
       roleSummary: "It is care for the outside, with no promise to change what happens inside.",
       heroPromise: "Your pH, respected.",
-      overview: "Some days ask for a clean reset before the next shower. HER gently cleanses external intimate skin without added fragrance. Its lactic acid and sodium lactate system is designed around an acidic target pH, while a smooth, individually sealed cloth keeps the ritual discreet. It is care for the outside, with no promise to change what happens inside.",
+      overview: "Some days ask for a clean reset before the next shower. HER gently cleanses Intimate skin without added fragrance. Its lactic acid and sodium lactate system is designed around an acidic target pH, while a smooth, individually sealed cloth keeps the ritual discreet. It is care for the outside, with no promise to change what happens inside.",
       information: "Vaginal fluid in one healthy cohort averaged 3.80 ± 0.20. HER’s proposed lotion target is 3.8–4.5. Vulvar skin varies by site and can be higher. This overlap illustrates formulation intent only; it does not show that HER changes vaginal pH. Batch results and finished-product tolerance data are still required.",
       imageLabel: "30 individually sealed wipes per pack · target lotion pH 3.8–4.5; verify on each production batch",
       lifestyleImage: "/wipelo-her-travel-care.png",
@@ -340,7 +340,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       pdpProofSection: "/wipelo-lab-her.png",
       pdpDirection: "/tear-at-notch-v2.png",
       ingredientTextureImg: "/wipelo-lab-her.png",
-      publishedDetails: ["External intimate skin care only", "Target pH 3.8–4.5 · batch verification pending", "30 individually sealed wipes per pack"],
+      publishedDetails: ["Intimate skin care only", "Target pH 3.8–4.5 · batch verification pending", "30 individually sealed wipes per pack"],
       benefitsHeading: "A small reset for the moments between.",
       benefitsIntro: "Fragrance free and alcohol free, with panthenol and glycerin for a softer afterfeel.",
       benefits: [
@@ -377,7 +377,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { title: "99 women", label: "Vulvar skin study", body: "Vulvar pH varied by site and was higher than inner-thigh and forearm control sites.", sourceLabel: "Vulvar skin study · PMID 23435846", sourceUrl: "https://pubmed.ncbi.nlm.nih.gov/23435846/" },
       ],
       usageHeading: "How to use it.",
-      usageIntro: "External intimate skin care only.",
+      usageIntro: "Intimate skin care only.",
       usageRows: [
         { label: "01", context: "Open", direction: "Open one sealed sachet with clean hands." },
         { label: "02", context: "Wipe", direction: "Gently wipe external vulvar skin from front to back. Never insert it or use it on broken skin." },
@@ -399,10 +399,10 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { question: "Can it balance vaginal pH or prevent infection?", answer: "No. HER is used on the outside. A lotion pH target does not prove a change to vaginal pH or a reduction in BV, yeast infections, or UTIs." },
       ],
       productDetails: [
-        { label: "Description", body: "Some days ask for a clean reset before the next shower. HER gently cleanses external intimate skin without added fragrance." },
+        { label: "Description", body: "Some days ask for a clean reset before the next shower. HER gently cleanses Intimate skin without added fragrance." },
         { label: "What it’s made of", body: "Aqua, Aloe Barbadensis Leaf Juice, Glycerin, Panthenol, Lactic Acid, Sodium Lactate, Alpha-Glucan Oligosaccharide, Lactobacillus Ferment Lysate, Coco-Glucoside, Decyl Glucoside, Vaccinium Macrocarpon Fruit Extract, Calendula Officinalis Flower Extract, Chamomilla Recutita Flower Extract, Allantoin, Sodium Hyaluronate, Menthyl Lactate, Phenoxyethanol, Ethylhexylglycerin, Sodium Benzoate, Potassium Sorbate, Sodium Phytate. Indicative pack-deck list; final INCI order must follow the manufactured batch." },
         { label: "How to use", body: "", list: ["Open one sealed sachet with clean hands.", "Gently wipe external vulvar skin from front to back. Never insert it.", "Let skin dry; bin the wipe and wrapper. Do not flush."] },
-        { label: "Specs", body: "", list: ["Use · External intimate skin care only", "Lotion pH · Target 3.8–4.5 · batch verification pending", "Format · 30 individually sealed wipes per pack", "Cloth · Soft Surface Cloth™, about 15 × 20 cm, 50 gsm"] },
+        { label: "Specs", body: "", list: ["Use · Intimate skin care only", "Lotion pH · Target 3.8–4.5 · batch verification pending", "Format · 30 individually sealed wipes per pack", "Cloth · Soft Surface Cloth™, about 15 × 20 cm, 50 gsm"] },
       ],
       careGuidance: {
         body: "ACOG guidance says clear water is adequate for the inner vulva and advises avoiding certain scented or intimate-hygiene products. HER is positioned for occasional external use when water is not practical, rather than as a medical or daily necessity.",
@@ -410,7 +410,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         url: "https://www.acog.org/womens-health/faqs/vulvovaginal-health",
         disclaimer: "This independent guidance informs the use decision. It is not an endorsement of Wipelo or this product.",
       },
-      heroKicker: "External intimate skin care · Fragrance-free",
+      heroKicker: "Intimate skin care · Fragrance-free",
       heroSpecs: [{ label: "pH system", value: "Lactic acid + sodium lactate" }, { label: "Lotion pH", value: "Target 3.8–4.5" }, { label: "Cloth", value: "~15 × 20 cm, smooth" }, { label: "Free from", value: "Fragrance · ethanol · parabens" }],
       heroSafety: "External use only — never insert. Not a treatment or a way to regulate vaginal pH. Do not flush.",
       relatedHandles: ["on-the-go", "spotless"],
