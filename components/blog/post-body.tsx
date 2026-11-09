@@ -3,7 +3,7 @@ import { PortableText, type PortableTextBlock, type PortableTextComponents } fro
 import { sanityImageDimensions, sanityImageSrcSet, sanityImageUrl } from "@/lib/sanity/image";
 import type { SanityImage } from "@/lib/sanity/types";
 import type { ShopifyProduct } from "@/lib/shopify";
-import { moneyLabel } from "@/lib/money";
+import { moneyLabel, productPerWipeLabel } from "@/lib/money";
 
 type Callout = { _type: "callout"; tone?: "note" | "tip" | "caution"; title?: string; text: string };
 type ProductCardBlock = { _type: "productCard"; handle: string; note?: string };
@@ -63,7 +63,7 @@ export function PostBody({ body, products }: { body: PortableTextBlock[]; produc
             <h4>{product.title}</h4>
             {value.note && <p>{value.note}</p>}
             <div className="post-product-foot">
-              <span>From {moneyLabel(product.priceRange.minVariantPrice)}</span>
+              <span>From {moneyLabel(product.priceRange.minVariantPrice)} · {productPerWipeLabel(product)}</span>
               <Link href={`/products/${product.handle}`}>View {product.title.replace(/^wipelo\s*/i, "")}</Link>
             </div>
           </div>
