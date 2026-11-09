@@ -35,7 +35,7 @@ const jobs = [
     product: "// HER",
     match: /\bher\b/i,
     tone: "sand",
-    title: "External intimate care",
+    title: "Intimate care",
     body: "A fragrance-free wipe for occasional external cleansing. The planned lactic acid and sodium lactate formula is pH-considerate.",
     active: "0% fragrance",
     use: "External skin only",
