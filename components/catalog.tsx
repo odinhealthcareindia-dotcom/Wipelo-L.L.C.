@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ShopifyProduct } from "@/lib/shopify";
-import { moneyLabel } from "@/lib/money";
+import { moneyLabel, productPerWipeLabel } from "@/lib/money";
 import { AddProductButton } from "@/components/add-product-button";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { getProductCategory, getProductProfile } from "@/lib/product-profiles";
@@ -37,7 +37,7 @@ function ProductCard({ product, compact = false }: { product: ShopifyProduct; co
       {productSummary(product) && <p className="tag">{productSummary(product)}</p>}
       {subscribeSaving > 0 && <Link className="sku-subscribe" href={`/products/${product.handle}`}>Subscribe &amp; save up to {subscribeSaving}%</Link>}
       <div className="sku-foot">
-        <div className="price">{moneyLabel(product.priceRange.minVariantPrice)}{product.priceRange.minVariantPrice.amount !== product.priceRange.maxVariantPrice.amount && <span className="per"> – {moneyLabel(product.priceRange.maxVariantPrice)}</span>}</div>
+        <div className="price">{moneyLabel(product.priceRange.minVariantPrice)}<span className="per">{productPerWipeLabel(product)}</span></div>
         {variant?.availableForSale && !product.requiresSellingPlan ? <AddProductButton variant={variant} className="sku-add">Add +</AddProductButton> : <Link className="sku-add" href={`/products/${product.handle}`}>View →</Link>}
       </div>
     </div>
@@ -85,7 +85,6 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
   const image = product.featuredImage ?? product.images[0] ?? null;
   const spec = compareSpec(product);
   const min = product.priceRange.minVariantPrice;
-  const max = product.priceRange.maxVariantPrice;
   return <Reveal className="cmpx-col">
     <div className="cmpx-cell cmpx-product">
       <Link className={`cmpx-stage cmpx-tone-${spec?.tone ?? "mint"}`} href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
@@ -94,7 +93,7 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
       </Link>
       {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}
       <Link href={`/products/${product.handle}`}><h3>{product.title.replace(/^wipelo\s*/i, "")}</h3></Link>
-      <div className="cmpx-price">{moneyLabel(min)}{min.amount !== max.amount && <span> – {moneyLabel(max)}</span>}</div>
+      <div className="cmpx-price">{moneyLabel(min)}<span> · {productPerWipeLabel(product)}</span></div>
       {variant?.availableForSale && !product.requiresSellingPlan ? <AddProductButton variant={variant} className="cmpx-add">Add to bag</AddProductButton> : <Link className="cmpx-add" href={`/products/${product.handle}`}>View product</Link>}
     </div>
     {compareRows.map((row) => <div className="cmpx-cell" data-label={row.label} key={row.key}>{spec?.[row.key] ?? (row.key === "bestFor" ? productSummary(product) : "—")}</div>)}

@@ -2658,12 +2658,18 @@ main{overflow-x:clip}
 .pdp6-related{border-top:1px solid var(--pdp6-line)}
 
 /* Sticky buy bar */
-.pdp6-sticky{position:fixed;left:0;right:0;bottom:0;z-index:60;border-top:1px solid var(--pdp6-line);background:rgba(250,245,239,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transform:translateY(100%);transition:transform .35s var(--glide)}
-.pdp6-sticky.is-visible{transform:none}
-.pdp6-sticky-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:12px;padding-bottom:max(12px,env(safe-area-inset-bottom,0px))}
-.pdp6-sticky-name{display:flex;flex-direction:column}
+/* Floating pill CTA: the outer layer only positions (and lets taps through around the pill);
+   the pill itself is inset from the edges, lifted off the home indicator, and slides + fades in. */
+.pdp6-sticky{position:fixed;left:0;right:0;bottom:max(16px,calc(env(safe-area-inset-bottom,0px) + 8px));z-index:60;display:flex;justify-content:center;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px));pointer-events:none;opacity:0;transform:translateY(calc(100% + 24px));transition:transform .45s var(--glide),opacity .3s ease}
+.pdp6-sticky.is-visible{opacity:1;transform:none}
+.pdp6-sticky-in{pointer-events:auto;display:flex;align-items:center;gap:12px;width:100%;max-width:640px;padding:8px 8px 8px 10px;border:1px solid rgba(16,33,31,.1);border-radius:999px;background:var(--cream);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 18px 40px -16px rgba(5,34,30,.35),0 4px 12px -6px rgba(5,34,30,.18)}
+.pdp6-sticky-thumb{flex:none;width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--pdp6-soft)}
+.pdp6-sticky-name{display:flex;flex-direction:column;flex:1;min-width:0}
+.pdp6-sticky-name b,.pdp6-sticky-name small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pdp6-sticky-name b{font:600 16px/1.2 var(--fr)}
 .pdp6-sticky-name small{color:rgba(16,33,31,.6);font-size:12.5px}
+.pdp6-sticky .pdp6-add.is-small{flex:none;box-shadow:none}
+@media(max-width:380px){.pdp6-sticky-thumb{display:none}.pdp6-sticky-in{padding-left:20px}}
 
 @media(prefers-reduced-motion:reduce){.pdp6-sticky{transition:none;animation:none}}
 
@@ -2825,6 +2831,10 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-purchase-price{display:flex;align-items:baseline;gap:8px;color:var(--abyss);white-space:nowrap}
 .pdp6-purchase-price b{font:600 clamp(20px,1.7vw,24px)/1 var(--fr);letter-spacing:-.02em}
 .pdp6-purchase-price s{color:var(--pdp6-muted);font-size:13px}
+/* Per-wipe cost: its own line under the price, and under the wipe count on each pack tile. */
+.pdp6-purchase-price{flex-wrap:wrap;justify-content:flex-end;row-gap:4px}
+.pdp6-purchase-price .pdp6-purchase-unit{flex-basis:100%;text-align:right;color:var(--pdp6-muted);font:500 12px/1.2 var(--in)}
+.pdp6-variant-box .pdp6-variant-unit{display:block;margin-top:2px;color:var(--pdp6-accent);font-weight:600}
 .pdp6-purchase-options label.active .pdp6-purchase-price s,.pdp6-purchase-options label.active small{color:rgba(5,34,30,.7)}
 .pdp6-frequency-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .pdp6-frequency-picker button{display:inline-flex;align-items:baseline;gap:6px;padding:6px 11px;border:1.5px solid rgba(5,34,30,.2);border-radius:999px;background:rgba(255,255,255,.55);color:var(--abyss);font:600 12px/1.2 var(--in);transition:background .2s,border-color .2s}
@@ -2919,6 +2929,7 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-purchase-options label>.pdp6-purchase-price{position:absolute;top:16px;right:18px}
   .pdp6-purchase-options strong,.pdp6-purchase-options small{padding-right:80px}
   .pdp6-purchase-price{flex-direction:column;align-items:flex-end;gap:2px}
+  .pdp6-purchase-options .pdp6-purchase-price .pdp6-purchase-unit{flex-basis:auto;white-space:nowrap;margin-top:2px;padding-right:0}
   .pdp6-add{padding:17px 16px;font-size:15px}
   .pdp6-tell-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pdp6-tell-tabs button:nth-child(2){border-right:0}

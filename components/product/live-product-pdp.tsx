@@ -8,7 +8,7 @@ import { FAQAccordion } from "@/components/faq-accordion";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { useStorefrontCart } from "@/components/storefront-provider";
 import { cleanTitle, getImageUrl, type CommerceProduct } from "@/lib/commerce";
-import { moneyLabel } from "@/lib/money";
+import { moneyLabel, perWipeLabel } from "@/lib/money";
 import { getProductProfile, type BenefitIconKey, type SubscriptionStory } from "@/lib/product-profiles";
 import { getReviewData } from "@/lib/product-reviews";
 import { ProductReviewsSection } from "./product-reviews";
@@ -274,7 +274,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
   const addSelected = () => { if (selected) void addToCart(selected, plan?.sellingPlan.id, quantity); };
   const total = effectivePrice ? { amount: (Number(effectivePrice.amount) * quantity).toFixed(2), currencyCode: effectivePrice.currencyCode } : null;
   const heroButtonLabel: ReactNode = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : <>{plan ? "Subscribe" : "Add to bag"} <span aria-hidden="true">·</span> {moneyLabel(total)}</>;
-  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `${plan ? "Subscribe" : "Add to bag"} · ${moneyLabel(total)}`;
+  const buttonLabel = !selected?.availableForSale ? "Sold out" : busy ? "Adding…" : `${plan ? "Add to bag" : "Add to bag"} · ${moneyLabel(total)}`;
 
   return <div className={`pdp6-page product-tone-${profile.category}`}>
     <div className="pdp6-subnav">
@@ -346,6 +346,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
                 <span className="pdp6-variant-box">
                   <strong>{packLabel}</strong>
                   <small>{variant.availableForSale ? countLabel ?? durationLabel(variant) : "Sold out"}</small>
+                  {variant.availableForSale && <small className="pdp6-variant-unit">{perWipeLabel(variant.price, variant.title)}</small>}
                 </span>
                 {saving > 0 && <span className="pdp6-variant-save">Save {saving}%</span>}
               </label>;
@@ -379,6 +380,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             {activePlan && <span className="pdp6-purchase-price">
               {activePlanSaving > 0 && <s>{moneyLabel(selected?.price)}</s>}
               <b>{moneyLabel(activePlan.checkoutChargeAmount)}</b>
+              <small className="pdp6-purchase-unit">{perWipeLabel(activePlan.checkoutChargeAmount, selected?.title)}</small>
             </span>}
           </label>}
           {canBuyOnce && <label className={!subscribing ? "active" : undefined}>
@@ -390,6 +392,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             <span className="pdp6-purchase-price">
               {selected?.compareAtPrice && savingsPercent(selected) > 0 && <s>{moneyLabel(selected.compareAtPrice)}</s>}
               <b>{moneyLabel(selected?.price)}</b>
+              <small className="pdp6-purchase-unit">{perWipeLabel(selected?.price, selected?.title)}</small>
             </span>
           </label>}
         </fieldset>
@@ -603,7 +606,8 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     </section>}
 
     <div className={`pdp6-sticky${stickyVisible ? " is-visible" : ""}`} aria-hidden={!stickyVisible} inert={!stickyVisible}>
-      <div className="wrap pdp6-sticky-in">
+      <div className="pdp6-sticky-in">
+        {slides[0] && <img className="pdp6-sticky-thumb" src={slides[0].image} alt="" width="44" height="44" loading="lazy" />}
         <span className="pdp6-sticky-name"><b>{title}</b><small>{selected?.title}{plan ? ` · ${deliveryLabel(plan.sellingPlan)}` : ""}</small></span>
         <button type="button" className="pdp6-add is-small" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
       </div>

@@ -1,5 +1,5 @@
 import type { CommerceProduct } from "@/lib/commerce";
-import { moneyLabel } from "@/lib/money";
+import { moneyLabel, perWipeLabel } from "@/lib/money";
 import { productIntros } from "@/lib/product-intro";
 import type { ProductCategory } from "@/lib/product-profiles";
 import styles from "./product-intro.module.css";
@@ -14,7 +14,8 @@ const icons = {
 export function ProductIntro({ product, category }: { product: CommerceProduct; category: ProductCategory }) {
   const content = productIntros[category];
   if (!content) return null;
-  const lowestPrice = product.variants.filter((variant) => variant.availableForSale).reduce<(typeof product.variants)[number] | undefined>((lowest, variant) => !lowest || Number(variant.price.amount) < Number(lowest.price.amount) ? variant : lowest, undefined)?.price;
+  const lowestVariant = product.variants.filter((variant) => variant.availableForSale).reduce<(typeof product.variants)[number] | undefined>((lowest, variant) => !lowest || Number(variant.price.amount) < Number(lowest.price.amount) ? variant : lowest, undefined);
+  const lowestPrice = lowestVariant?.price;
 
   return <section className={`${styles.section} ${styles[category]}`} aria-labelledby="product-intro-title" id="intro">
     <div className={styles.copy}>
@@ -31,7 +32,7 @@ export function ProductIntro({ product, category }: { product: CommerceProduct; 
         <p className={styles.eyebrow}>Why {content.name} exists</p>
         <h3>{content.storyTitle}</h3>
         <p>{content.story}</p>
-        <a className={styles.cta} href="#product">Shop {content.name}{lowestPrice && <> · from {moneyLabel(lowestPrice)}</>}<span aria-hidden="true">→</span></a>
+        <a className={styles.cta} href="#product">Shop {content.name}{lowestPrice && <> · from {moneyLabel(lowestPrice)} ({perWipeLabel(lowestPrice, lowestVariant?.title)})</>}<span aria-hidden="true">→</span></a>
         <small>Proposed formulation ranges; final values printed on pack.</small>
       </div>
     </div>

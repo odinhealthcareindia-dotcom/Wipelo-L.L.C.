@@ -14,7 +14,7 @@ import { WellnessSections } from "@/components/home/wellness-sections";
 import { FormulaSections } from "@/components/home/formula-sections";
 import { RevealEffects } from "@/components/reveal-effects";
 import { getProducts } from "@/lib/shopify";
-import { moneyLabel } from "@/lib/money";
+import { moneyLabel, productPerWipeLabel } from "@/lib/money";
 import { getProductCategory } from "@/lib/product-profiles";
 import { ProblemSection } from "@/components/home/problem";
 import { MarqueeSection } from "@/components/home/marquee";
@@ -33,7 +33,7 @@ export default async function HomePage() {
     handle: product.handle,
     category: getProductCategory(product),
     title: product.title,
-    price: moneyLabel(product.priceRange.minVariantPrice),
+    price: `${moneyLabel(product.priceRange.minVariantPrice)} (${productPerWipeLabel(product)})`,
   }));
   const onTheGoProduct = products.find((product) => /on[\s-]?the[\s-]?go/i.test(`${product.title} ${product.handle}`));
   const spotlessProduct = products.find((product) => /spotless/i.test(`${product.title} ${product.handle}`));
@@ -48,8 +48,8 @@ export default async function HomePage() {
       onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
       spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
       herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
-      onTheGoPrice={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined}
-      spotlessPrice={spotlessProduct ? moneyLabel(spotlessProduct.priceRange.minVariantPrice) : undefined}
+      onTheGoPrice={onTheGoProduct ? `${moneyLabel(onTheGoProduct.priceRange.minVariantPrice)} · ${productPerWipeLabel(onTheGoProduct)}` : undefined}
+      spotlessPrice={spotlessProduct ? `${moneyLabel(spotlessProduct.priceRange.minVariantPrice)} · ${productPerWipeLabel(spotlessProduct)}` : undefined}
       spotlessImage="/images/wellness/spotless-carton-pouch.webp"
       onTheGoImage="/images/wellness/on-the-go-carton-pouch.webp"
       herImage="/images/wellness/her-carton-pouch.webp"
