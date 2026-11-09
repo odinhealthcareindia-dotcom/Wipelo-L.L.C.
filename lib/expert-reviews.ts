@@ -56,7 +56,7 @@ export const expertReviews: ExpertReviewEntry[] = [
 
 // Signed reviews always show; drafts show only outside production, for layout and copy review.
 export function getExpertReview(category: ProductCategory) {
-  debugger
+  // debugger
   const showDrafts = process.env.NODE_ENV !== "production";
   return expertReviews.find((review) => review.category === category && (review.signed || true)) ?? null;
 }
