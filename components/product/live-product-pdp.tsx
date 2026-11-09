@@ -37,8 +37,8 @@ const SLIDE_HEADLINES = ["The pack", "Up close", "Inside the formula", "How to u
 const baseSectionLinks = [
   // { id: "product", label: "Overview" },
   { id: "intro", label: "Info" },
-  { id: "why-it-works", label: "Benefits" },
   { id: "ingredients", label: "Ingredients" },
+  { id: "why-it-works", label: "Benefits" },
   { id: "proof", label: "Expert" },
   { id: "expect", label: "What to expect" },
   { id: "reviews", label: "Reviews" },
@@ -448,36 +448,6 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     <FeaturedInStrip />
     <ProductIntro product={product} category={profile.category} />
 
-    {/* Benefits */}
-    <section className="pdp6-section" id="why-it-works">
-      <div className="wrap">
-        <Stagger className="pdp6-head" gap={0.09}>
-          <Reveal as="span" className="pdp6-eyebrow">{profile.badge}</Reveal>
-          <Reveal as="h2">{profile.benefitsHeading}</Reveal>
-          <Reveal as="p">{profile.benefitsIntro}</Reveal>
-        </Stagger>
-        <Stagger className="pdp6-benefits" gap={0.08}>
-          {profile.benefits.map((benefit, index) => <Reveal className="pdp6-benefit" key={benefit.title}>
-            <span className="pdp6-icon"><Icon name={benefit.icon ?? fallbackIcons[index % fallbackIcons.length]} /></span>
-            {benefit.when && <small>{benefit.when}</small>}
-            <h3>{benefit.title}</h3>
-            <p>{benefit.body}</p>
-          </Reveal>)}
-        </Stagger>
-        <div className="pdp6-story">
-          <Reveal variant="slideFromLeft" className="pdp6-story-media"><img src={profile.pdpRoutineSection} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
-          <Reveal variant="slideFromRight" className="pdp6-story-copy">
-            <span className="pdp6-eyebrow">{profile.storyEyebrow}</span>
-            <h3>{profile.storyTitle}</h3>
-            <p>{profile.information}</p>
-            <ol>{profile.routine.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><b>{step.title}</b><p>{step.body}</p></div></li>)}</ol>
-            <div className="pdp6-ideal"><span>Ideal for</span>{profile.idealFor.map((item) => <i key={item}>{item}</i>)}</div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-
-
     {/* Ingredients */}
     <section className="pdp6-section pdp6-formula" id="ingredients" aria-labelledby="pdp6-formula-title">
       <div className="wrap">
@@ -492,36 +462,81 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           </nav> */}
         </div>
 
-        <div className="pdp6-formula-grid">
-          <Reveal variant="scaleIn" className="pdp6-formula-side">
+        <div className="pdp6-formula-bento">
+          <Reveal variant="scaleIn" as="figure" className="pdp6-formula-hero">
             <img src={profile.ingredientTextureImg} alt={`Wipelo ${title} beside a folded wipe and glass labware`} loading="lazy" />
-            <dl className="pdp6-formula-specs">{profile.ingredientSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl>
+            <figcaption>
+              <p>See the cloth.<br />Read the dose.</p>
+              <dl>{profile.ingredientSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl>
+            </figcaption>
           </Reveal>
 
-          <Reveal className="pdp6-formula-table" role="table" aria-label={`${title} ingredients`}>
-            <div className="pdp6-formula-row is-head" role="row">
-              <span role="columnheader">Ingredient · Dose</span>
-              <span role="columnheader">✓ What it does</span>
-              <span role="columnheader">× What it doesn’t</span>
-            </div>
-            {profileIngredients.map((ingredient) => <div className="pdp6-formula-row" role="row" key={ingredient.title}>
-              <div role="cell" className="pdp6-formula-name">
+          <ul className="pdp6-formula-cards" aria-label={`${title} ingredients`}>
+            {profileIngredients.map((ingredient) => <Reveal as="li" className="pdp6-formula-card" key={ingredient.title}>
+              <div className={`pdp6-formula-media${ingredient.image ? " has-photo" : ""}`}>
+                {ingredient.image
+                  ? <img src={ingredient.image} alt={ingredient.imageAlt ?? ""} loading="lazy" />
+                  : <span className="pdp6-formula-dish" aria-hidden="true"><b>{(ingredient.dose ?? "✓").split(" · ").map((part) => <span key={part}>{part}</span>)}</b></span>}
                 <small>{ingredient.status}</small>
-                <h3>{ingredient.title}</h3>
-                {ingredient.dose && <b>{ingredient.dose}</b>}
               </div>
-              <div role="cell" className="pdp6-formula-does" data-label="What it does">{ingredient.does ?? ingredient.body}</div>
-              <div role="cell" className="pdp6-formula-doesnt" data-label="What it doesn’t">{ingredient.doesnt ?? "—"}</div>
-            </div>)}
-          </Reveal>
+              <div className="pdp6-formula-copy">
+                <h3>{ingredient.title}{ingredient.dose && <span className="sr-only">, {ingredient.dose}</span>}</h3>
+                <div>
+                  <p>{ingredient.does ?? ingredient.body}</p>
+                  {/* {ingredient.doesnt && <p className="pdp6-formula-not"><span aria-hidden="true">×</span> {ingredient.doesnt}</p>} */}
+                </div>
+              </div>
+            </Reveal>)}
+          </ul>
         </div>
 
-        <Reveal className="pdp6-formula-foot">
-          {profile.freeFrom.map((item) => <span key={item}>{item}</span>)}
-          <p>{profile.ingredientUseNote}</p>
+        <Reveal className="pdp6-formula-promise">
+          <span className="pdp6-formula-promise-mark" aria-hidden="true">i</span>
+          <div>
+            <h3>What’s left out</h3>
+            <p>{profile.formulaNote} {profile.ingredientUseNote}</p>
+          </div>
+          {profile.freeFrom.length > 0 && <ul>{profile.freeFrom.map((item) => <li key={item}>{item}</li>)}</ul>}
         </Reveal>
       </div>
     </section>
+
+    {/* Benefits */}
+    <section className="pdp6-section pdp6-why" id="why-it-works" aria-labelledby="pdp6-why-title">
+      <div className="wrap pdp6-why-grid">
+        <div className="pdp6-why-copy">
+          <h2 id="pdp6-why-title">{profile.benefitsHeading}</h2>
+          <p className="pdp6-why-intro">{profile.benefitsIntro}</p>
+          <Stagger as="ul" className="pdp6-why-list" gap={0.08}>
+            {profile.benefits.map((benefit, index) => <Reveal as="li" key={benefit.title}>
+              <span className="pdp6-why-badge" aria-hidden="true"><Icon name={benefit.icon ?? fallbackIcons[index % fallbackIcons.length]} /></span>
+              <div>
+                <h3>{benefit.title}</h3>
+                <p>{benefit.body}</p>
+                {benefit.when && <small>{benefit.when}</small>}
+              </div>
+            </Reveal>)}
+          </Stagger>
+        </div>
+        <Reveal variant="scaleIn" className="pdp6-why-media"><img src={profile.lifestyleImage} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
+      </div>
+    </section>
+    <section className="pdp6-section pdp6-story-section">
+      <div className="wrap">
+        <div className="pdp6-story">
+          <Reveal variant="slideFromLeft" className="pdp6-story-media"><img src={profile.pdpRoutineSection} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
+          <Reveal variant="slideFromRight" className="pdp6-story-copy">
+            <span className="pdp6-eyebrow">{profile.storyEyebrow}</span>
+            <h3>{profile.storyTitle}</h3>
+            <p>{profile.information}</p>
+            <ol>{profile.routine.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><b>{step.title}</b><p>{step.body}</p></div></li>)}</ol>
+            <div className="pdp6-ideal"><span>Ideal for</span>{profile.idealFor.map((item) => <i key={item}>{item}</i>)}</div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+
+
     {/* Expert review (drafts render in development only) */}
     {expertReview && <ExpertReviewSection review={expertReview} />}
     {/* What actually happens */}
