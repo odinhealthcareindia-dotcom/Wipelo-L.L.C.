@@ -466,7 +466,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           <Reveal variant="scaleIn" as="figure" className="pdp6-formula-hero">
             <img src={profile.ingredientTextureImg} alt={`Wipelo ${title} beside a folded wipe and glass labware`} loading="lazy" />
             <figcaption>
-              <p>See the cloth.<br />Read the dose.</p>
+              {/* <p>See the cloth.<br />Read the dose.</p> */}
               <dl>{profile.ingredientSpecs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl>
             </figcaption>
           </Reveal>
@@ -477,7 +477,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
                 {ingredient.image
                   ? <img src={ingredient.image} alt={ingredient.imageAlt ?? ""} loading="lazy" />
                   : <span className="pdp6-formula-dish" aria-hidden="true"><b>{(ingredient.dose ?? "✓").split(" · ").map((part) => <span key={part}>{part}</span>)}</b></span>}
-                <small>{ingredient.status}</small>
+                {/* <small>{ingredient.status}</small> */}
               </div>
               <div className="pdp6-formula-copy">
                 <h3>{ingredient.title}{ingredient.dose && <span className="sr-only">, {ingredient.dose}</span>}</h3>
