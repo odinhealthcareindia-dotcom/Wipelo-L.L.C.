@@ -2988,6 +2988,7 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-formula-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:inherit;margin:0;padding:0;list-style:none}
 .pdp6-formula-card{display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 1px 0 rgba(16,33,31,.04),0 14px 30px -22px rgba(16,33,31,.28)}
 .pdp6-formula-media{position:relative;aspect-ratio:16/11;overflow:hidden;background:radial-gradient(120% 90% at 50% 30%,#fff 0%,#F4F3EF 62%,#ECEBE6 100%)}
+.pdp6-formula-media.has-photo{aspect-ratio:1/1}
 .pdp6-formula-media img{width:100%;height:100%;object-fit:cover}
 .pdp6-formula-media small{position:absolute;top:12px;left:12px;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.88);color:var(--pdp6-accent);font:500 11px/1.3 var(--in)}
 /* No ingredient photo yet: a glass dish holding the planned dose. */
@@ -3021,6 +3022,7 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-formula-hero{aspect-ratio:4/5}
   .pdp6-formula-cards{grid-template-columns:minmax(0,1fr)}
   .pdp6-formula-media{aspect-ratio:16/9}
+  .pdp6-formula-media.has-photo{aspect-ratio:1/1}
   .pdp6-formula-dish{width:min(44%,150px)}
   .pdp6-formula-promise{grid-template-columns:minmax(0,1fr)}
   .pdp6-formula-promise-mark{display:none}

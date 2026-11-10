@@ -27,7 +27,7 @@ export function ExpertReviewSection({ review }: { review: ExpertReviewEntry }) {
               <small>{review.credentials} · {review.affiliation}</small>
             </span>
           </footer>
-          {!review.signed && <span className="pdp6-expert-draft">Placeholder — replace with signed advisor quote</span>}
+          {/* {!review.signed && <span className="pdp6-expert-draft">Placeholder — replace with signed advisor quote</span>} */}
         </Reveal>
       </div>
     </div>
