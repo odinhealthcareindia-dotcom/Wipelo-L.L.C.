@@ -2741,6 +2741,41 @@ main{overflow-x:clip}
 .pdp6-media-expand:hover{background:var(--abyss);color:var(--cream)}
 .pdp6-media-expand:focus-visible{outline:2px solid var(--abyss);outline-offset:3px}
 @media(max-width:640px){.pdp6-media-expand{right:14px;bottom:14px;width:38px;height:38px}}
+/* 3D model slide (Shopify GLB via <model-viewer>). Poster first; the viewer only loads after "Turn it around in 3D". */
+.pdp6-model{position:absolute;inset:0;z-index:1;opacity:0;visibility:hidden;transition:opacity .45s var(--glide),visibility 0s .45s;background:radial-gradient(120% 95% at 50% 38%,#fff 0%,var(--pdp6-soft) 70%)}
+.pdp6-model.is-active{opacity:1;visibility:visible;transition:opacity .45s var(--glide)}
+.pdp6-main-media:has(.pdp6-model.is-active){cursor:default}
+.pdp6-model-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s var(--glide)}
+.pdp6-model.is-ready .pdp6-model-poster{opacity:0}
+.pdp6-model-canvas{position:absolute;inset:0;width:100%;height:100%;background:transparent;--poster-color:transparent;--progress-bar-color:transparent;cursor:grab}
+.pdp6-model-canvas:active{cursor:grabbing}
+.pdp6-model-canvas:focus-visible{outline:2px solid var(--abyss);outline-offset:-4px;border-radius:inherit}
+.pdp6-model-start{position:absolute;left:50%;bottom:28px;z-index:2;display:inline-flex;align-items:center;gap:10px;padding:13px 20px 13px 16px;border-radius:999px;background:var(--abyss);color:var(--cream);font:600 14px/1 var(--in);transform:translateX(-50%);box-shadow:0 14px 30px -14px rgba(5,34,30,.7);transition:background .2s,transform .3s var(--glide)}
+.pdp6-model-start:hover{background:var(--pdp6-accent)}
+.pdp6-model-start:active{transform:translateX(-50%) scale(.97)}
+.pdp6-model-start:focus-visible{outline:2px solid var(--abyss);outline-offset:3px}
+.pdp6-model-start .pdp6-orbit-icon ellipse{transform-origin:center;animation:pdp6-orbit 3.2s var(--glide) infinite}
+@keyframes pdp6-orbit{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.pdp6-model-loading{position:absolute;left:50%;bottom:32px;z-index:2;width:min(46%,220px);transform:translateX(-50%)}
+.pdp6-model-bar{display:block;height:4px;border-radius:4px;overflow:hidden;background:rgba(16,33,31,.12)}
+.pdp6-model-bar i{display:block;height:100%;background:var(--pdp6-accent);transform-origin:left;transition:transform .25s linear}
+.pdp6-model-hint{position:absolute;left:50%;bottom:24px;z-index:2;margin:0;padding:9px 14px;border-radius:999px;background:var(--pdp6-paper);color:var(--abyss);font:500 12.5px/1 var(--in);white-space:nowrap;transform:translateX(-50%);box-shadow:0 8px 20px -12px rgba(5,34,30,.45);pointer-events:none;transition:opacity .4s,transform .4s var(--glide)}
+.pdp6-model-hint.is-gone{opacity:0;transform:translate(-50%,6px)}
+.pdp6-model-reset{position:absolute;right:20px;bottom:20px;z-index:2;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--pdp6-paper);color:var(--abyss);box-shadow:0 8px 20px -12px rgba(5,34,30,.45);transition:background .2s,color .2s}
+.pdp6-model-ar{position:absolute;left:20px;bottom:20px;display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:999px;background:var(--abyss);color:var(--cream);font:600 13px/1 var(--in);box-shadow:0 14px 30px -14px rgba(5,34,30,.7)}
+.pdp6-model-reset:hover,.pdp6-model-ar:hover{background:var(--pdp6-accent);color:#fff}
+.pdp6-model-reset:focus-visible,.pdp6-model-ar:focus-visible{outline:2px solid var(--abyss);outline-offset:3px}
+/* The AR button is in model-viewer's slot; on phones with AR the hint moves up so the two never overlap. */
+.pdp6-model.is-ready:has(model-viewer[ar-status]) .pdp6-model-hint{bottom:76px}
+.pdp6-model-error{position:absolute;left:20px;right:20px;bottom:20px;z-index:2;margin:0;padding:12px 16px;border-radius:14px;background:var(--pdp6-paper);color:var(--abyss);font:400 13px/1.45 var(--in);text-align:center}
+.pdp6-thumb-3d{position:absolute;left:6px;bottom:6px;display:inline-flex;align-items:center;gap:4px;padding:4px 7px 4px 5px;border-radius:999px;background:var(--abyss);color:var(--cream);font:600 10.5px/1 var(--in)}
+@media(max-width:640px){
+  .pdp6-model-start{bottom:18px;padding:12px 17px 12px 14px;font-size:13px}
+  .pdp6-model-reset{right:14px;bottom:14px;width:38px;height:38px}
+  .pdp6-model-ar{left:14px;bottom:14px;padding:11px 14px;font-size:12.5px}
+  .pdp6-model-hint{bottom:18px;font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){.pdp6-model,.pdp6-model-poster,.pdp6-model-hint{transition:none}.pdp6-model-start .pdp6-orbit-icon ellipse{animation:none}}
 
 /* ===================== Full-screen product image viewer ===================== */
 html.lightbox-lock{overflow:hidden}
