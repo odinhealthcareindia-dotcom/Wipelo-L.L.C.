@@ -23,6 +23,14 @@ const PRODUCT_METAFIELDS = [...new Set([
 
 export type ShopifyMoney = { amount: string; currencyCode: string };
 export type ShopifyImage = { url: string; altText: string | null; width?: number | null; height?: number | null };
+/** A 3D model uploaded to the product's media in Shopify. `sources` holds a GLB and, when Shopify generates one, a USDZ for iOS AR. */
+export type ShopifyModel3d = {
+  alt: string | null;
+  previewImage: ShopifyImage | null;
+  sources: { url: string; mimeType: string; format: string }[];
+  /** How many product images come before this model in Shopify's media order, so the gallery can keep that order. */
+  position: number;
+};
 export type ShopifyOption = { name: string; value: string };
 export type ShopifySellingPlan = { id: string; name: string; description: string | null; recurringDeliveries: boolean; options: { name: string | null; value: string | null }[] };
 export type ShopifyPlanAllocation = {
@@ -52,6 +60,8 @@ export type ShopifyProduct = {
   requiresSellingPlan: boolean;
   featuredImage: ShopifyImage | null;
   images: ShopifyImage[];
+  /** Optional so hand-built products (fixtures, legacy content) stay valid. */
+  models?: ShopifyModel3d[];
   priceRange: { minVariantPrice: ShopifyMoney; maxVariantPrice: ShopifyMoney };
   options: { id: string; name: string; values: string[] }[];
   variants: ShopifyVariant[];
@@ -62,7 +72,9 @@ type ShopifyProductConnection = { nodes: ShopifyProductPayload[]; pageInfo: { ha
 type ShopifyVariantPayload = Omit<ShopifyVariant, "sellingPlanAllocations"> & {
   sellingPlanAllocations?: { nodes: ShopifyPlanAllocation[] } | ShopifyPlanAllocation[];
 };
-type ShopifyProductPayload = Omit<ShopifyProduct, "images" | "variants" | "metafields"> & {
+type ShopifyMediaPayload = { mediaContentType: string; alt?: string | null; previewImage?: ShopifyImage | null; sources?: ShopifyModel3d["sources"] };
+type ShopifyProductPayload = Omit<ShopifyProduct, "images" | "models" | "variants" | "metafields"> & {
+  media?: { nodes: ShopifyMediaPayload[] } | ShopifyMediaPayload[];
   metafields: (ShopifyMetafield | null)[] | null;
   images: { nodes: ShopifyImage[] } | ShopifyImage[];
   variants: { nodes: ShopifyVariantPayload[] } | ShopifyVariantPayload[];
@@ -139,6 +151,7 @@ const PRODUCT_FIELDS = `
   id handle title productType tags description descriptionHtml availableForSale requiresSellingPlan
   featuredImage { ${IMAGE_FIELDS} }
   images(first: 50) { nodes { ${IMAGE_FIELDS} } }
+  media(first: 50) { nodes { mediaContentType ... on Model3d { alt previewImage { ${IMAGE_FIELDS} } sources { url mimeType format } } } }
   priceRange { minVariantPrice { amount currencyCode } maxVariantPrice { amount currencyCode } }
   options { id name values }
   variants(first: 100) {
@@ -155,10 +168,22 @@ const PRODUCT_FIELDS = `
 function normalizeProduct(product: ShopifyProductPayload): ShopifyProduct {
   const images = Array.isArray(product.images) ? product.images : product.images.nodes;
   const variants = Array.isArray(product.variants) ? product.variants : product.variants.nodes;
+  const media = product.media ? (Array.isArray(product.media) ? product.media : product.media.nodes) : [];
+  const models: ShopifyModel3d[] = [];
+  let imagesSeen = 0;
+  for (const item of media) {
+    if (item.mediaContentType === "IMAGE") imagesSeen += 1;
+    else if (item.mediaContentType === "MODEL_3D" && item.sources?.some((source) => source.format === "glb")) {
+      models.push({ alt: item.alt ?? null, previewImage: item.previewImage ?? null, sources: item.sources, position: imagesSeen });
+    }
+  }
+  const { media: _media, ...rest } = product;
+  void _media;
 
   return {
-    ...product,
+    ...rest,
     images,
+    models,
     variants: variants.map((variant) => {
       const allocations = variant.sellingPlanAllocations;
       return {

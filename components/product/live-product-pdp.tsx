@@ -19,10 +19,13 @@ import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
 import { ProductLightbox } from "./product-lightbox";
+import { OrbitIcon, ProductModelViewer, type ProductModel } from "./product-model-viewer";
 import { ReceiptsSectionPdp } from "../home/receipts-pdp";
 import { GuaranteeSection } from "../home/guarantee";
 
 type PurchaseMode = "subscribe" | "one-time";
+/** A gallery slide: a photo, or a Shopify 3D model shown on its poster until the shopper turns it around. */
+type GallerySlide = { image: string; alt: string; eyebrow?: string; headline: string; caption?: string; fit?: "cover" | "contain"; model?: ProductModel };
 
 /** Minimum gallery length; a product with more Shopify images shows all of them. */
 const GALLERY_SIZE = 8;
@@ -148,7 +151,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
   // 6. Gallery slides.
   const detailImage = profile.pdpProofSection;
-  const slides = useMemo(() => {
+  const slides = useMemo((): GallerySlide[] => {
     const liveImages = product.images.map((image) => ({ image: getImageUrl(image.url, 1400), alt: image.altText || `Wipelo ${title}` }));
     if (!liveImages.length && profile.gallerySlides?.length) return cycle(profile.gallerySlides, GALLERY_SIZE);
     const sources = [
@@ -162,13 +165,27 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     const captions = [profile.ingredientIntro, profile.usageIntro, profile.galleryCaption];
     // Every image uploaded in Shopify is shown, in Shopify's order. Brand and lifestyle shots only top up galleries with fewer than GALLERY_SIZE images.
     const size = Math.max(GALLERY_SIZE, liveImages.length);
-    return cycle(unique, size).map((source, index) => {
+    const gallery: GallerySlide[] = cycle(unique, size).map((source, index) => {
       if (index === 0) return { ...source, eyebrow: profile.badge, headline: profile.heroPromise, caption: profile.galleryHighlight, fit: "cover" as const };
       if (index === 2 && profile.expertReview) return { ...source, eyebrow: "Expert review", headline: profile.expertReview.name, caption: profile.expertReview.scope, fit: "cover" as const };
       return { ...source, eyebrow: `${profile.audience}`, headline: SLIDE_HEADLINES[index % SLIDE_HEADLINES.length], caption: captions[index % captions.length], fit: "cover" as const };
     });
-  }, [product.images, profile, title, detailImage]);
+    // 3D models (GLB uploaded to the product's media in Shopify) keep their place in Shopify's media order,
+    // but never land first: the opening slide stays a photo so the page paints without the 3D viewer.
+    const models = (product.models ?? []).flatMap((model) => {
+      const glb = model.sources.find((source) => source.format === "glb" || source.url.split("?")[0].endsWith(".glb"));
+      if (!glb) return [];
+      const usdz = model.sources.find((source) => source.format === "usdz")?.url;
+      const poster = model.previewImage ? getImageUrl(model.previewImage.url, 1400) : gallery[0]?.image ?? profile.lifestyleImage;
+      const alt = model.alt || `3D model of Wipelo ${title}`;
+      return [{ position: Math.max(1, model.position), slide: { image: poster, alt, headline: "3D view", fit: "cover" as const, model: { glb: glb.url, usdz, poster, alt } } }];
+    });
+    models.forEach(({ position, slide }, offset) => gallery.splice(Math.min(position + offset, gallery.length), 0, slide));
+    return gallery;
+  }, [product.images, product.models, profile, title, detailImage]);
+
   const [slideIndex, setSlideIndex] = useState(0);
+  const activeIsModel = Boolean(slides[slideIndex]?.model);
   const thumbsRef = useRef<HTMLDivElement>(null);
   // Keep the active thumbnail in view when the slide changes (swipe, arrows, or a click near the edge).
   useEffect(() => {
@@ -296,20 +313,20 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             const deltaX = event.clientX - swipeStartX.current;
             swipeStartX.current = null;
             if (Math.abs(deltaX) >= 40) goToSlide(deltaX < 0 ? 1 : -1);
-            else if (Math.abs(deltaX) < 8 && event.button === 0) setLightboxOpen(true);
+            else if (Math.abs(deltaX) < 8 && event.button === 0 && !activeIsModel) setLightboxOpen(true);
           }}>
-            {slides.map((item, index) => <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
+            {slides.map((item, index) => item.model ? <ProductModelViewer key={`${item.model.glb}-${index}`} model={item.model} active={index === slideIndex} /> : <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
             {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>}
             <span className="pdp6-media-count">{slideIndex + 1} / {slides.length}</span>
-            <button type="button" className="pdp6-media-expand" onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={() => setLightboxOpen(true)} aria-label="View image full screen">
+            {!activeIsModel && <button type="button" className="pdp6-media-expand" onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={() => setLightboxOpen(true)} aria-label="View image full screen">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
+            </button>}
           </div>
           <button type="button" className="pdp6-media-arrow pdp6-media-prev" aria-label="Show previous image" onClick={() => goToSlide(-1)}><span aria-hidden="true" /></button>
           <button type="button" className="pdp6-media-arrow pdp6-media-next" aria-label="Show next image" onClick={() => goToSlide(1)}><span aria-hidden="true" /></button>
         </div>
         <div className="pdp6-media-nav" ref={thumbsRef} role="tablist" aria-label="Product images">
-          {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={`Image ${index + 1}: ${item.headline}`} className={index === slideIndex ? "active" : undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" /></button>)}
+          {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={item.model ? `3D model ${index + 1}: turn the pack around` : `Image ${index + 1}: ${item.headline}`} className={`${index === slideIndex ? "active" : ""}${item.model ? " is-model" : ""}` || undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" />{item.model && <span className="pdp6-thumb-3d" aria-hidden="true"><OrbitIcon size={14} />3D</span>}</button>)}
         </div>
         <ProductLightbox slides={slides} index={slideIndex} onIndexChange={setSlideIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} title={product.title} />
         <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
