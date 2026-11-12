@@ -239,7 +239,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       lifestyleImage: "/wipelo-body-skincare-routine.png",
       lifestyleAlt: "A woman gently uses a cleansing wipe on her upper arm as part of a body-care routine.",
       benefitsTabImage: "/spotless-body-home.png",
-      pdpRoutineSection: "/spotless-body-home.png",
+      pdpRoutineSection: "/spotless-pdp/one-pass-one-wipe.png",
       pdpProofSection: "/wipelo-lab-spotless.png",
       pdpDirection: "/one-pass-one-wipe.png",
       ingredientTextureImg: "/wipelo-lab-spotless.png",
