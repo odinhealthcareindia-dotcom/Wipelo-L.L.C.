@@ -336,7 +336,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       lifestyleImage: "/wipelo-her-travel-care.png",
       lifestyleAlt: "A woman places an individually wrapped wipe in a travel pouch on a bathroom counter.",
       benefitsTabImage: "/her-handbag-essential.png",
-      pdpRoutineSection: "/her-handbag-essential.png",
+      pdpRoutineSection: "/her-pdp/Wipelo HER_ Your pH, Respected.gif",
       pdpProofSection: "/wipelo-lab-her.png",
       pdpDirection: "/tear-at-notch-v2.png",
       ingredientTextureImg: "/wipelo-lab-her.png",
