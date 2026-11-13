@@ -4,7 +4,7 @@ const steps = [
   {
     title: "Open one wipe",
     body: "Each wipe is individually wrapped for easy carrying and use when you need it.",
-    image: "/images/ritual/open-wipe.png",
+    image: "/images/ritual/Wipelo_Three_Packets_Opening_Loop.gif",
     alt: "Hands opening an individually wrapped Wipelo wipe at the tear notch",
   },
   {

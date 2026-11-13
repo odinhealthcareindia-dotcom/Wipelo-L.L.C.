@@ -46,6 +46,7 @@ export type ProductProfile = {
   information: string;
   imageLabel: string;
   lifestyleImage: string;
+  momentsBetween:string;
   lifestyleAlt: string;
   // The Benefits tab sits next to the lifestyle image elsewhere on the page, so it needs a different photo.
   benefitsTabImage?: string;
@@ -140,6 +141,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       information: "Masking path: sweat and residue remain while fragrance sits over them. Proposed Source Reset path: a wipe removes surface material, cleansing lotion lifts remaining residue, and zinc ricinoleate is intended to bind odor molecules. This is a mechanism diagram, not a measured before-and-after result. A finished-product odor study must establish any difference.",
       imageLabel: "30 individually sealed wipes per pack · target lotion pH 4.5–5.0, pending batch verification",
       lifestyleImage: "/on-the-go-pdp/gym-on-the-go.png",
+      momentsBetween:"/images/campaign/on-the-go/03-on-the-go.webp",
       lifestyleAlt: "A woman packs an individually wrapped wipe into her gym bag after a workout.",
       benefitsTabImage: "/on-the-go-home.png",
       pdpRoutineSection: "/on-the-go-pdp/steps.gif",
@@ -237,6 +239,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       information: "Proposed lotion: 0.5% salicylic acid. A pass with a saturated cloth is followed by air-dry, leave-on contact. Concentration alone does not establish drug compliance or the amount transferred from the cloth. Do not present wipe time as a clinical contact-time claim.",
       imageLabel: "30 individually sealed wipes per pack · proposed 0.5% salicylic acid; target lotion pH about 3.9",
       lifestyleImage: "/wipelo-body-skincare-routine.png",
+      momentsBetween:"/images/campaign/spotless/07-spotless.webp",
       lifestyleAlt: "A woman gently uses a cleansing wipe on her upper arm as part of a body-care routine.",
       benefitsTabImage: "/spotless-body-home.png",
       pdpRoutineSection: "/spotless-pdp/one-pass-one-wipe.png",
@@ -334,12 +337,13 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       information: "Vaginal fluid in one healthy cohort averaged 3.80 ± 0.20. HER’s proposed lotion target is 3.8–4.5. Vulvar skin varies by site and can be higher. This overlap illustrates formulation intent only; it does not show that HER changes vaginal pH. Batch results and finished-product tolerance data are still required.",
       imageLabel: "30 individually sealed wipes per pack · target lotion pH 3.8–4.5; verify on each production batch",
       lifestyleImage: "/wipelo-her-travel-care.png",
+      momentsBetween:"/images/campaign/her/08-her-graphic-flatlay.webp",
       lifestyleAlt: "A woman places an individually wrapped wipe in a travel pouch on a bathroom counter.",
       benefitsTabImage: "/her-handbag-essential.png",
       pdpRoutineSection: "/her-pdp/Wipelo HER_ Your pH, Respected.gif",
       pdpProofSection: "/wipelo-lab-her.png",
       pdpDirection: "/tear-at-notch-v2.png",
-      ingredientTextureImg: "/wipelo-lab-her.png",
+      ingredientTextureImg: "/images/campaign/her/07-her-ready-to-go.webp",
       publishedDetails: ["Intimate skin care only", "Target pH 3.8–4.5 · batch verification pending", "30 individually sealed wipes per pack"],
       benefitsHeading: "A small reset for the moments between.",
       benefitsIntro: "Fragrance free and alcohol free, with panthenol and glycerin for a softer afterfeel.",
@@ -388,8 +392,8 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       expectationEmphasis: "actually",
       expectations: [
         { window: "Wipe 1 · First use", title: "Gentle, unscented, done.", body: "A smooth cloth and a lactic acid lotion around pH 3.8–4.5 give a brief external clean with a light, unscented afterfeel. Stop if it stings.", img: "/wipelo-lab-her.png", imgAlt: "The HER sachet with a white wipe, glass dishes and an aloe leaf.", stats: [{ value: "3.8–4.5", label: "lotion pH" }, { value: "0%", label: "fragrance" }] },
-        { window: "Week 1 · The habit", title: "A quiet bag staple.", body: "A few sealed singles live in the period bag, the gym bag and the travel pouch — for moments without water, not as a daily requirement.", img: "/wipelo-her-travel-care.png", imgAlt: "A woman slips an individually wrapped wipe into a pouch on a bathroom counter.", stats: [{ value: "~15 × 20 cm", label: "cloth" }, { value: "1 wipe", label: "= 1 refresh" }] },
-        { window: "Week 4 · The standard", title: "Clean, with clear limits.", body: "The value is reliable access to a gentle external clean. No transformed microbiome, fewer infections or “better” natural scent is promised.", img: "/her-handbag-essential.png", imgAlt: "A woman slips a cream HER wipe into a deep-green handbag.", stats: [{ value: "[XX]%", label: "of testers*", placeholder: true }, { value: "0%", label: "alcohol" }] },
+        { window: "Week 1 · The habit", title: "A quiet bag staple.", body: "A few sealed singles live in the period bag, the gym bag and the travel pouch — for moments without water, not as a daily requirement.", img: "/her-handbag-essential.png", imgAlt: "A woman slips an individually wrapped wipe into a pouch on a bathroom counter.", stats: [{ value: "~15 × 20 cm", label: "cloth" }, { value: "1 wipe", label: "= 1 refresh" }] },
+        { window: "Week 4 · The standard", title: "Clean, with clear limits.", body: "The value is reliable access to a gentle external clean. No transformed microbiome, fewer infections or “better” natural scent is promised.", img: "/Wipelo HER sachet handoff on ivory marble.png", imgAlt: "A woman slips a cream HER wipe into a deep-green handbag.", stats: [{ value: "[XX]%", label: "of testers*", placeholder: true }, { value: "0%", label: "alcohol" }] },
       ],
       expectationWontDo: ["Not for internal use", "Doesn’t change vaginal pH", "Doesn’t replace washing"],
       expectationFootnote: "*Placeholder: add a tester figure only once a consumer study is complete, with sample size and method.",
@@ -431,6 +435,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
     information: "Each wipe is individually sealed, so the last one in the box is as ready as the first. Formula details, directions, and cautions are printed on the approved package label.",
     imageLabel: "Product images from Shopify",
     lifestyleImage: "/wipelo-purposeful-care.png",
+    momentsBetween:"/images/campaign/her/08-her-graphic-flatlay.webp",
     lifestyleAlt: "Three individually wrapped wipes arranged beside a folded cloth on a pale stone surface.",
     benefitsTabImage: "/wipelo-lab-range.png",
     pdpRoutineSection: "/wipelo-lab-range.png",

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRef, type KeyboardEvent } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import { nextTabIndex, useAutoRotate } from "./use-auto-rotate";
 
 // Long enough to read the headline and four ingredient cards before the panel changes.
@@ -15,6 +17,7 @@ export type NeedsScienceTab = {
   product: string;
   tone: "mint" | "stone" | "sand";
   image?: string;
+  images?: { src: string; alt: string }[];
   href: string;
   headline: string;
   actives: { icon: Icon; dose: string; name: string; body: string }[];
@@ -31,6 +34,35 @@ const iconPaths: Record<Icon, React.ReactNode> = {
   dots: <><circle cx="12" cy="12" r="7" /><circle cx="9.5" cy="11" r=".6" fill="currentColor" /><circle cx="14" cy="10.5" r=".6" fill="currentColor" /><circle cx="12.5" cy="14.5" r=".6" fill="currentColor" /></>,
   spark: <path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1" />,
 };
+
+function ScienceImageCarousel({ images, product }: { images: { src: string; alt: string }[]; product: string }) {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (paused || reducedMotion || images.length < 2) return;
+    const timer = window.setInterval(() => setActive((current) => (current + 1) % images.length), 2400);
+    return () => window.clearInterval(timer);
+  }, [images.length, paused, reducedMotion]);
+
+  const photo = images[active];
+  return <div className="science-carousel" role="group" aria-label={`${product} product and lifestyle photographs`} onPointerEnter={() => setPaused(true)} onPointerLeave={() => setPaused(false)}>
+    <AnimatePresence initial={false} mode="sync">
+      <m.div key={photo.src} className="science-carousel-slide" initial={reducedMotion ? { opacity: 0 } : { x: "8%", opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={reducedMotion ? { opacity: 0 } : { x: "-8%", opacity: 0 }} transition={{ duration: reducedMotion ? 0.15 : 0.55, ease: [0.22, 1, 0.36, 1] }}>
+        <Image src={photo.src} fill sizes="(max-width: 640px) 90vw, (max-width: 1020px) 80vw, 40vw" alt={photo.alt} />
+      </m.div>
+    </AnimatePresence>
+  </div>;
+}
 
 export function NeedsScience({ tabs, heading }: { tabs: NeedsScienceTab[]; heading: React.ReactNode }) {
   const rotation = useAutoRotate(tabs.length);
@@ -85,7 +117,9 @@ export function NeedsScience({ tabs, heading }: { tabs: NeedsScienceTab[]; headi
           <b>{tab.product}</b>
         </div>
         <div className="science-pack">
-          {tab.image && <span className="science-pack-img"><Image src={tab.image} width={1402} height={1122} sizes="(max-width: 640px) 90vw, (max-width: 1020px) 80vw, 40vw" alt={`Wipelo ${tab.product} carton and individually wrapped wipe pouch`} /></span>}
+          {(tab.images?.length || tab.image) && <span className="science-pack-img">
+            <ScienceImageCarousel images={tab.images?.length ? tab.images : [{ src: tab.image!, alt: `Wipelo ${tab.product} product photograph` }]} product={tab.product} />
+          </span>}
         </div>
         {/* <dl className="science-specs">
           {tab.specs.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}
