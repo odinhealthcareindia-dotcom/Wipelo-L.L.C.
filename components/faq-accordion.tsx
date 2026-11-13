@@ -2,10 +2,22 @@
 
 import { useState, type ReactNode } from "react";
 import { Reveal, Stagger } from "@/components/motion/reveal";
+import { BackgroundVideo, type BackgroundVideoSource } from "@/components/motion/background-video";
 
 export type FAQItem = { question: string; answer: ReactNode };
 
-export function FAQAccordion({ items, tag = "// Wipelo, explained", title = "A few helpful answers." }: { items: FAQItem[]; tag?: string; title?: string }) {
+export function FAQAccordion({
+  items,
+  tag = "// Wipelo, explained",
+  title = "A few helpful answers.",
+  backgroundVideo,
+}: {
+  items: FAQItem[];
+  tag?: string;
+  title?: string;
+  /** Optional silent looping video behind the section; switches on the frosted, readable layout. */
+  backgroundVideo?: BackgroundVideoSource;
+}) {
   const [openItems, setOpenItems] = useState<Set<number>>(() => new Set());
 
   function toggleItem(index: number) {
@@ -17,7 +29,11 @@ export function FAQAccordion({ items, tag = "// Wipelo, explained", title = "A f
     });
   }
 
-  return <section className="sec" id="faq">
+  return <section className={backgroundVideo ? "sec faq-video-section" : "sec"} id="faq">
+    {backgroundVideo && <div className="faq-video-bg" aria-hidden="true">
+      <BackgroundVideo className="faq-video" src={backgroundVideo.src} poster={backgroundVideo.poster} />
+      <div className="faq-video-scrim" />
+    </div>}
     <div className="wrap">
       <Stagger className="sec-head" gap={0.09}>
         <Reveal as="span" className="mono-tag">{tag}</Reveal>

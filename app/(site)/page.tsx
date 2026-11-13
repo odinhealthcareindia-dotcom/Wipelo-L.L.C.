@@ -24,6 +24,7 @@ import { ReviewsSection } from "@/components/home/reviews";
 import { ReceiptsSection } from "@/components/home/receipts";
 import { GuaranteeSection } from "@/components/home/guarantee";
 import { ReviewsSectionHome } from "@/components/home/reviewshome";
+import { CampaignStorySections } from "@/components/home/campaign-stories";
 
 export const revalidate = 60;
 
@@ -54,12 +55,17 @@ export default async function HomePage() {
       onTheGoImage="/images/wellness/on-the-go-carton-pouch.webp"
       herImage="/images/wellness/her-carton-pouch.webp"
     />
+    <CampaignStorySections
+      onTheGoHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"}
+      spotlessHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"}
+      herHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"}
+    />
     <ReceiptsSection />
     <ReviewsSectionHome />
     <RitualSection />
     <ComparisonSection />
     <MechanismSection />
-    <FAQAccordion items={homeFaqItems} />
+    <FAQAccordion items={homeFaqItems} backgroundVideo={{ src: "/videos/faq-background.mp4", poster: "/videos/faq-background-poster.webp" }} />
     {/* <OnTheGoSection productHref={onTheGoProduct ? `/products/${encodeURIComponent(onTheGoProduct.handle)}` : "/shop#products"} price={onTheGoProduct ? moneyLabel(onTheGoProduct.priceRange.minVariantPrice) : undefined} />
     <SpotlessSection productHref={spotlessProduct ? `/products/${encodeURIComponent(spotlessProduct.handle)}` : "/shop#products"} />
     <HerSection productHref={herProduct ? `/products/${encodeURIComponent(herProduct.handle)}` : "/shop#products"} />

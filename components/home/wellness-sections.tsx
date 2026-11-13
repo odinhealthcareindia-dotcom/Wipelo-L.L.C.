@@ -140,6 +140,12 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
           </Stagger>} tabs={[
             {
               label: "Body freshness", product: "ON THE GO", tone: "mint", image: onTheGoImage, href: onTheGoHref,
+              images: [
+                { src: "/images/science-carousel/on-the-go/01.webp", alt: "A man holds the teal ON THE GO sachet beside its carton." },
+                { src: "/images/science-carousel/on-the-go/02.webp", alt: "The ON THE GO carton and sachet displayed together." },
+                { src: "/images/science-carousel/on-the-go/03.webp", alt: "A woman carries an ON THE GO sachet in her shirt pocket." },
+                { src: "/images/science-carousel/on-the-go/04.webp", alt: "An ON THE GO sachet is packed into a small travel pouch." },
+              ],
               headline: "Don’t just cover up body odor. Cleanse away the sweat and residue behind it.",
               actives: [
                 { icon: "drop", dose: "0.4–0.8%", name: "Zinc ricinoleate", body: "Traps and neutralises odor molecules — not dependent on fragrance." },
@@ -152,6 +158,12 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
             },
             {
               label: "Body breakouts", product: "SPOTLESS", tone: "stone", image: spotlessImage, href: spotlessHref,
+              images: [
+                { src: "/images/science-carousel/spotless/01.webp", alt: "A woman holds a SPOTLESS sachet beside her face." },
+                { src: "/images/science-carousel/spotless/02.webp", alt: "The SPOTLESS carton and sachet displayed together." },
+                { src: "/images/science-carousel/spotless/03.webp", alt: "A SPOTLESS sachet is placed into a cream travel pouch." },
+                { src: "/images/science-carousel/spotless/04.webp", alt: "A seated woman holds a SPOTLESS sachet outdoors." },
+              ],
               headline: "Body acne doesn’t stop at your face. Neither should your skincare.",
               actives: [
                 { icon: "dots", dose: "0.5%", name: "Salicylic acid (BHA)", body: "Helps exfoliate dead skin cells and address clogged pores." },
@@ -164,6 +176,12 @@ export function WellnessSections({ onTheGoHref, spotlessHref, herHref, onTheGoPr
             },
             {
               label: "Intimate care", product: "HER", tone: "sand", image: herImage, href: herHref,
+              images: [
+                { src: "/images/science-carousel/her/01.webp", alt: "A woman holds the HER carton beside a sunlit window." },
+                { src: "/images/science-carousel/her/02.webp", alt: "The HER sachet and carton arranged on a deep green surface." },
+                { src: "/images/science-carousel/her/03.webp", alt: "A HER sachet is packed into a dark green travel pouch." },
+                { src: "/images/science-carousel/her/04.webp", alt: "The HER carton and sachet displayed in a green frame." },
+              ],
               headline: "A gentle, convenient external refresh — without added fragrance.",
               actives: [
                 { icon: "flask", dose: "0.3–0.5%", name: "Lactic acid + 0.5% sodium lactate", body: "Supports an acidic, pH-considerate lotion design." },

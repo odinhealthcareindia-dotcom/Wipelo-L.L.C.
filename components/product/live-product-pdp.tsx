@@ -535,7 +535,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             </Reveal>)}
           </Stagger>
         </div>
-        <Reveal variant="scaleIn" className="pdp6-why-media"><img src={profile.lifestyleImage} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
+        <Reveal variant="scaleIn" className="pdp6-why-media"><img src={profile.momentsBetween} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
       </div>
     </section>
     <section className="pdp6-section pdp6-story-section">
