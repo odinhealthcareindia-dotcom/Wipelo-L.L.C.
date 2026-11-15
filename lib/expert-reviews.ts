@@ -15,17 +15,23 @@ export type ExpertReviewEntry = {
   signed: boolean;
 };
 
+// One advisor for the whole range: every PDP shows the same dermatologist photo and designation.
+const EXPERT_IMAGE = "/images/expert-image/dermatologist.png";
+const EXPERT_IMAGE_ALT = "A smiling dermatologist in navy scrubs outside a modern clinic.";
+const EXPERT_CREDENTIALS = "Board-certified dermatologist";
+const EXPERT_BADGE = "Dermatologist-recommended";
+
 export const expertReviews: ExpertReviewEntry[] = [
   {
     category: "on-the-go",
     quote: "Between showers, the real job is getting sweat and residue off the skin. ON THE GO does that with mild, sulfate-free cleansers at a pH 4.5–5.0 lotion, and it’s honest that it isn’t an antiperspirant.",
     name: "Dr. Full Name, MD",
     initials: "DR",
-    credentials: "Board-certified dermatologist",
+    credentials: EXPERT_CREDENTIALS,
     affiliation: "Wipelo advisory panel",
-    badge: "Dermatologist-recommended",
-    image: "/wipelo-between-shower-refresh.png",
-    imageAlt: "A woman packs an individually wrapped wipe into her gym bag after a workout.",
+    badge: EXPERT_BADGE,
+    image: EXPERT_IMAGE,
+    imageAlt: EXPERT_IMAGE_ALT,
     signed: false,
   },
   {
@@ -33,11 +39,11 @@ export const expertReviews: ExpertReviewEntry[] = [
     quote: "Back and chest are hard to reach with a serum. A fragrance-free, leave-on wipe with 0.5% salicylic acid and 2% niacinamide is a simple step for breakout-prone body skin — alongside treatment when it’s needed, not instead of it.",
     name: "Dr. Full Name, MD, FAAD",
     initials: "DR",
-    credentials: "Board-certified dermatologist",
+    credentials: EXPERT_CREDENTIALS,
     affiliation: "Wipelo advisory panel",
-    badge: "Dermatologist-recommended",
-    image: "/wipelo-body-skincare-routine.png",
-    imageAlt: "A woman gently uses a cleansing wipe on her upper arm as part of a body-care routine.",
+    badge: EXPERT_BADGE,
+    image: EXPERT_IMAGE,
+    imageAlt: EXPERT_IMAGE_ALT,
     signed: false,
   },
   {
@@ -45,11 +51,11 @@ export const expertReviews: ExpertReviewEntry[] = [
     quote: "For external cleansing when a shower isn’t an option, I want fragrance-free, gentle and clear about its limits. HER is external use only and doesn’t claim to change vaginal pH — that honesty matters.",
     name: "Dr. Full Name, MD",
     initials: "DR",
-    credentials: "Board-certified OB-GYN",
+    credentials: EXPERT_CREDENTIALS,
     affiliation: "Wipelo advisory panel",
-    badge: "Gynecologist-recommended",
-    image: "/wipelo-her-travel-care.png",
-    imageAlt: "A woman in a bathrobe slips an individually wrapped wipe into a dark pouch on a marble counter.",
+    badge: EXPERT_BADGE,
+    image: EXPERT_IMAGE,
+    imageAlt: EXPERT_IMAGE_ALT,
     signed: false,
   },
 ];
