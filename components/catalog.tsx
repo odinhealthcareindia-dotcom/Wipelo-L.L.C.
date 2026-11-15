@@ -5,6 +5,7 @@ import { AddProductButton } from "@/components/add-product-button";
 import { Reveal, Stagger } from "@/components/motion/reveal";
 import { getProductCategory, getProductProfile } from "@/lib/product-profiles";
 import { maxPlanSavingsPercent } from "@/lib/subscriptions";
+import { CompareCarousel, type CompareCarouselImage } from "@/components/compare-carousel";
 
 function firstVariant(product: ShopifyProduct) {
   return product.variants.find((variant) => variant.availableForSale) ?? product.variants[0] ?? null;
@@ -65,6 +66,29 @@ const compareSpecs: Record<string, CompareSpec> = {
   her: { tone: "sand", eyebrow: "Intimate care", bestFor: "Occasional external intimate cleansing", useOn: "External intimate skin only", ingredients: "Planned lactic acid + sodium lactate, glycerin, panthenol, aloe", format: "Individually wrapped · fragrance-free", note: "Does not change or regulate vaginal pH" },
 };
 
+const compareGalleryDir = "/images/Find-your-Wipelo";
+
+const compareGalleries: Record<string, CompareCarouselImage[]> = {
+  otg: [
+    { src: `${compareGalleryDir}/on-the-go/Wipelo On the Go Product Photo-1.png`, alt: "Wipelo ON THE GO carton and sachet" },
+    { src: `${compareGalleryDir}/on-the-go/Wipelo On the Go product showcase-2.png`, alt: "Wipelo ON THE GO product showcase" },
+    { src: `${compareGalleryDir}/on-the-go/Wipelo On the Go Product Photo-3.png`, alt: "Wipelo ON THE GO pack styled for everyday carry" },
+    { src: `${compareGalleryDir}/on-the-go/Wipelo On the Go square product photo-4.png`, alt: "Wipelo ON THE GO carton close-up" },
+  ],
+  spotless: [
+    { src: `${compareGalleryDir}/spotless/Wipelo SPOTLESS square product scene-1.png`, alt: "Wipelo SPOTLESS carton and sachets" },
+    { src: `${compareGalleryDir}/spotless/Wipelo SPOTLESS product on a soft towel-2.png`, alt: "Wipelo SPOTLESS pack on a soft towel" },
+    { src: `${compareGalleryDir}/spotless/Wipelo SPOTLESS product showcase-3.png`, alt: "Wipelo SPOTLESS product showcase" },
+    { src: `${compareGalleryDir}/spotless/Wipelo SPOTLESS product display-4.png`, alt: "Wipelo SPOTLESS product display" },
+  ],
+  her: [
+    { src: `${compareGalleryDir}/her/Red-haired woman holding a cream sachet-1.png`, alt: "Woman holding a Wipelo HER sachet" },
+    { src: `${compareGalleryDir}/her/HER Sachet on Dark Teal-2.png`, alt: "Wipelo HER sachet on a dark teal background" },
+    { src: `${compareGalleryDir}/her/Wipelo carton on a green pedestal-3.png`, alt: "Wipelo HER carton on a green pedestal" },
+    { src: `${compareGalleryDir}/her/Cream sachet tucked into a shirt pocket-4.png`, alt: "Wipelo HER sachet tucked into a shirt pocket" },
+  ],
+};
+
 function compareKey(product: ShopifyProduct) {
   const category = getProductCategory(product);
   return category === "on-the-go" ? "otg" : category === "wipelo" ? null : category;
@@ -84,11 +108,12 @@ function CompareColumn({ product }: { product: ShopifyProduct }) {
   const variant = firstVariant(product);
   const image = product.featuredImage ?? product.images[0] ?? null;
   const spec = compareSpec(product);
+  const gallery = compareGalleries[compareKey(product) ?? ""];
   const min = product.priceRange.minVariantPrice;
   return <Reveal className="cmpx-col">
     <div className="cmpx-cell cmpx-product">
       <Link className={`cmpx-stage cmpx-tone-${spec?.tone ?? "mint"}`} href={`/products/${product.handle}`} aria-label={`View ${product.title}`}>
-        {image ? <img src={image.url} alt={image.altText || product.title} width={image.width ?? undefined} height={image.height ?? undefined} /> : <span className="cmpx-stage-name">{product.title}</span>}
+        {gallery ? <CompareCarousel images={gallery} /> : image ? <img src={image.url} alt={image.altText || product.title} width={image.width ?? undefined} height={image.height ?? undefined} /> : <span className="cmpx-stage-name">{product.title}</span>}
         {!product.availableForSale && <span className="cmpx-flag">Sold out</span>}
       </Link>
       {spec && <span className="cmpx-eyebrow">{spec.eyebrow}</span>}
