@@ -13,7 +13,7 @@ const jobs = [
     body: "Mild cleansing ingredients help lift surface sweat and everyday residue. Zinc ricinoleate is included for odor-binding support.",
     active: "0.4–0.8% zinc ricinoleate",
     use: "Underarms · feet · body",
-    image: "/images/mechanism/on-the-go-use.webp",
+    image: "/images/mechanism/on-the-go-use.png",
     alt: "Person holding a Wipelo wipe against their raised underarm after a workout",
     pack: "/images/mechanism/on-the-go-sachet.webp",
   },
