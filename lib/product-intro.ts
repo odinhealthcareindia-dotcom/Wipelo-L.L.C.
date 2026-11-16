@@ -29,7 +29,7 @@ export const productIntros: Partial<Record<ProductCategory, IntroContent>> = {
     ],
     storyTitle: "Gym to work. Long travel days. The commute home.",
     story: "Most days don’t leave room for a second shower, and spraying over sweat doesn’t remove it. ON THE GO cleans away the surface residue behind body odor so you can reset and carry on. It isn’t an antiperspirant, a deodorant replacement or a shower — use soap and water when you can.",
-    image: "/images/product-intro/on-the-go-blended.webp",
+    image: "/images/product-intro/on-the-go.webp",
     imageAlt: "Deep teal Wipelo ON THE GO sachet with a folded white wipe on dark green stone against a forest-green backdrop.",
     facts: [{ label: "Zinc ricinoleate", value: "0.4–0.8%" }, { label: "Lotion pH target", value: "4.5–5.0" }, { label: "Cloth", value: "20 cm" }],
   },

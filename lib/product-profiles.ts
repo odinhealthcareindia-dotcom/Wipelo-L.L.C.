@@ -245,7 +245,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       pdpRoutineSection: "/spotless-pdp/one-pass-one-wipe.png",
       pdpProofSection: "/wipelo-lab-spotless.png",
       pdpDirection: "/one-pass-one-wipe.png",
-      ingredientTextureImg: "/wipelo-lab-spotless.png",
+      ingredientTextureImg: "/images/campaign/spotless/06-pouch.webp",
       publishedDetails: ["Intact external body skin", "Proposed 0.5% salicylic acid · transfer not measured", "30 individually sealed wipes per pack"],
       benefitsHeading: "A small reset for the moments between.",
       benefitsIntro: "Fragrance free and ethanol free, with niacinamide, glycerin, and panthenol for skin feel.",
