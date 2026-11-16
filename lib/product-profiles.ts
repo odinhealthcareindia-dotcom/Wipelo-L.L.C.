@@ -147,7 +147,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       pdpRoutineSection: "/on-the-go-pdp/steps.gif",
       pdpProofSection: "/wipelo-lab-on-the-go.png",
       pdpDirection: "/one-pass-one-wipe.png",
-      ingredientTextureImg: "/wipelo-lab-on-the-go.png",
+      ingredientTextureImg: "/images/campaign/on-the-go/02-on-the-gob3.webp",
       publishedDetails: ["Intact external body skin", "Target pH 4.5–5.0 · batch verification pending", "30 individually sealed wipes per pack"],
       benefitsHeading: "A small reset for the moments between.",
       benefitsIntro: "Glycerin, panthenol and an acidic pH target support a comfortable finish; fragrance is present.",
