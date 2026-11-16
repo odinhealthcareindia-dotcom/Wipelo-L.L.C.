@@ -2911,6 +2911,13 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-media-next span{transform:translateX(-2px) rotate(-135deg)}
 .pdp6-media-arrow:hover{background:var(--abyss);color:var(--cream)}
 .pdp6-media-arrow:focus-visible{outline:2px solid var(--abyss);outline-offset:3px}
+/* Keep the photo clear: on pointer devices the gallery controls and counter appear only while the
+   image is hovered, or while a control has keyboard focus. Touch devices keep them visible. */
+@media(hover:hover) and (pointer:fine){
+  .pdp6-media-frame :is(.pdp6-media-arrow,.pdp6-media-count,.pdp6-media-expand){opacity:0;transition:opacity .25s ease,background .2s,color .2s,transform .3s var(--glide)}
+  .pdp6-media-frame:is(:hover,:focus-within) :is(.pdp6-media-arrow,.pdp6-media-count,.pdp6-media-expand){opacity:1}
+}
+@media(prefers-reduced-motion:reduce){.pdp6-media-frame :is(.pdp6-media-arrow,.pdp6-media-count,.pdp6-media-expand){transition:none}}
 /* Thumbnails: a single scrolling row. Four fit at once and the fifth peeks in, so it reads as scrollable. */
 .pdp6-media-nav{display:flex;gap:10px;margin-top:14px;padding:4px 2px 10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:2px;scrollbar-width:thin;scrollbar-color:rgba(16,33,31,.25) transparent;-webkit-overflow-scrolling:touch}
 .pdp6-media-nav::-webkit-scrollbar{height:4px}
