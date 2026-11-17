@@ -1760,14 +1760,25 @@ body::after{
 .ritual-orbit-stage{position:relative;z-index:1;width:var(--rt-stage);aspect-ratio:1;align-self:start}
 .ritual-orbit-ring{position:absolute;inset:0;border:1.5px dashed rgba(14,124,110,.32);border-radius:50%}
 .ritual-orbit-disc{position:absolute;inset:9%;overflow:hidden;border-radius:50%;background:#EFE7DD;box-shadow:0 30px 60px -38px rgba(16,33,31,.55),0 0 0 10px #F5F2EC}
-.ritual-orbit-disc img{display:block;width:100%;height:100%;object-fit:cover}
+.ritual-orbit-disc img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s var(--ease),transform 1.4s var(--ease)}
+.ritual-orbit-disc img.is-active{opacity:1;transform:none}
 .ritual-orbit-sat{position:absolute;inset:0;pointer-events:none}
 .ritual-orbit-halo{position:absolute;top:0;left:50%;width:clamp(62px,5.4vw,74px);aspect-ratio:1;border:1.5px solid var(--rt-teal);border-radius:50%;background:rgba(14,124,110,.08);transform:translate(-50%,-50%)}
-.ritual-orbit-node{position:absolute;z-index:1;display:grid;place-items:center;width:clamp(42px,3.6vw,50px);aspect-ratio:1;border:1.5px solid var(--rt-teal);border-radius:50%;background:#F5F2EC;color:var(--rt-teal);font:600 clamp(18px,1.6vw,22px)/1 var(--fr);transform:translate(-50%,-50%);transition:background .45s ease,color .45s ease}
-.ritual-orbit-node.is-active,.ritual-orbit.is-still .ritual-orbit-node{background:var(--rt-teal);color:#fff}
+.ritual-orbit-halo.is-timing{border-color:rgba(14,124,110,.22)}
+.ritual-orbit-progress{position:absolute;inset:-1.5px;width:calc(100% + 3px);height:calc(100% + 3px);overflow:visible}
+.ritual-orbit-progress circle{fill:none;stroke:var(--rt-teal);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transform:rotate(-90deg);transform-origin:50% 50%;animation:ritual-progress linear forwards}
+@keyframes ritual-progress{to{stroke-dashoffset:0}}
+.ritual-orbit-node{position:absolute;z-index:1;display:grid;place-items:center;width:clamp(42px,3.6vw,50px);aspect-ratio:1;padding:0;border:1.5px solid var(--rt-teal);border-radius:50%;background:#F5F2EC;color:var(--rt-teal);font:600 clamp(18px,1.6vw,22px)/1 var(--fr);cursor:pointer;transform:translate(-50%,-50%);transition:background .45s ease,color .45s ease}
+.ritual-orbit-node.is-active{background:var(--rt-teal);color:#fff}
 .ritual-orbit-steps{display:grid;grid-template-columns:minmax(0,1fr) var(--rt-stage) minmax(0,1fr);grid-template-rows:var(--rt-stage) auto;column-gap:clamp(36px,4.5vw,72px);width:100%;margin:0;padding:0;list-style:none}
-.ritual-orbit-step{transition:opacity .5s ease}
-.ritual-orbit-step:not(.is-active){opacity:.55}
+.ritual-orbit-step{position:relative;transition:opacity .5s ease}
+.ritual-orbit-step:not(.is-active){opacity:.5}
+.ritual-orbit-step h3 button{padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:inherit;cursor:pointer}
+/* The whole step block is the tap target, not just its title. */
+.ritual-orbit-step h3 button::after{content:"";position:absolute;inset:-12px;border-radius:16px}
+.ritual-orbit-step h3 button:focus-visible{outline:none}
+.ritual-orbit-step h3 button:focus-visible::after{outline:2px solid var(--rt-teal);outline-offset:0}
+@media(hover:hover){.ritual-orbit-step:not(.is-active):hover{opacity:.8}.ritual-orbit-node:not(.is-active):hover{background:rgba(14,124,110,.1)}}
 .ritual-orbit-step-1{grid-area:1/1;justify-self:end;max-width:30ch;padding-top:calc(var(--rt-stage) * .17);text-align:right}
 .ritual-orbit-step-2{grid-area:1/3;justify-self:start;max-width:30ch;padding-top:calc(var(--rt-stage) * .17)}
 .ritual-orbit-step-3{grid-area:2/2;justify-self:center;max-width:34ch;padding-top:clamp(40px,4vw,52px);text-align:center}
@@ -1777,12 +1788,12 @@ body::after{
   .ritual-orbit{--rt-stage:min(72vw,360px)}
   .ritual-orbit>*{grid-area:auto}
   .ritual-orbit-steps{grid-template-columns:minmax(0,1fr);grid-template-rows:none;row-gap:28px;max-width:440px;margin-top:clamp(48px,8vw,64px);counter-reset:rt}
-  .ritual-orbit-step-1,.ritual-orbit-step-2,.ritual-orbit-step-3{grid-area:auto;justify-self:stretch;max-width:none;padding:0 0 0 64px;text-align:left;position:relative;counter-increment:rt}
+  .ritual-orbit-step-1,.ritual-orbit-step-2,.ritual-orbit-step-3{grid-area:auto;justify-self:stretch;max-width:none;padding:0 0 0 64px;text-align:left;counter-increment:rt}
   .ritual-orbit-step::before{content:counter(rt);position:absolute;left:0;top:-2px;display:grid;place-items:center;width:42px;height:42px;border:1.5px solid var(--rt-teal);border-radius:50%;color:var(--rt-teal);font:600 18px/1 var(--fr);transition:background .45s ease,color .45s ease}
   .ritual-orbit-step.is-active::before{background:var(--rt-teal);color:#fff}
   .ritual-orbit-step h3{margin-bottom:6px}
 }
-@media(prefers-reduced-motion:reduce){.ritual-orbit-node,.ritual-orbit-step,.ritual-orbit-step::before{transition:none}}
+@media(prefers-reduced-motion:reduce){.ritual-orbit-node,.ritual-orbit-step,.ritual-orbit-step::before,.ritual-orbit-disc img{transition:none}}
 .ritual-bar{display:flex;align-items:center;gap:14px;width:fit-content;max-width:100%;margin:clamp(40px,5vw,60px) auto 0;padding:12px 26px 12px 14px;border-radius:999px;background:var(--rt-ink);color:rgba(250,245,239,.82);font-size:clamp(14px,1.1vw,15px);line-height:1.45}
 .ritual-bar b{color:#fff;font-weight:600}
 .ritual-bar-icon{flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#13B89F;color:var(--rt-ink);font:700 15px/1 var(--in)}
