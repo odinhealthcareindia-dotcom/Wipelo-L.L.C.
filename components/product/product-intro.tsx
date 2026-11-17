@@ -2,6 +2,7 @@ import type { CommerceProduct } from "@/lib/commerce";
 import { moneyLabel, perWipeLabel } from "@/lib/money";
 import { productIntros } from "@/lib/product-intro";
 import type { ProductCategory } from "@/lib/product-profiles";
+import { IntroBenefits } from "./intro-benefits";
 import styles from "./product-intro.module.css";
 
 const icons = {
@@ -22,12 +23,12 @@ export function ProductIntro({ product, category }: { product: CommerceProduct; 
       <p className={styles.kicker}><span>New</span>{content.kicker}</p>
       <h2 id="product-intro-title" className={styles.title}>{content.title}<br /><em>{content.titleEnd}</em></h2>
       <p className={styles.description}>{content.description}</p>
-      <div className={styles.benefits}>
+      <IntroBenefits titles={content.benefits.map((benefit) => benefit.title)}>
         {content.benefits.map((benefit) => <div className={styles.benefit} key={benefit.title}>
           <span className={styles.icon}><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{icons[benefit.icon]}</svg></span>
           <h3>{benefit.title}</h3><p>{benefit.body}</p>
         </div>)}
-      </div>
+      </IntroBenefits>
       <div className={styles.story}>
         <p className={styles.eyebrow}>Why {content.name} exists</p>
         <h3>{content.storyTitle}</h3>

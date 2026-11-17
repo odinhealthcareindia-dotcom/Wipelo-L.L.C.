@@ -18,7 +18,10 @@ import { deliveryLabel, planSavingsPercent, subscriptionAllocations } from "@/li
 import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
+import { ArcCards } from "./arc-cards";
+import { FormulaCards } from "./formula-cards";
 import { ProductLightbox } from "./product-lightbox";
+import { RoutineSteps } from "./routine-steps";
 import { OrbitIcon, ProductModelViewer, type ProductModel } from "./product-model-viewer";
 import { ReceiptsSectionPdp } from "../home/receipts-pdp";
 import { GuaranteeSection } from "../home/guarantee";
@@ -316,7 +319,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             else if (Math.abs(deltaX) < 8 && event.button === 0 && !activeIsModel) setLightboxOpen(true);
           }}>
             {slides.map((item, index) => item.model ? <ProductModelViewer key={`${item.model.glb}-${index}`} model={item.model} active={index === slideIndex} /> : <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
-            {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>}
+            {/* {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>} */}
             <span className="pdp6-media-count">{slideIndex + 1} / {slides.length}</span>
             {!activeIsModel && <button type="button" className="pdp6-media-expand" onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={() => setLightboxOpen(true)} aria-label="View image full screen">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -329,7 +332,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={item.model ? `3D model ${index + 1}: turn the pack around` : `Image ${index + 1}: ${item.headline}`} className={`${index === slideIndex ? "active" : ""}${item.model ? " is-model" : ""}` || undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" />{item.model && <span className="pdp6-thumb-3d" aria-hidden="true"><OrbitIcon size={14} />3D</span>}</button>)}
         </div>
         <ProductLightbox slides={slides} index={slideIndex} onIndexChange={setSlideIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} title={product.title} />
-        <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
+        {/* <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p> */}
       </div>
 
       <div className="pdp6-buy">
@@ -488,33 +491,17 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             </figcaption>
           </Reveal>
 
-          <ul className="pdp6-formula-cards" aria-label={`${title} ingredients`}>
-            {profileIngredients.map((ingredient) => <Reveal as="li" className="pdp6-formula-card" key={ingredient.title}>
-              <div className={`pdp6-formula-media${ingredient.image ? " has-photo" : ""}`}>
-                {ingredient.image
-                  ? <img src={ingredient.image} alt={ingredient.imageAlt ?? ""} loading="lazy" />
-                  : <span className="pdp6-formula-dish" aria-hidden="true"><b>{(ingredient.dose ?? "✓").split(" · ").map((part) => <span key={part}>{part}</span>)}</b></span>}
-                {/* <small>{ingredient.status}</small> */}
-              </div>
-              <div className="pdp6-formula-copy">
-                <h3>{ingredient.title}{ingredient.dose && <span className="sr-only">, {ingredient.dose}</span>}</h3>
-                <div>
-                  <p>{ingredient.does ?? ingredient.body}</p>
-                  {/* {ingredient.doesnt && <p className="pdp6-formula-not"><span aria-hidden="true">×</span> {ingredient.doesnt}</p>} */}
-                </div>
-              </div>
-            </Reveal>)}
-          </ul>
+          <FormulaCards ingredients={profileIngredients} label={`${title} ingredients`} />
         </div>
 
-        <Reveal className="pdp6-formula-promise">
+        {/* <Reveal className="pdp6-formula-promise">
           <span className="pdp6-formula-promise-mark" aria-hidden="true">i</span>
           <div>
             <h3>What’s left out</h3>
             <p>{profile.formulaNote} {profile.ingredientUseNote}</p>
           </div>
           {profile.freeFrom.length > 0 && <ul>{profile.freeFrom.map((item) => <li key={item}>{item}</li>)}</ul>}
-        </Reveal>
+        </Reveal> */}
       </div>
     </section>
 
@@ -546,7 +533,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             <span className="pdp6-eyebrow">{profile.storyEyebrow}</span>
             <h3>{profile.storyTitle}</h3>
             <p>{profile.information}</p>
-            <ol>{profile.routine.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><b>{step.title}</b><p>{step.body}</p></div></li>)}</ol>
+            <RoutineSteps steps={profile.routine} />
             <div className="pdp6-ideal"><span>Ideal for</span>{profile.idealFor.map((item) => <i key={item}>{item}</i>)}</div>
           </Reveal>
         </div>
@@ -564,22 +551,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           <Reveal as="h2" id="pdp6-arc-title">{emphasize(profile.expectationHeading, profile.expectationEmphasis)}</Reveal>
           <Reveal as="p">{profile.expectationIntro}</Reveal>
         </Stagger>
-        <Stagger as="ol" className="pdp6-arc-cards" gap={0.12}>
-          {profile.expectations.map((item, index) => <Reveal as="li" className="pdp6-arc-card" key={item.window}>
-            <div className="pdp6-arc-media">
-              <img src={item.img} alt={item.imgAlt ?? ""} loading="lazy" />
-              <span className="pdp6-arc-window">{item.window}</span>
-              <span className="pdp6-arc-num" aria-hidden="true">{index + 1}</span>
-            </div>
-            <div className="pdp6-arc-body">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-              {item.stats.some((stat) => showDrafts || !stat.placeholder) && <ul className="pdp6-arc-stats">
-                {item.stats.filter((stat) => showDrafts || !stat.placeholder).map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}
-              </ul>}
-            </div>
-          </Reveal>)}
-        </Stagger>
+        <ArcCards items={profile.expectations} showDrafts={showDrafts} />
         {/* <Reveal className="pdp6-arc-limits">
           <div className="pdp6-arc-wont">
             <b>And what it won’t do:</b>

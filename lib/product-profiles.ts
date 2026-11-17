@@ -207,7 +207,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { question: "Will it remove every odor?", answer: "No. It removes surface material and contains an odor-binding ingredient, but odor differs by person, fabric, and activity. A persistent new odor deserves medical assessment." },
       ],
       productDetails: [
-        { label: "Description", body: "The day does not always leave room for a second shower. ON THE GO removes surface sweat and residue where odor begins." },
+        { label: "Description", body: "The day does not always leave room for a second shower. ON THE GO removes surface sweat and residue where odor begins. With 30 individually sealed wipes per pack." },
         { label: "What it’s made of", body: "Aqua, Glycerin, Propanediol, Aloe Barbadensis Leaf Juice, Hamamelis Virginiana Water, Sodium Cocoyl Glutamate, Coco-Glucoside, Niacinamide, Zinc Ricinoleate, Sodium PCA, Panthenol, Lactic Acid, Sodium Lactate, Menthyl Lactate, Allantoin, Caprylyl Glycol, Glyceryl Caprylate, Sodium Benzoate, Potassium Sorbate, Tetrasodium Glutamate Diacetate, Parfum. Indicative pack-deck list; final INCI order must follow the manufactured batch." },
         { label: "How to use", body: "", list: ["Open one sachet.", "Wipe underarms, feet, or external body skin; textured side first, smooth side to finish.", "Let skin dry, dress, and bin the wipe. Do not flush."] },
         { label: "Specs", body: "", list: ["Use · Intact external body skin", "Lotion pH · Target 4.5–5.0 · batch verification pending", "Format · 30 individually sealed wipes per pack", "Cloth · Dual Surface Cloth™, about 20 × 20 cm, 50–60 gsm"] },
@@ -305,7 +305,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { question: "Will it clear body acne in four weeks?", answer: "No fixed timeline is promised. Body bumps can have different causes, including folliculitis or keratosis pilaris. Painful, deep, spreading, or scarring lesions need a clinician." },
       ],
       productDetails: [
-        { label: "Description", body: "Your face routine does not reach every place that gets sweaty or congested. SPOTLESS spreads a salicylic-acid lotion across hard-to-reach body skin." },
+        { label: "Description", body: "Your face routine does not reach every place that gets sweaty or congested. SPOTLESS spreads a salicylic-acid lotion across hard-to-reach body skin. With 30 individually sealed wipes per pack." },
         { label: "What it’s made of", body: "Aqua, Glycerin, Niacinamide, Panthenol, Salicylic Acid, Zinc PCA, Allantoin, Centella Asiatica Extract, Camellia Sinensis Leaf Extract, Polysorbate 20, Sodium Hyaluronate, Sodium Phytate, Phenoxyethanol, Ethylhexylglycerin, Sodium Benzoate, Sodium Hydroxide. Indicative pack-deck list; final INCI order must follow the manufactured batch." },
         { label: "How to use", body: "", list: ["Open one sachet.", "Gently pass over intact chest, shoulders, or back. Do not scrub.", "Let the lotion air-dry; do not rinse. Bin the wipe."] },
         { label: "Specs", body: "", list: ["Use · Intact external body skin", "Salicylic acid · Proposed 0.5% lotion · transfer not measured", "Format · 30 individually sealed wipes per pack", "Cloth · Leave-On Cloth™, around 60 gsm, saturated to about 400%"] },
@@ -403,7 +403,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
         { question: "Can it balance vaginal pH or prevent infection?", answer: "No. HER is used on the outside. A lotion pH target does not prove a change to vaginal pH or a reduction in BV, yeast infections, or UTIs." },
       ],
       productDetails: [
-        { label: "Description", body: "Some days ask for a clean reset before the next shower. HER gently cleanses Intimate skin without added fragrance." },
+        { label: "Description", body: "Some days ask for a clean reset before the next shower. HER gently cleanses Intimate skin without added fragrance. With 30 individually sealed wipes per pack." },
         { label: "What it’s made of", body: "Aqua, Aloe Barbadensis Leaf Juice, Glycerin, Panthenol, Lactic Acid, Sodium Lactate, Alpha-Glucan Oligosaccharide, Lactobacillus Ferment Lysate, Coco-Glucoside, Decyl Glucoside, Vaccinium Macrocarpon Fruit Extract, Calendula Officinalis Flower Extract, Chamomilla Recutita Flower Extract, Allantoin, Sodium Hyaluronate, Menthyl Lactate, Phenoxyethanol, Ethylhexylglycerin, Sodium Benzoate, Potassium Sorbate, Sodium Phytate. Indicative pack-deck list; final INCI order must follow the manufactured batch." },
         { label: "How to use", body: "", list: ["Open one sealed sachet with clean hands.", "Gently wipe external vulvar skin from front to back. Never insert it.", "Let skin dry; bin the wipe and wrapper. Do not flush."] },
         { label: "Specs", body: "", list: ["Use · Intimate skin care only", "Lotion pH · Target 3.8–4.5 · batch verification pending", "Format · 30 individually sealed wipes per pack", "Cloth · Soft Surface Cloth™, about 15 × 20 cm, 50 gsm"] },
@@ -484,7 +484,7 @@ export function getProductProfile(product: CommerceProduct): ProductProfile {
       { question: "Does it replace washing?", answer: "No. A wipe is a bridge until soap and water are available." },
     ],
     productDetails: [
-      { label: "Description", body: "An individually wrapped wipe for moments away from a sink." },
+      { label: "Description", body: "An individually wrapped wipe for moments away from a sink. With 30 individually sealed wipes per pack." },
     ],
     relatedHandles: [],
     heroKicker: "Personal care · Individually wrapped",

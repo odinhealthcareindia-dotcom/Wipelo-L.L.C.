@@ -33,6 +33,31 @@
 .icon svg { width: 22px; height: 22px; }
 .benefit h3 { font-family: var(--fr); font-size: 20px; line-height: 1.25; letter-spacing: -.02em; font-weight: 600; margin-bottom: 8px; }
 .benefit p { font-size: 14.5px; line-height: 1.6; color: #b9cac4; }
+/* Benefits slider (phones only). Colours derive from the section's text colour and accent,
+   so it works on the dark panels and on ON THE GO's light panel. */
+.controls { display: none; }
+@media (max-width: 720px) {
+  /* Let the copy column shrink to the screen; otherwise the wide slide track stretches it. */
+  .copy { min-width: 0; }
+  .slider { margin: 28px 0 32px; }
+  .viewport { overflow: hidden; border: 1px solid color-mix(in srgb, currentColor 14%, transparent); border-radius: 18px; background: color-mix(in srgb, currentColor 5%, transparent); }
+  .slider .benefits { display: flex; gap: 0; margin: 0; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; }
+  .slider .benefits:active { cursor: grabbing; }
+  .slide { flex: 0 0 100%; min-width: 0; box-sizing: border-box; padding: 20px 18px; }
+  .controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+  .dots { display: flex; }
+  .dots button { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+  .dots span { position: relative; display: block; width: 7px; height: 7px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, currentColor 28%, transparent); transition: width .3s ease; }
+  .dots .dotActive span { width: 22px; }
+  .fill { position: absolute; inset: 0; border-radius: inherit; background: var(--intro-accent); transform-origin: left center; animation-name: introFill; animation-timing-function: linear; animation-fill-mode: forwards; }
+  .toggle { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid color-mix(in srgb, currentColor 24%, transparent); border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+  .dots button:focus-visible, .toggle:focus-visible { outline: 2px solid var(--intro-accent); outline-offset: 2px; border-radius: 999px; }
+}
+@keyframes introFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  .dots span { transition: none; }
+  .fill { animation: none; transform: none; }
+}
 .story > p:not(.eyebrow) { font-size: 15.5px; line-height: 1.7; color: #b9cac4; }
 .story { border-top: 1px solid var(--intro-line); padding-top: 30px; }
 .eyebrow { font: 400 11.5px/1.4 var(--mo); text-transform: uppercase; letter-spacing: .18em; color: var(--intro-accent); margin-bottom: 12px; }

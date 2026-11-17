@@ -2719,6 +2719,23 @@ main{overflow-x:clip}
 .pdp6-story-copy li>span{flex:none;color:var(--pdp6-accent);font:400 12px/1.6 var(--mo)}
 .pdp6-story-copy li b{display:block;font-size:15.5px}
 .pdp6-story-copy li p{color:rgba(16,33,31,.7);font-size:14px;line-height:1.55}
+/* Routine steps: a plain list on desktop; a swipeable one-at-a-time slider on phones. */
+.pdp6-routine-controls{display:none}
+@media(max-width:720px){
+  .pdp6-routine{margin-top:22px}
+  .pdp6-routine-viewport{overflow:hidden;border:1px solid rgba(16,33,31,.08);border-radius:16px;background:rgba(255,255,255,.6)}
+  .pdp6-story-copy .pdp6-routine ol{flex-direction:row;gap:0;margin:0;cursor:grab;user-select:none;-webkit-user-select:none}
+  .pdp6-story-copy .pdp6-routine ol:active{cursor:grabbing}
+  .pdp6-story-copy .pdp6-routine li{flex:0 0 100%;min-width:0;box-sizing:border-box;padding:16px 18px 18px}
+  .pdp6-routine-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+  .pdp6-routine-dots{display:flex}
+  .pdp6-routine-dots button{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer}
+  .pdp6-routine-dots span{display:block;width:7px;height:7px;border-radius:999px;background:rgba(16,33,31,.22);transition:width .3s ease,background .3s ease}
+  .pdp6-routine-dots .is-active span{width:20px;background:var(--pdp6-accent)}
+  .pdp6-routine-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid rgba(16,33,31,.16);border-radius:50%;background:#fff;color:var(--pdp6-ink);cursor:pointer}
+  .pdp6-routine-dots button:focus-visible,.pdp6-routine-toggle:focus-visible{outline:2px solid var(--pdp6-accent);outline-offset:2px;border-radius:999px}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){.pdp6-routine-dots span{transition:none}}
 .pdp6-ideal{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:24px}
 .pdp6-ideal span{margin-right:4px;color:rgba(16,33,31,.6);font:400 11px/1 var(--mo);letter-spacing:.14em;text-transform:uppercase}
 .pdp6-ideal i{padding:6px 12px;border-radius:999px;background:var(--pdp6-soft);font-style:normal;font-size:13px}
@@ -3129,6 +3146,8 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-formula-hero dt{color:rgba(255,255,255,.72);font:400 12px/1.2 var(--in)}
 .pdp6-formula-hero dd{margin:0;font:600 12.5px/1.2 var(--in)}
 
+/* Slider wrappers are transparent on desktop; they pass the bento gap through to the card grid. */
+.pdp6-formula-slider,.pdp6-formula-viewport{gap:inherit;min-width:0}
 .pdp6-formula-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:inherit;margin:0;padding:0;list-style:none}
 .pdp6-formula-card{display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 1px 0 rgba(16,33,31,.04),0 14px 30px -22px rgba(16,33,31,.28)}
 .pdp6-formula-media{position:relative;aspect-ratio:16/11;overflow:hidden;background:radial-gradient(120% 90% at 50% 30%,#fff 0%,#F4F3EF 62%,#ECEBE6 100%)}
@@ -3170,6 +3189,18 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-formula-dish{width:min(44%,150px)}
   .pdp6-formula-promise{grid-template-columns:minmax(0,1fr)}
   .pdp6-formula-promise-mark{display:none}
+  /* Photo cards: the copy sits on the lower part of the image over a soft blur that fades
+     upward, instead of stacking below it. Dose-dish cards keep the stacked layout. */
+  /* Ingredient cards become a swipeable slider (gap must match SLIDE_GAP in formula-cards.tsx). */
+  .pdp6-formula-viewport{overflow:hidden;border-radius:18px}
+  .pdp6-formula-cards{display:flex;gap:12px;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+  .pdp6-formula-cards:active{cursor:grabbing}
+  .pdp6-formula-cards>.pdp6-formula-card{flex:0 0 100%;min-width:0}
+  .pdp6-formula-card:has(.has-photo){position:relative;isolation:isolate}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy{position:absolute;inset:auto 0 0;z-index:1;gap:6px;padding:72px 20px 20px}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(16,33,31,.82) 0%,rgba(16,33,31,.55) 50%,rgba(16,33,31,0) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);-webkit-mask-image:linear-gradient(to top,#000 55%,transparent);mask-image:linear-gradient(to top,#000 55%,transparent)}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy h3{color:#fff}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy p{color:rgba(255,255,255,.86)}
 }
 
 /* ===================== Product page: Expert review ===================== */
@@ -3241,6 +3272,24 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-arc-wont li{display:flex;align-items:center;gap:10px;color:rgba(16,33,31,.78);font-size:15px}
 .pdp6-arc-wont li span{color:var(--pdp6-accent);font-size:18px;line-height:1}
 .pdp6-arc-foot{margin-top:8px;color:#8A5A22;font-size:13px;line-height:1.5}
+/* Phones: "What actually happens" as a deck of play cards (rendered only on mobile). */
+.pdp6-deck{overflow-x:clip;margin-inline:-6px;padding-inline:6px}
+.pdp6-deck-stage{padding:6px 0 14px}
+.pdp6-deck-cards{display:grid;width:84%;margin:0;padding:0;list-style:none}
+.pdp6-deck-card{grid-area:1/1;position:relative;display:flex;flex-direction:column;padding:8px;border-radius:22px;background:#fff;box-shadow:0 1px 0 rgba(16,33,31,.05),0 18px 34px -22px rgba(16,33,31,.45);transform-origin:right center;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.pdp6-deck-card.is-front{cursor:grab}
+.pdp6-deck-card.is-front:active{cursor:grabbing}
+.pdp6-deck-photo{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:15px;background:var(--pdp6-soft)}
+.pdp6-deck-photo img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.pdp6-deck-pip{position:absolute;top:10px;left:10px;display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:10px;background:#FBF8F3;color:var(--pdp6-accent);font:600 19px/1 var(--fr);box-shadow:0 4px 12px -6px rgba(16,33,31,.4)}
+.pdp6-deck-pip-flip{top:auto;left:auto;right:14px;bottom:12px;min-width:0;height:auto;padding:0;background:none;box-shadow:none;font-size:17px;opacity:.55;transform:rotate(180deg)}
+.pdp6-deck-body{display:flex;flex:1;flex-direction:column;padding:14px 10px 10px}
+.pdp6-deck-window{margin-bottom:6px;color:var(--pdp6-accent);font:500 12.5px/1.3 var(--in)}
+.pdp6-deck-body h3{margin-bottom:8px;font:600 21px/1.2 var(--fr);letter-spacing:-.015em;color:var(--pdp6-ink)}
+.pdp6-deck-body p{color:rgba(16,33,31,.74);font-size:14px;line-height:1.55}
+.pdp6-deck-stats{display:flex;flex-wrap:wrap;gap:6px;margin:auto 0 0;padding:14px 32px 0 0;list-style:none}
+.pdp6-deck-stats li{padding:6px 11px;border-radius:999px;background:var(--pdp6-soft);color:var(--pdp6-ink);font-size:12.5px;line-height:1.2}
+.pdp6-deck-stats b{color:var(--pdp6-accent);font-weight:600}
 
 @media(max-width:1020px){
   .pdp6-arc-cards{grid-template-columns:repeat(3,minmax(260px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 calc(-1 * min(5vw,40px));padding:0 min(5vw,40px) 8px}
@@ -3356,8 +3405,11 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-rev-filters::-webkit-scrollbar{display:none}
   .pdp6-rev-filters button{flex:none;padding:11px 15px;font-size:14px}
   .pdp6-rev-actions{justify-content:space-between}
-  .pdp6-rev-card{grid-template-columns:minmax(0,1fr);padding:18px}
-  .pdp6-rev-photo{width:100%;aspect-ratio:16/10}
+  /* Author left, a small photo thumbnail top-right, and the review text full width below. */
+  .pdp6-rev-card{grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:14px;padding:18px}
+  .pdp6-rev-author{grid-column:1;grid-row:1;min-width:0}
+  .pdp6-rev-main{grid-column:1/-1;grid-row:2}
+  .pdp6-rev-photo{grid-column:2;grid-row:1;align-self:start;width:64px;border-radius:12px}
 }
 
 /* ---------- Product page: Review photo lightbox ---------- */
