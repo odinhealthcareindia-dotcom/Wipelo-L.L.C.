@@ -69,7 +69,7 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
   return <section className="pdp6-section pdp6-rev" id="reviews" aria-labelledby="pdp6-rev-title">
     <div className="wrap">
       <Stagger className="pdp6-rev-head" gap={0.09}>
-        <Reveal as="span" className="pdp6-eyebrow">// Customer reviews</Reveal>
+        {/* <Reveal as="span" className="pdp6-eyebrow">// Customer reviews</Reveal> */}
         <Reveal as="h2" id="pdp6-rev-title">Real people. <em>Real in-between moments.</em></Reveal>
         <Reveal as="p">From verified buyers of {filter === "all" ? "ON THE GO, SPOTLESS and HER" : categoryProductLabel[filter]}.</Reveal>
       </Stagger>

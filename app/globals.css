@@ -2985,6 +2985,14 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-stars.is-rated{color:var(--teal-deep)}
 .pdp6-rating a{color:var(--pdp6-ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .pdp6-lead{max-width:62ch;margin-top:14px;color:rgba(5,34,30,.82);font-size:clamp(15px,1.1vw,16px);line-height:1.6}
+.pdp6-lead p{margin:0;overflow:hidden;max-height:3.2em;transition:max-height .45s var(--glide)}
+.pdp6-lead.is-clamped:not(.is-open) p{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 1.1em),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 1.1em),transparent)}
+.pdp6-lead button{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 0;border:0;background:none;color:var(--pdp6-ink,#05221e);font:600 13.5px/1.2 var(--in);text-decoration:underline;text-decoration-color:rgba(5,34,30,.3);text-underline-offset:4px;cursor:pointer;transition:text-decoration-color .2s}
+.pdp6-lead button:hover{text-decoration-color:currentColor}
+.pdp6-lead button:focus-visible{outline:2px solid var(--teal-bright);outline-offset:3px;border-radius:4px}
+.pdp6-lead button svg{transition:transform .3s var(--glide)}
+.pdp6-lead.is-open button svg{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.pdp6-lead p,.pdp6-lead button svg{transition:none}}
 
 .pdp6-short-pitch{margin:20px 0 6px;padding:22px 24px;border-radius:20px;background:var(--abyss);color:var(--cream);box-shadow:0 18px 36px -20px rgba(5,34,30,.6)}
 .pdp6-short-pitch>span{display:block;color:var(--teal-bright);font:700 12px/1.2 var(--in)}

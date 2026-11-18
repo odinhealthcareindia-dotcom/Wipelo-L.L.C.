@@ -227,7 +227,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
   // Product details accordion, closing with shipping and returns.
   const details = [...profile.productDetails, { label: "Shipping & returns", body: "Free U.S. shipping on orders of $50 or more. The First Pack Promise gives you 30 days from delivery to contact Wipelo about a refund of your first order." }];
-  const [openDetail, setOpenDetail] = useState<number | null>(0);
+  const [openDetail, setOpenDetail] = useState<number | null>(null);
   const usageDetailIndex = details.findIndex((detail) => /how to use/i.test(detail.label));
   const openUsageDetail = () => { if (usageDetailIndex >= 0) setOpenDetail(usageDetailIndex); };
 
@@ -344,7 +344,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             ? <a href="#reviews">{ratingSummary.average.toFixed(1)} from {ratingSummary.count.toLocaleString("en-US")} reviews</a>
             : <>New, no reviews yet. <a href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
         </div>
-        <p className="pdp6-lead">{profile.overview}</p>
+        <LeadOverview text={profile.overview} />
 
         <div className="pdp6-short-pitch">
           <span>The short version</span>
@@ -420,13 +420,13 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <div className="pdp6-cart-row">
           <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !purchasable} onClick={addSelected}>{heroButtonLabel}</button>
         </div>
-        {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
+        {/* {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
         <div className="pdp6-micro-trust">
           <span>Secure checkout</span>
           <span>30-day First Pack Promise</span>
           <span>Free U.S. shipping over $50</span>
           <span>{plan ? "Change or cancel online" : "Shipping shown at checkout"}</span>
-        </div>
+        </div> */}
 
         <section className="pdp6-tell" aria-labelledby="pdp6-tell-title">
           <h2 id="pdp6-tell-title">Tell me about:</h2>
@@ -462,7 +462,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             </div>;
           })}
         </div>
-        <p className="pdp6-safety">{profile.heroSafety}</p>
+        {/* <p className="pdp6-safety">{profile.heroSafety}</p> */}
       </div>
     </section>
     <FeaturedInStrip />
@@ -473,7 +473,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
       <div className="wrap">
         <div className="pdp6-formula-head">
           <Stagger gap={0.09}>
-            <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal>
+            {/* <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal> */}
             <Reveal as="h2" id="pdp6-formula-title">What’s in it — <em>and what it isn’t.</em></Reveal>
             <Reveal as="p">{profile.ingredientIntro}</Reveal>
           </Stagger>
@@ -517,7 +517,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
               <div>
                 <h3>{benefit.title}</h3>
                 <p>{benefit.body}</p>
-                {benefit.when && <small>{benefit.when}</small>}
+                {/* {benefit.when && <small>{benefit.when}</small>} */}
               </div>
             </Reveal>)}
           </Stagger>
@@ -530,7 +530,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <div className="pdp6-story">
           <Reveal variant="slideFromLeft" className="pdp6-story-media"><img src={profile.pdpRoutineSection} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
           <Reveal variant="slideFromRight" className="pdp6-story-copy">
-            <span className="pdp6-eyebrow">{profile.storyEyebrow}</span>
+            {/* <span className="pdp6-eyebrow">{profile.storyEyebrow}</span> */}
             <h3>{profile.storyTitle}</h3>
             <p>{profile.information}</p>
             <RoutineSteps steps={profile.routine} />
@@ -547,9 +547,9 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     <section className="pdp6-section pdp6-arc" id="expect" aria-labelledby="pdp6-arc-title">
       <div className="wrap">
         <Stagger className="pdp6-arc-head" gap={0.09}>
-          <Reveal as="span" className="pdp6-eyebrow">// Honest expectations</Reveal>
+          {/* <Reveal as="span" className="pdp6-eyebrow">// Honest expectations</Reveal> */}
           <Reveal as="h2" id="pdp6-arc-title">{emphasize(profile.expectationHeading, profile.expectationEmphasis)}</Reveal>
-          <Reveal as="p">{profile.expectationIntro}</Reveal>
+          {/* <Reveal as="p">{profile.expectationIntro}</Reveal> */}
         </Stagger>
         <ArcCards items={profile.expectations} showDrafts={showDrafts} />
         {/* <Reveal className="pdp6-arc-limits">
@@ -565,7 +565,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     {/* Customer reviews */}
     {reviewData && <ProductReviewsSection initial={profile.category === "wipelo" ? "all" : profile.category} reviews={reviewData.reviews} summaries={reviewData.summaries} productTitle={title} />}
     {/* Receipts */}
-    <ReceiptsSectionPdp />
+    {/* <ReceiptsSectionPdp /> */}
     {/* Directions */}
     {/* <section className="pdp6-section pdp6-tint" id="how-to-use">
       <div className="wrap">
@@ -585,7 +585,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
       </div>
     </section> */}
-    <GuaranteeSection />
+    {/* <GuaranteeSection /> */}
     {/* Subscribe (only when Shopify selling plans exist) */}
     {hasSubscription && <section className="pdp6-section pdp6-subscribe" id="subscribe">
       <div className="wrap">
@@ -616,5 +616,36 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <button type="button" className="pdp6-add is-small" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
       </div>
     </div>
+  </div>;
+}
+
+/** Product overview clamped to two lines; the toggle appears only when the copy actually overflows. */
+function LeadOverview({ text }: { text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [overflows, setOverflows] = useState(false);
+  const [fullHeight, setFullHeight] = useState<number>();
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      setFullHeight(el.scrollHeight);
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 24;
+      setOverflows(el.scrollHeight > lineHeight * 2 + 2);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [text]);
+
+  const id = "pdp6-lead-text";
+  return <div className={`pdp6-lead${overflows ? " is-clamped" : ""}${expanded ? " is-open" : ""}`}>
+    <p id={id} ref={ref} style={expanded && fullHeight ? { maxHeight: fullHeight } : undefined}>{text}</p>
+    {overflows && <button type="button" aria-expanded={expanded} aria-controls={id} onClick={() => setExpanded((open) => !open)}>
+      {expanded ? "Read less" : "Read more"}
+      <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </button>}
   </div>;
 }

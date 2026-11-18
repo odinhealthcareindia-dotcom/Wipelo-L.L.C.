@@ -29,9 +29,9 @@ function ArcGrid({ items, showDrafts }: { items: Expectation[]; showDrafts: bool
       <div className="pdp6-arc-body">
         <h3>{item.title}</h3>
         <p>{item.body}</p>
-        {visibleStats(item, showDrafts).length > 0 && <ul className="pdp6-arc-stats">
+        {/* {visibleStats(item, showDrafts).length > 0 && <ul className="pdp6-arc-stats">
           {visibleStats(item, showDrafts).map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}
-        </ul>}
+        </ul>} */}
       </div>
     </Reveal>)}
   </Stagger>;
@@ -111,10 +111,10 @@ export function ArcCards({ items, showDrafts }: { items: Expectation[]; showDraf
               <span className="pdp6-deck-window">{item.window}</span>
               <h3>{item.title}</h3>
               <p>{item.body}</p>
-              {stats.length > 0 && <ul className="pdp6-deck-stats">{stats.map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}</ul>}
+              {/* {stats.length > 0 && <ul className="pdp6-deck-stats">{stats.map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}</ul>} */}
             </div>
             {/* The mirrored corner index, as on a playing card. */}
-            <span className="pdp6-deck-pip pdp6-deck-pip-flip" aria-hidden="true">{i + 1}</span>
+            {/* <span className="pdp6-deck-pip pdp6-deck-pip-flip" aria-hidden="true">{i + 1}</span> */}
           </m.li>;
         })}
       </ol>

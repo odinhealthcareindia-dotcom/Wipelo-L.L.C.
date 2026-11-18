@@ -20,22 +20,23 @@ export function ProductIntro({ product, category }: { product: CommerceProduct; 
 
   return <section className={`${styles.section} ${styles[category]}`} aria-labelledby="product-intro-title" id="intro">
     <div className={styles.copy}>
-      <p className={styles.kicker}><span>New</span>{content.kicker}</p>
+      {/* <p className={styles.kicker}><span>New</span>{content.kicker}</p> */}
       <h2 id="product-intro-title" className={styles.title}>{content.title}<br /><em>{content.titleEnd}</em></h2>
-      <p className={styles.description}>{content.description}</p>
+      {/* <p className={styles.description}>{content.description}</p> */}
       <IntroBenefits titles={content.benefits.map((benefit) => benefit.title)}>
         {content.benefits.map((benefit) => <div className={styles.benefit} key={benefit.title}>
           <span className={styles.icon}><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{icons[benefit.icon]}</svg></span>
-          <h3>{benefit.title}</h3><p>{benefit.body}</p>
+          <h3>{benefit.title}</h3>
+          <p>{benefit.body}</p>
         </div>)}
       </IntroBenefits>
-      <div className={styles.story}>
+      {/* <div className={styles.story}>
         <p className={styles.eyebrow}>Why {content.name} exists</p>
         <h3>{content.storyTitle}</h3>
         <p>{content.story}</p>
         <a className={styles.cta} href="#product">Shop {content.name}{lowestPrice && <> · from {moneyLabel(lowestPrice)} ({perWipeLabel(lowestPrice, lowestVariant?.title)})</>}<span aria-hidden="true">→</span></a>
         <small>Proposed formulation ranges; final values printed on pack.</small>
-      </div>
+      </div> */}
     </div>
     <div className={styles.media}>
       <img src={content.image} alt={content.imageAlt} loading="lazy" width="1024" height="1536" />
