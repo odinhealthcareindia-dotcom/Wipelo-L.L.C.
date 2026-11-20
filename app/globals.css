@@ -1760,14 +1760,25 @@ body::after{
 .ritual-orbit-stage{position:relative;z-index:1;width:var(--rt-stage);aspect-ratio:1;align-self:start}
 .ritual-orbit-ring{position:absolute;inset:0;border:1.5px dashed rgba(14,124,110,.32);border-radius:50%}
 .ritual-orbit-disc{position:absolute;inset:9%;overflow:hidden;border-radius:50%;background:#EFE7DD;box-shadow:0 30px 60px -38px rgba(16,33,31,.55),0 0 0 10px #F5F2EC}
-.ritual-orbit-disc img{display:block;width:100%;height:100%;object-fit:cover}
+.ritual-orbit-disc img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .7s var(--ease),transform 1.4s var(--ease)}
+.ritual-orbit-disc img.is-active{opacity:1;transform:none}
 .ritual-orbit-sat{position:absolute;inset:0;pointer-events:none}
 .ritual-orbit-halo{position:absolute;top:0;left:50%;width:clamp(62px,5.4vw,74px);aspect-ratio:1;border:1.5px solid var(--rt-teal);border-radius:50%;background:rgba(14,124,110,.08);transform:translate(-50%,-50%)}
-.ritual-orbit-node{position:absolute;z-index:1;display:grid;place-items:center;width:clamp(42px,3.6vw,50px);aspect-ratio:1;border:1.5px solid var(--rt-teal);border-radius:50%;background:#F5F2EC;color:var(--rt-teal);font:600 clamp(18px,1.6vw,22px)/1 var(--fr);transform:translate(-50%,-50%);transition:background .45s ease,color .45s ease}
-.ritual-orbit-node.is-active,.ritual-orbit.is-still .ritual-orbit-node{background:var(--rt-teal);color:#fff}
+.ritual-orbit-halo.is-timing{border-color:rgba(14,124,110,.22)}
+.ritual-orbit-progress{position:absolute;inset:-1.5px;width:calc(100% + 3px);height:calc(100% + 3px);overflow:visible}
+.ritual-orbit-progress circle{fill:none;stroke:var(--rt-teal);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transform:rotate(-90deg);transform-origin:50% 50%;animation:ritual-progress linear forwards}
+@keyframes ritual-progress{to{stroke-dashoffset:0}}
+.ritual-orbit-node{position:absolute;z-index:1;display:grid;place-items:center;width:clamp(42px,3.6vw,50px);aspect-ratio:1;padding:0;border:1.5px solid var(--rt-teal);border-radius:50%;background:#F5F2EC;color:var(--rt-teal);font:600 clamp(18px,1.6vw,22px)/1 var(--fr);cursor:pointer;transform:translate(-50%,-50%);transition:background .45s ease,color .45s ease}
+.ritual-orbit-node.is-active{background:var(--rt-teal);color:#fff}
 .ritual-orbit-steps{display:grid;grid-template-columns:minmax(0,1fr) var(--rt-stage) minmax(0,1fr);grid-template-rows:var(--rt-stage) auto;column-gap:clamp(36px,4.5vw,72px);width:100%;margin:0;padding:0;list-style:none}
-.ritual-orbit-step{transition:opacity .5s ease}
-.ritual-orbit-step:not(.is-active){opacity:.55}
+.ritual-orbit-step{position:relative;transition:opacity .5s ease}
+.ritual-orbit-step:not(.is-active){opacity:.5}
+.ritual-orbit-step h3 button{padding:0;border:0;background:none;color:inherit;font:inherit;letter-spacing:inherit;text-align:inherit;cursor:pointer}
+/* The whole step block is the tap target, not just its title. */
+.ritual-orbit-step h3 button::after{content:"";position:absolute;inset:-12px;border-radius:16px}
+.ritual-orbit-step h3 button:focus-visible{outline:none}
+.ritual-orbit-step h3 button:focus-visible::after{outline:2px solid var(--rt-teal);outline-offset:0}
+@media(hover:hover){.ritual-orbit-step:not(.is-active):hover{opacity:.8}.ritual-orbit-node:not(.is-active):hover{background:rgba(14,124,110,.1)}}
 .ritual-orbit-step-1{grid-area:1/1;justify-self:end;max-width:30ch;padding-top:calc(var(--rt-stage) * .17);text-align:right}
 .ritual-orbit-step-2{grid-area:1/3;justify-self:start;max-width:30ch;padding-top:calc(var(--rt-stage) * .17)}
 .ritual-orbit-step-3{grid-area:2/2;justify-self:center;max-width:34ch;padding-top:clamp(40px,4vw,52px);text-align:center}
@@ -1777,12 +1788,12 @@ body::after{
   .ritual-orbit{--rt-stage:min(72vw,360px)}
   .ritual-orbit>*{grid-area:auto}
   .ritual-orbit-steps{grid-template-columns:minmax(0,1fr);grid-template-rows:none;row-gap:28px;max-width:440px;margin-top:clamp(48px,8vw,64px);counter-reset:rt}
-  .ritual-orbit-step-1,.ritual-orbit-step-2,.ritual-orbit-step-3{grid-area:auto;justify-self:stretch;max-width:none;padding:0 0 0 64px;text-align:left;position:relative;counter-increment:rt}
+  .ritual-orbit-step-1,.ritual-orbit-step-2,.ritual-orbit-step-3{grid-area:auto;justify-self:stretch;max-width:none;padding:0 0 0 64px;text-align:left;counter-increment:rt}
   .ritual-orbit-step::before{content:counter(rt);position:absolute;left:0;top:-2px;display:grid;place-items:center;width:42px;height:42px;border:1.5px solid var(--rt-teal);border-radius:50%;color:var(--rt-teal);font:600 18px/1 var(--fr);transition:background .45s ease,color .45s ease}
   .ritual-orbit-step.is-active::before{background:var(--rt-teal);color:#fff}
   .ritual-orbit-step h3{margin-bottom:6px}
 }
-@media(prefers-reduced-motion:reduce){.ritual-orbit-node,.ritual-orbit-step,.ritual-orbit-step::before{transition:none}}
+@media(prefers-reduced-motion:reduce){.ritual-orbit-node,.ritual-orbit-step,.ritual-orbit-step::before,.ritual-orbit-disc img{transition:none}}
 .ritual-bar{display:flex;align-items:center;gap:14px;width:fit-content;max-width:100%;margin:clamp(40px,5vw,60px) auto 0;padding:12px 26px 12px 14px;border-radius:999px;background:var(--rt-ink);color:rgba(250,245,239,.82);font-size:clamp(14px,1.1vw,15px);line-height:1.45}
 .ritual-bar b{color:#fff;font-weight:600}
 .ritual-bar-icon{flex:none;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#13B89F;color:var(--rt-ink);font:700 15px/1 var(--in)}
@@ -2719,6 +2730,23 @@ main{overflow-x:clip}
 .pdp6-story-copy li>span{flex:none;color:var(--pdp6-accent);font:400 12px/1.6 var(--mo)}
 .pdp6-story-copy li b{display:block;font-size:15.5px}
 .pdp6-story-copy li p{color:rgba(16,33,31,.7);font-size:14px;line-height:1.55}
+/* Routine steps: a plain list on desktop; a swipeable one-at-a-time slider on phones. */
+.pdp6-routine-controls{display:none}
+@media(max-width:720px){
+  .pdp6-routine{margin-top:22px}
+  .pdp6-routine-viewport{overflow:hidden;border:1px solid rgba(16,33,31,.08);border-radius:16px;background:rgba(255,255,255,.6)}
+  .pdp6-story-copy .pdp6-routine ol{flex-direction:row;gap:0;margin:0;cursor:grab;user-select:none;-webkit-user-select:none}
+  .pdp6-story-copy .pdp6-routine ol:active{cursor:grabbing}
+  .pdp6-story-copy .pdp6-routine li{flex:0 0 100%;min-width:0;box-sizing:border-box;padding:16px 18px 18px}
+  .pdp6-routine-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+  .pdp6-routine-dots{display:flex}
+  .pdp6-routine-dots button{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer}
+  .pdp6-routine-dots span{display:block;width:7px;height:7px;border-radius:999px;background:rgba(16,33,31,.22);transition:width .3s ease,background .3s ease}
+  .pdp6-routine-dots .is-active span{width:20px;background:var(--pdp6-accent)}
+  .pdp6-routine-toggle{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid rgba(16,33,31,.16);border-radius:50%;background:#fff;color:var(--pdp6-ink);cursor:pointer}
+  .pdp6-routine-dots button:focus-visible,.pdp6-routine-toggle:focus-visible{outline:2px solid var(--pdp6-accent);outline-offset:2px;border-radius:999px}
+}
+@media(max-width:720px) and (prefers-reduced-motion:reduce){.pdp6-routine-dots span{transition:none}}
 .pdp6-ideal{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:24px}
 .pdp6-ideal span{margin-right:4px;color:rgba(16,33,31,.6);font:400 11px/1 var(--mo);letter-spacing:.14em;text-transform:uppercase}
 .pdp6-ideal i{padding:6px 12px;border-radius:999px;background:var(--pdp6-soft);font-style:normal;font-size:13px}
@@ -2957,6 +2985,14 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-stars.is-rated{color:var(--teal-deep)}
 .pdp6-rating a{color:var(--pdp6-ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .pdp6-lead{max-width:62ch;margin-top:14px;color:rgba(5,34,30,.82);font-size:clamp(15px,1.1vw,16px);line-height:1.6}
+.pdp6-lead p{margin:0;overflow:hidden;max-height:3.2em;transition:max-height .45s var(--glide)}
+.pdp6-lead.is-clamped:not(.is-open) p{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 1.1em),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 1.1em),transparent)}
+.pdp6-lead button{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 0;border:0;background:none;color:var(--pdp6-ink,#05221e);font:600 13.5px/1.2 var(--in);text-decoration:underline;text-decoration-color:rgba(5,34,30,.3);text-underline-offset:4px;cursor:pointer;transition:text-decoration-color .2s}
+.pdp6-lead button:hover{text-decoration-color:currentColor}
+.pdp6-lead button:focus-visible{outline:2px solid var(--teal-bright);outline-offset:3px;border-radius:4px}
+.pdp6-lead button svg{transition:transform .3s var(--glide)}
+.pdp6-lead.is-open button svg{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.pdp6-lead p,.pdp6-lead button svg{transition:none}}
 
 .pdp6-short-pitch{margin:20px 0 6px;padding:22px 24px;border-radius:20px;background:var(--abyss);color:var(--cream);box-shadow:0 18px 36px -20px rgba(5,34,30,.6)}
 .pdp6-short-pitch>span{display:block;color:var(--teal-bright);font:700 12px/1.2 var(--in)}
@@ -3129,6 +3165,8 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-formula-hero dt{color:rgba(255,255,255,.72);font:400 12px/1.2 var(--in)}
 .pdp6-formula-hero dd{margin:0;font:600 12.5px/1.2 var(--in)}
 
+/* Slider wrappers are transparent on desktop; they pass the bento gap through to the card grid. */
+.pdp6-formula-slider,.pdp6-formula-viewport{gap:inherit;min-width:0}
 .pdp6-formula-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:inherit;margin:0;padding:0;list-style:none}
 .pdp6-formula-card{display:flex;flex-direction:column;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 1px 0 rgba(16,33,31,.04),0 14px 30px -22px rgba(16,33,31,.28)}
 .pdp6-formula-media{position:relative;aspect-ratio:16/11;overflow:hidden;background:radial-gradient(120% 90% at 50% 30%,#fff 0%,#F4F3EF 62%,#ECEBE6 100%)}
@@ -3170,6 +3208,18 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-formula-dish{width:min(44%,150px)}
   .pdp6-formula-promise{grid-template-columns:minmax(0,1fr)}
   .pdp6-formula-promise-mark{display:none}
+  /* Photo cards: the copy sits on the lower part of the image over a soft blur that fades
+     upward, instead of stacking below it. Dose-dish cards keep the stacked layout. */
+  /* Ingredient cards become a swipeable slider (gap must match SLIDE_GAP in formula-cards.tsx). */
+  .pdp6-formula-viewport{overflow:hidden;border-radius:18px}
+  .pdp6-formula-cards{display:flex;gap:12px;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+  .pdp6-formula-cards:active{cursor:grabbing}
+  .pdp6-formula-cards>.pdp6-formula-card{flex:0 0 100%;min-width:0}
+  .pdp6-formula-card:has(.has-photo){position:relative;isolation:isolate}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy{position:absolute;inset:auto 0 0;z-index:1;gap:6px;padding:72px 20px 20px}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(16,33,31,.82) 0%,rgba(16,33,31,.55) 50%,rgba(16,33,31,0) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);-webkit-mask-image:linear-gradient(to top,#000 55%,transparent);mask-image:linear-gradient(to top,#000 55%,transparent)}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy h3{color:#fff}
+  .pdp6-formula-card:has(.has-photo) .pdp6-formula-copy p{color:rgba(255,255,255,.86)}
 }
 
 /* ===================== Product page: Expert review ===================== */
@@ -3241,6 +3291,24 @@ html.lightbox-lock{overflow:hidden}
 .pdp6-arc-wont li{display:flex;align-items:center;gap:10px;color:rgba(16,33,31,.78);font-size:15px}
 .pdp6-arc-wont li span{color:var(--pdp6-accent);font-size:18px;line-height:1}
 .pdp6-arc-foot{margin-top:8px;color:#8A5A22;font-size:13px;line-height:1.5}
+/* Phones: "What actually happens" as a deck of play cards (rendered only on mobile). */
+.pdp6-deck{overflow-x:clip;margin-inline:-6px;padding-inline:6px}
+.pdp6-deck-stage{padding:6px 0 14px}
+.pdp6-deck-cards{display:grid;width:84%;margin:0;padding:0;list-style:none}
+.pdp6-deck-card{grid-area:1/1;position:relative;display:flex;flex-direction:column;padding:8px;border-radius:22px;background:#fff;box-shadow:0 1px 0 rgba(16,33,31,.05),0 18px 34px -22px rgba(16,33,31,.45);transform-origin:right center;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.pdp6-deck-card.is-front{cursor:grab}
+.pdp6-deck-card.is-front:active{cursor:grabbing}
+.pdp6-deck-photo{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:15px;background:var(--pdp6-soft)}
+.pdp6-deck-photo img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.pdp6-deck-pip{position:absolute;top:10px;left:10px;display:grid;place-items:center;min-width:34px;height:34px;padding:0 8px;border-radius:10px;background:#FBF8F3;color:var(--pdp6-accent);font:600 19px/1 var(--fr);box-shadow:0 4px 12px -6px rgba(16,33,31,.4)}
+.pdp6-deck-pip-flip{top:auto;left:auto;right:14px;bottom:12px;min-width:0;height:auto;padding:0;background:none;box-shadow:none;font-size:17px;opacity:.55;transform:rotate(180deg)}
+.pdp6-deck-body{display:flex;flex:1;flex-direction:column;padding:14px 10px 10px}
+.pdp6-deck-window{margin-bottom:6px;color:var(--pdp6-accent);font:500 12.5px/1.3 var(--in)}
+.pdp6-deck-body h3{margin-bottom:8px;font:600 21px/1.2 var(--fr);letter-spacing:-.015em;color:var(--pdp6-ink)}
+.pdp6-deck-body p{color:rgba(16,33,31,.74);font-size:14px;line-height:1.55}
+.pdp6-deck-stats{display:flex;flex-wrap:wrap;gap:6px;margin:auto 0 0;padding:14px 32px 0 0;list-style:none}
+.pdp6-deck-stats li{padding:6px 11px;border-radius:999px;background:var(--pdp6-soft);color:var(--pdp6-ink);font-size:12.5px;line-height:1.2}
+.pdp6-deck-stats b{color:var(--pdp6-accent);font-weight:600}
 
 @media(max-width:1020px){
   .pdp6-arc-cards{grid-template-columns:repeat(3,minmax(260px,1fr));overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 calc(-1 * min(5vw,40px));padding:0 min(5vw,40px) 8px}
@@ -3356,8 +3424,11 @@ html.lightbox-lock{overflow:hidden}
   .pdp6-rev-filters::-webkit-scrollbar{display:none}
   .pdp6-rev-filters button{flex:none;padding:11px 15px;font-size:14px}
   .pdp6-rev-actions{justify-content:space-between}
-  .pdp6-rev-card{grid-template-columns:minmax(0,1fr);padding:18px}
-  .pdp6-rev-photo{width:100%;aspect-ratio:16/10}
+  /* Author left, a small photo thumbnail top-right, and the review text full width below. */
+  .pdp6-rev-card{grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:14px;padding:18px}
+  .pdp6-rev-author{grid-column:1;grid-row:1;min-width:0}
+  .pdp6-rev-main{grid-column:1/-1;grid-row:2}
+  .pdp6-rev-photo{grid-column:2;grid-row:1;align-self:start;width:64px;border-radius:12px}
 }
 
 /* ---------- Product page: Review photo lightbox ---------- */

@@ -18,7 +18,10 @@ import { deliveryLabel, planSavingsPercent, subscriptionAllocations } from "@/li
 import type { ShopifyVariant } from "@/lib/shopify";
 import { FeaturedInStrip } from "../home/featured-in";
 import { ProductIntro } from "./product-intro";
+import { ArcCards } from "./arc-cards";
+import { FormulaCards } from "./formula-cards";
 import { ProductLightbox } from "./product-lightbox";
+import { RoutineSteps } from "./routine-steps";
 import { OrbitIcon, ProductModelViewer, type ProductModel } from "./product-model-viewer";
 import { ReceiptsSectionPdp } from "../home/receipts-pdp";
 import { GuaranteeSection } from "../home/guarantee";
@@ -224,7 +227,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
   // Product details accordion, closing with shipping and returns.
   const details = [...profile.productDetails, { label: "Shipping & returns", body: "Free U.S. shipping on orders of $50 or more. The First Pack Promise gives you 30 days from delivery to contact Wipelo about a refund of your first order." }];
-  const [openDetail, setOpenDetail] = useState<number | null>(0);
+  const [openDetail, setOpenDetail] = useState<number | null>(null);
   const usageDetailIndex = details.findIndex((detail) => /how to use/i.test(detail.label));
   const openUsageDetail = () => { if (usageDetailIndex >= 0) setOpenDetail(usageDetailIndex); };
 
@@ -316,7 +319,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             else if (Math.abs(deltaX) < 8 && event.button === 0 && !activeIsModel) setLightboxOpen(true);
           }}>
             {slides.map((item, index) => item.model ? <ProductModelViewer key={`${item.model.glb}-${index}`} model={item.model} active={index === slideIndex} /> : <img key={`${item.image}-${index}`} src={item.image} alt={index === slideIndex ? item.alt : ""} aria-hidden={index !== slideIndex} draggable={false} className={`pdp6-stage-img fit-${item.fit ?? "cover"}${index === slideIndex ? " is-active" : ""}`} loading={index === 0 ? "eager" : "lazy"} />)}
-            {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>}
+            {/* {hasLaunchPrice && <span className="pdp6-media-badge">Launch price</span>} */}
             <span className="pdp6-media-count">{slideIndex + 1} / {slides.length}</span>
             {!activeIsModel && <button type="button" className="pdp6-media-expand" onPointerDown={(event) => event.stopPropagation()} onPointerUp={(event) => event.stopPropagation()} onClick={() => setLightboxOpen(true)} aria-label="View image full screen">
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -329,7 +332,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           {slides.map((item, index) => <button key={`${item.image}-${index}`} type="button" role="tab" aria-selected={index === slideIndex} aria-label={item.model ? `3D model ${index + 1}: turn the pack around` : `Image ${index + 1}: ${item.headline}`} className={`${index === slideIndex ? "active" : ""}${item.model ? " is-model" : ""}` || undefined} onClick={() => setSlideIndex(index)}><img src={item.image} alt="" width="160" height="160" loading="lazy" />{item.model && <span className="pdp6-thumb-3d" aria-hidden="true"><OrbitIcon size={14} />3D</span>}</button>)}
         </div>
         <ProductLightbox slides={slides} index={slideIndex} onIndexChange={setSlideIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} title={product.title} />
-        <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p>
+        {/* <p className="pdp6-image-note"><span aria-hidden="true">✦</span>{profile.imageLabel}</p> */}
       </div>
 
       <div className="pdp6-buy">
@@ -341,7 +344,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             ? <a href="#reviews">{ratingSummary.average.toFixed(1)} from {ratingSummary.count.toLocaleString("en-US")} reviews</a>
             : <>New, no reviews yet. <a href={`mailto:uswipelo@gmail.com?subject=${encodeURIComponent(`Review: ${title}`)}`}>Be the first to review</a></>}
         </div>
-        <p className="pdp6-lead">{profile.overview}</p>
+        <LeadOverview text={profile.overview} />
 
         <div className="pdp6-short-pitch">
           <span>The short version</span>
@@ -417,13 +420,13 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <div className="pdp6-cart-row">
           <button ref={mainButtonRef} type="button" className="pdp6-add" disabled={busy || !purchasable} onClick={addSelected}>{heroButtonLabel}</button>
         </div>
-        {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
+        {/* {plan && <p className="pdp6-renewal">Renews automatically: {moneyLabel(total)} plus any shipping and tax, {deliveryLabel(plan.sellingPlan).toLowerCase()}, until you cancel. {subscriptionPortalUrl ? <a href={subscriptionPortalUrl}>Change or cancel from your account</a> : "Change or cancel from your account"}{subscriptionPolicyUrl ? <>. <a href={subscriptionPolicyUrl} target="_blank" rel="noreferrer">Cancellation policy</a></> : ""}.</p>}
         <div className="pdp6-micro-trust">
           <span>Secure checkout</span>
           <span>30-day First Pack Promise</span>
           <span>Free U.S. shipping over $50</span>
           <span>{plan ? "Change or cancel online" : "Shipping shown at checkout"}</span>
-        </div>
+        </div> */}
 
         <section className="pdp6-tell" aria-labelledby="pdp6-tell-title">
           <h2 id="pdp6-tell-title">Tell me about:</h2>
@@ -459,7 +462,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             </div>;
           })}
         </div>
-        <p className="pdp6-safety">{profile.heroSafety}</p>
+        {/* <p className="pdp6-safety">{profile.heroSafety}</p> */}
       </div>
     </section>
     <FeaturedInStrip />
@@ -470,9 +473,9 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
       <div className="wrap">
         <div className="pdp6-formula-head">
           <Stagger gap={0.09}>
-            <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal>
+            {/* <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal> */}
             <Reveal as="h2" id="pdp6-formula-title">What’s in it — <em>and what it isn’t.</em></Reveal>
-            <Reveal as="p">{profile.ingredientIntro}</Reveal>
+            {/* <Reveal as="p">{profile.ingredientIntro}</Reveal> */}
           </Stagger>
           {/* <nav className="pdp6-formula-switch" aria-label="Compare formulas">
             {FORMULA_PRODUCTS.map((item) => <Link key={item.handle} href={`/products/${item.handle}#ingredients`} aria-current={item.category === profile.category ? "page" : undefined} className={item.category === profile.category ? "is-active" : undefined}>{item.label}</Link>)}
@@ -488,33 +491,17 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
             </figcaption>
           </Reveal>
 
-          <ul className="pdp6-formula-cards" aria-label={`${title} ingredients`}>
-            {profileIngredients.map((ingredient) => <Reveal as="li" className="pdp6-formula-card" key={ingredient.title}>
-              <div className={`pdp6-formula-media${ingredient.image ? " has-photo" : ""}`}>
-                {ingredient.image
-                  ? <img src={ingredient.image} alt={ingredient.imageAlt ?? ""} loading="lazy" />
-                  : <span className="pdp6-formula-dish" aria-hidden="true"><b>{(ingredient.dose ?? "✓").split(" · ").map((part) => <span key={part}>{part}</span>)}</b></span>}
-                {/* <small>{ingredient.status}</small> */}
-              </div>
-              <div className="pdp6-formula-copy">
-                <h3>{ingredient.title}{ingredient.dose && <span className="sr-only">, {ingredient.dose}</span>}</h3>
-                <div>
-                  <p>{ingredient.does ?? ingredient.body}</p>
-                  {/* {ingredient.doesnt && <p className="pdp6-formula-not"><span aria-hidden="true">×</span> {ingredient.doesnt}</p>} */}
-                </div>
-              </div>
-            </Reveal>)}
-          </ul>
+          <FormulaCards ingredients={profileIngredients} label={`${title} ingredients`} />
         </div>
 
-        <Reveal className="pdp6-formula-promise">
+        {/* <Reveal className="pdp6-formula-promise">
           <span className="pdp6-formula-promise-mark" aria-hidden="true">i</span>
           <div>
             <h3>What’s left out</h3>
             <p>{profile.formulaNote} {profile.ingredientUseNote}</p>
           </div>
           {profile.freeFrom.length > 0 && <ul>{profile.freeFrom.map((item) => <li key={item}>{item}</li>)}</ul>}
-        </Reveal>
+        </Reveal> */}
       </div>
     </section>
 
@@ -530,7 +517,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
               <div>
                 <h3>{benefit.title}</h3>
                 <p>{benefit.body}</p>
-                {benefit.when && <small>{benefit.when}</small>}
+                {/* {benefit.when && <small>{benefit.when}</small>} */}
               </div>
             </Reveal>)}
           </Stagger>
@@ -543,10 +530,10 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <div className="pdp6-story">
           <Reveal variant="slideFromLeft" className="pdp6-story-media"><img src={profile.pdpRoutineSection} alt={profile.lifestyleAlt} loading="lazy" /></Reveal>
           <Reveal variant="slideFromRight" className="pdp6-story-copy">
-            <span className="pdp6-eyebrow">{profile.storyEyebrow}</span>
+            {/* <span className="pdp6-eyebrow">{profile.storyEyebrow}</span> */}
             <h3>{profile.storyTitle}</h3>
             <p>{profile.information}</p>
-            <ol>{profile.routine.map((step, index) => <li key={step.title}><span>{String(index + 1).padStart(2, "0")}</span><div><b>{step.title}</b><p>{step.body}</p></div></li>)}</ol>
+            <RoutineSteps steps={profile.routine} />
             <div className="pdp6-ideal"><span>Ideal for</span>{profile.idealFor.map((item) => <i key={item}>{item}</i>)}</div>
           </Reveal>
         </div>
@@ -560,26 +547,11 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     <section className="pdp6-section pdp6-arc" id="expect" aria-labelledby="pdp6-arc-title">
       <div className="wrap">
         <Stagger className="pdp6-arc-head" gap={0.09}>
-          <Reveal as="span" className="pdp6-eyebrow">// Honest expectations</Reveal>
+          {/* <Reveal as="span" className="pdp6-eyebrow">// Honest expectations</Reveal> */}
           <Reveal as="h2" id="pdp6-arc-title">{emphasize(profile.expectationHeading, profile.expectationEmphasis)}</Reveal>
-          <Reveal as="p">{profile.expectationIntro}</Reveal>
+          {/* <Reveal as="p">{profile.expectationIntro}</Reveal> */}
         </Stagger>
-        <Stagger as="ol" className="pdp6-arc-cards" gap={0.12}>
-          {profile.expectations.map((item, index) => <Reveal as="li" className="pdp6-arc-card" key={item.window}>
-            <div className="pdp6-arc-media">
-              <img src={item.img} alt={item.imgAlt ?? ""} loading="lazy" />
-              <span className="pdp6-arc-window">{item.window}</span>
-              <span className="pdp6-arc-num" aria-hidden="true">{index + 1}</span>
-            </div>
-            <div className="pdp6-arc-body">
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-              {item.stats.some((stat) => showDrafts || !stat.placeholder) && <ul className="pdp6-arc-stats">
-                {item.stats.filter((stat) => showDrafts || !stat.placeholder).map((stat) => <li key={stat.label}><b>{stat.value}</b> {stat.label}</li>)}
-              </ul>}
-            </div>
-          </Reveal>)}
-        </Stagger>
+        <ArcCards items={profile.expectations} showDrafts={showDrafts} />
         {/* <Reveal className="pdp6-arc-limits">
           <div className="pdp6-arc-wont">
             <b>And what it won’t do:</b>
@@ -593,7 +565,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
     {/* Customer reviews */}
     {reviewData && <ProductReviewsSection initial={profile.category === "wipelo" ? "all" : profile.category} reviews={reviewData.reviews} summaries={reviewData.summaries} productTitle={title} />}
     {/* Receipts */}
-    <ReceiptsSectionPdp />
+    {/* <ReceiptsSectionPdp /> */}
     {/* Directions */}
     {/* <section className="pdp6-section pdp6-tint" id="how-to-use">
       <div className="wrap">
@@ -613,7 +585,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
 
       </div>
     </section> */}
-    <GuaranteeSection />
+    {/* <GuaranteeSection /> */}
     {/* Subscribe (only when Shopify selling plans exist) */}
     {hasSubscription && <section className="pdp6-section pdp6-subscribe" id="subscribe">
       <div className="wrap">
@@ -644,5 +616,36 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         <button type="button" className="pdp6-add is-small" disabled={busy || !purchasable} onClick={addSelected}>{buttonLabel}</button>
       </div>
     </div>
+  </div>;
+}
+
+/** Product overview clamped to two lines; the toggle appears only when the copy actually overflows. */
+function LeadOverview({ text }: { text: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const [overflows, setOverflows] = useState(false);
+  const [fullHeight, setFullHeight] = useState<number>();
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      setFullHeight(el.scrollHeight);
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 24;
+      setOverflows(el.scrollHeight > lineHeight * 2 + 2);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [text]);
+
+  const id = "pdp6-lead-text";
+  return <div className={`pdp6-lead${overflows ? " is-clamped" : ""}${expanded ? " is-open" : ""}`}>
+    <p id={id} ref={ref} style={expanded && fullHeight ? { maxHeight: fullHeight } : undefined}>{text}</p>
+    {overflows && <button type="button" aria-expanded={expanded} aria-controls={id} onClick={() => setExpanded((open) => !open)}>
+      {expanded ? "Read less" : "Read more"}
+      <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+    </button>}
   </div>;
 }

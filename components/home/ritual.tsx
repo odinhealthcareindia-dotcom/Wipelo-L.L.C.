@@ -5,18 +5,22 @@ const steps: RitualStep[] = [
   {
     title: "Open one wipe",
     body: "Each wipe is individually wrapped for easy carrying and use when you need it.",
+    image: "/images/ritual/step-1.png",
+    alt: "Two hands tearing open a teal Wipelo On the Go sachet.",
   },
   {
     title: "Use for its purpose",
     body: "Choose ON THE GO for body freshness, SPOTLESS for breakout-prone body skin, or HER for external intimate cleansing. Follow each pack’s directions.",
+    image: "/images/ritual/step-2.png",
+    alt: "A hand gently wiping the inner forearm with a soft white wipe.",
   },
   {
     title: "Dispose in the bin",
     body: "Keep use external and follow the guidance printed on the pack.",
+    image: "/images/ritual/step-3.png",
+    alt: "A hand dropping a used wipe into a small bin.",
   },
 ];
-
-const ritualAlt = "A looping clip of the three steps: hands tear open a Wipelo sachet, a wipe is used on the forearm, and the used wipe drops into a bin.";
 
 export function RitualSection() {
   return (
@@ -27,7 +31,7 @@ export function RitualSection() {
           <Reveal as="h2" id="ritual-title">Open. <em>Use.</em> Dispose.</Reveal>
         </Stagger>
         <Reveal variant="fadeIn">
-          <RitualOrbit steps={steps} alt={ritualAlt} />
+          <RitualOrbit steps={steps} />
         </Reveal>
         {/* <Reveal as="p" className="ritual-bar">
           <span className="ritual-bar-icon" aria-hidden="true">!</span>

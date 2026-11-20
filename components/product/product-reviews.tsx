@@ -69,7 +69,7 @@ export function ProductReviewsSection({ initial, reviews, summaries, productTitl
   return <section className="pdp6-section pdp6-rev" id="reviews" aria-labelledby="pdp6-rev-title">
     <div className="wrap">
       <Stagger className="pdp6-rev-head" gap={0.09}>
-        <Reveal as="span" className="pdp6-eyebrow">// Customer reviews</Reveal>
+        {/* <Reveal as="span" className="pdp6-eyebrow">// Customer reviews</Reveal> */}
         <Reveal as="h2" id="pdp6-rev-title">Real people. <em>Real in-between moments.</em></Reveal>
         <Reveal as="p">From verified buyers of {filter === "all" ? "ON THE GO, SPOTLESS and HER" : categoryProductLabel[filter]}.</Reveal>
       </Stagger>
@@ -194,7 +194,7 @@ function ReviewLightbox({ items, view, onView, onClose }: { items: ProductReview
 
       {review ? <div className="pdp6-lb-body">
         <figure className="pdp6-lb-media">
-          <img key={review.id} src={review.photo} alt={`Photo shared by ${review.name}`} />
+          <img key={review.id} src={review.photo} alt={review.photoAlt ?? `Photo shared by ${review.name}`} />
           {items.length > 1 && <>
             <button type="button" className="pdp6-lb-nav is-prev" onClick={() => step(-1)} aria-label="Previous photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
             <button type="button" className="pdp6-lb-nav is-next" onClick={() => step(1)} aria-label="Next photo"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
