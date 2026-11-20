@@ -195,6 +195,13 @@ function normalizeProduct(product: ShopifyProductPayload): ShopifyProduct {
   };
 }
 
+/** Funnel products (tagged "funnel" in Shopify) are reached only by ad and funnel URLs: they stay out of
+ *  listings, collections, related products and the sitemap, while their own product URL keeps working. */
+export const FUNNEL_TAG = "funnel";
+export function isFunnelProduct(product: { tags?: string[] | null }) {
+  return (product.tags ?? []).some((tag) => tag.trim().toLowerCase() === FUNNEL_TAG);
+}
+
 export async function getProducts(first = 50): Promise<ShopifyProduct[]> {
   const products: ShopifyProduct[] = [];
   let after: string | null = null;
@@ -213,7 +220,7 @@ export async function getProducts(first = 50): Promise<ShopifyProduct[]> {
     if (!data.products.pageInfo.hasNextPage || !data.products.pageInfo.endCursor) break;
     after = data.products.pageInfo.endCursor;
   }
-  return products;
+  return products.filter((product) => !isFunnelProduct(product));
 }
 
 export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {
@@ -259,7 +266,7 @@ export async function getCollectionByHandle(handle: string): Promise<ShopifyColl
     after = connection.pageInfo.endCursor;
     if (!connection.pageInfo.hasNextPage) break;
   }
-  return { ...collection, products };
+  return { ...collection, products: products.filter((product) => !isFunnelProduct(product)) };
 }
 
 export async function getAvailableCountries() {

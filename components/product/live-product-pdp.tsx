@@ -88,6 +88,12 @@ function savingsPercent(variant: ShopifyVariant) {
   return compareAt > price ? Math.round((1 - price / compareAt) * 100) : 0;
 }
 
+/** Free packs in an offer variant named like "Buy 2, get 2 free · 120 wipes"; 0 for an ordinary pack. */
+function freePacks(variant: ShopifyVariant) {
+  const match = variant.title.match(/get\s+(\d+)\s+free/i);
+  return match ? Number(match[1]) : 0;
+}
+
 function durationLabel(variant: ShopifyVariant) {
   const match = variant.title.match(/(\d+)\s*(week|month)s?/i);
   return match ? `${match[1]} ${match[2].toLowerCase()}${match[1] === "1" ? "" : "s"}` : null;
@@ -116,10 +122,13 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
   const defaultVariant = (variants[1]?.availableForSale ? variants[1] : variants.find((variant) => variant.availableForSale)) ?? variants[0];
   const [selectedId, setSelectedId] = useState(defaultVariant?.id ?? "");
   const selected = variants.find((variant) => variant.id === selectedId) ?? defaultVariant;
+  // Offer products ("Buy 1, get 1 free" …) all save the same percentage, so the biggest offer is the best value.
+  const isOffer = variants.length > 0 && variants.every((variant) => freePacks(variant) > 0);
   const bestValueVariantId = useMemo(() => {
+    if (isOffer) return variants.reduce((best, variant) => freePacks(variant) > freePacks(best) ? variant : best).id;
     const ranked = variants.map((variant) => ({ id: variant.id, saving: savingsPercent(variant) })).filter((item) => item.saving > 0).sort((a, b) => b.saving - a.saving);
     return ranked[0]?.id ?? null;
-  }, [variants]);
+  }, [variants, isOffer]);
   const recommendedVariantId = variants.length > 2 && variants[Math.floor(variants.length / 2)].id !== bestValueVariantId ? variants[Math.floor(variants.length / 2)].id : null;
   const hasSubscription = variants.some((variant) => subscriptionAllocations(variant).length > 0);
   const [purchaseMode, setPurchaseMode] = useState<PurchaseMode>(hasSubscription ? "subscribe" : "one-time");
@@ -353,7 +362,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
         </div>
 
         {variants.length > 1 && <fieldset className="pdp6-variants">
-          <legend>Choose your pack</legend>
+          <legend>{isOffer ? "Choose your offer" : "Choose your pack"}</legend>
           <div className="pdp6-variant-grid">
             {variants.map((variant) => {
               const saving = savingsPercent(variant);
@@ -368,7 +377,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
                   <small>{variant.availableForSale ? countLabel ?? durationLabel(variant) : "Sold out"}</small>
                   {variant.availableForSale && <small className="pdp6-variant-unit">{perWipeLabel(variant.price, variant.title)}</small>}
                 </span>
-                {saving > 0 && <span className="pdp6-variant-save">Save {saving}%</span>}
+                {isOffer ? <span className="pdp6-variant-save">+{freePacks(variant)} free</span> : saving > 0 && <span className="pdp6-variant-save">Save {saving}%</span>}
               </label>;
             })}
           </div>
