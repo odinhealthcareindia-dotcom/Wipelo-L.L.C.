@@ -475,7 +475,7 @@ export function LiveProductPdp({ product, related = [], subscriptionPolicyUrl, s
           <Stagger gap={0.09}>
             {/* <Reveal as="span" className="pdp6-eyebrow">// Inside the formula · {title}</Reveal> */}
             <Reveal as="h2" id="pdp6-formula-title">What’s in it — <em>and what it isn’t.</em></Reveal>
-            <Reveal as="p">{profile.ingredientIntro}</Reveal>
+            {/* <Reveal as="p">{profile.ingredientIntro}</Reveal> */}
           </Stagger>
           {/* <nav className="pdp6-formula-switch" aria-label="Compare formulas">
             {FORMULA_PRODUCTS.map((item) => <Link key={item.handle} href={`/products/${item.handle}#ingredients`} aria-current={item.category === profile.category ? "page" : undefined} className={item.category === profile.category ? "is-active" : undefined}>{item.label}</Link>)}
