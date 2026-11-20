@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LiveProductPdp } from "@/components/product/live-product-pdp";
 import { getProductProfile } from "@/lib/product-profiles";
-import { getProductByHandle, getProducts, getSubscriptionPolicyUrl, subscriptionPortalUrl } from "@/lib/shopify";
+import { getProductByHandle, getProducts, getSubscriptionPolicyUrl, isFunnelProduct, subscriptionPortalUrl } from "@/lib/shopify";
 
 export const revalidate = 60;
 
@@ -18,7 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { handle } = await params;
   const product = await resolveProduct(handle);
   if (!product) return { title: "Product not found" };
-  return { title: product.title, description: getProductProfile(product).overview.slice(0, 160) };
+  return {
+    title: product.title,
+    description: getProductProfile(product).overview.slice(0, 160),
+    // Funnel pages exist for ads only, so search engines should not list them.
+    ...(isFunnelProduct(product) ? { robots: { index: false, follow: false } } : {}),
+  };
 }
 
 // Products load on the server (cached for 60 seconds), so a missing handle renders Next's not-found page.
